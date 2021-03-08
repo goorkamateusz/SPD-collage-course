@@ -1,2 +1,3 @@
 # Styl programowania
-<!-- todo ogólne zasady pisania ładnego i czystego kodu -->
+
+- Zgodny z [PEP8](https://realpython.com/python-pep8/)

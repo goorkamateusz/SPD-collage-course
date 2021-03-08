@@ -1,7 +1,6 @@
-Realny proces:
-
 Przykładem realnego procesu problemu przepływowego jest produkcja płytek obwodów drukowanych.
 Na wytworzenie gotowej płytki PCB przekłada się:
+
 1. Wiercenie,
 2. Wytrawianie,
 3. Nakładanie silkscreen'u,

@@ -1,0 +1,23 @@
+# Visual Studio Code
+.vscode
+*.code-workspace
+
+# Temporary and local
+**_local**
+**_temp**
+*.log
+
+# Python
+__pycache__
+
+# LaTex
+latex-build
+*.aux
+*.fdb_latexmk
+*.fls
+*.gz
+*.xdv
+*.pdf
+
+# Other
+
