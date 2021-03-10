@@ -26,11 +26,11 @@ class Machine:
     def get_id(self) -> int:
         return self.__id
 
-    def get_duration(self) -> int:
-        sum = 0
-        for task in self.tasks:
-            sum = sum + self.get_task_duration(task)
-        return sum
+    def has_task(self, task: Task) -> bool:
+        return task in self.tasks
+
+    def add_task(self, new_task: Task) -> None:
+        self.tasks.append(new_task)
 
     def get_number_of_tasks(self) -> int:
         return len(self.tasks)
@@ -43,9 +43,6 @@ class Machine:
             return self.__tasks_durations[task]
         except KeyError:
             raise KeyError
-
-    def add_task(self, new_task: Task) -> None:
-        self.tasks.append(new_task)
 
     def __eq__(self, other: Task) -> bool:
         return self.__id == other.__id
