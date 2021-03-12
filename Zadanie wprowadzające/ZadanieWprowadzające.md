@@ -10,7 +10,7 @@ Na wytworzenie gotowej płytki PCB przekłada się:
 7. Oględziny wykonywane przez człowieka,
 8. Pakowanie.
 
-Każdy etap wymaga innej maszyny, kolejność (poza drobnymi wyjątkami) nie może ulec zmianie.
-W tych wyjątkach, dobór odpowiedniej kolejności może znacząco zmienić czas produkcji.
+Każdy etap wymaga innej maszyny, kolejność nie może ulec zmianie.
+Płytki PCB mogą mieć różny rozmiar oraz poziom skomplikowania. Wybierając odpowiednią kolejność ich produkcji można zaoszczędzić dużo czasu.
 
 W przedstawionym powyżej przykładzie zadaniem może być np. wytrawianie, a operacje to wszystkie elementy, jakie należy wykonać, aby to zadanie zrealizować.
