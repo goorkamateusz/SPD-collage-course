@@ -20,6 +20,7 @@ if __name__ == "__main__":
     print(B)
 
     gantt = Gantt([A, B])
+    # gantt = Gantt([A])
     print(gantt.duration)
     gantt.plot()
 
