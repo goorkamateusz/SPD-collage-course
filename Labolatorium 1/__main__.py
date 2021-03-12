@@ -1,6 +1,5 @@
-# from labolatorium1.johnson_rule import *
-# from labolatorium1.all_possibilities import *
-from labolatorium1.gantt_plot import *
+from labolatorium1.gantt_plot import Gantt
+from labolatorium1.general_lib import Task, Machine
 
 if __name__ == "__main__":
     tasks = [Task(i) for i in range(1,6)]
@@ -20,8 +19,5 @@ if __name__ == "__main__":
     print(B)
 
     gantt = Gantt([A, B])
-    # gantt = Gantt([A])
-    print(gantt.duration)
+    print(gantt.get_duration())
     gantt.plot()
-
-    pass
