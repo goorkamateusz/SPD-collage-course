@@ -1,20 +1,22 @@
 import matplotlib.pyplot as plt
-from labolatorium1.general_lib import AllTaskAreCalculated, Machine, Task, TaskTime
+from labolatorium1.general_lib import Machine, Task
+from labolatorium1.calculable_lib import AllTaskAreCalculated, MachineTime, TaskTime
 
 class Gantt:
     """
     Wykonuje wszystkie niezbędne obliczenia nad rozkładem w czasie zadań na maszynach
     """
     def __init__(self, machines: list) -> int:
-        self.machines = machines
-        self.duration = 0
+        self.machines = []
+        for machine in machines:
+            self.machines.append(MachineTime(machine))
+        self.__duration = 0
         self.__calculate()
 
     def __calculate(self):
         """
         Uzupełnia listę time_line w machines klasami `TaskTime`, zawierajacymi początek i czas trwania taska.
         """
-
         finish = False
         task_ending_moment = {}
 
@@ -29,12 +31,12 @@ class Gantt:
 
                     if task not in current_task:
                         if task in task_ending_moment:
-                            start_time = max(task_ending_moment[task], machine.get_time_line_finish())
+                            start_time = max(task_ending_moment[task], machine.get_finish_time())
                         else:
-                            start_time = machine.get_time_line_finish()
+                            start_time = machine.get_finish_time()
 
-                        machine.add_task_to_time_line(task, start_time)
-                        finish_time = machine.get_time_line_finish()
+                        machine.add_task(task, start_time)
+                        finish_time = machine.get_finish_time()
 
                         current_task.append(task)
                         task_ending_moment[task] = finish_time
@@ -42,10 +44,13 @@ class Gantt:
                 except AllTaskAreCalculated:
                     continue
 
-        self.duration = max([m.get_time_line_finish() for m in self.machines])
+        self.__duration = max([m.get_finish_time() for m in self.machines])
+
+    def get_duration(self) -> int:
+        return self.__duration
 
     def plot(self):
-        plot = Gantt.Plot(self.machines, self.duration)
+        plot = Gantt.Plot(self.machines, self.__duration)
         plot.show()
 
     class Plot:
@@ -95,7 +100,7 @@ class Gantt:
             self.gnt.set_ylabel("Machines")
 
         def _set_ticks(self):
-            self.gnt.set_yticks([(i+1) for i in range(len(self.__machines))])
+            self.gnt.set_yticks([i for i in range(len(self.__machines), 0, -1)])
             self.gnt.set_yticklabels([f"{m.get_id()}" for m in self.__machines])
 
         def _get_c_max(self):
