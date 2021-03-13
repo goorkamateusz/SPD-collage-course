@@ -1,5 +1,9 @@
 
 class Task:
+    """
+    Zadanie.
+    Posiada ID, pozwala się porównywać i konwertować do stringa, w formie "Task 1".
+    """
     def __init__(self, id: int) -> None:
         self._id = id
         pass
@@ -20,9 +24,20 @@ class Task:
         return hash(self._id)
 
     def __str__(self) -> str:
-        return f"Task: {self._id}"
+        return f"Task {self._id}"
 
 class Machine:
+    """
+    Maszyna.
+    - `add_task_duration(task, time)` i odpowiednio `get_task_duration(task)`
+      obsługują czas trwania wykonywanie zadań na maszynie i muszą być zainicjowane;
+    - Posiada listę `tasks` do zapisywania kolejności wykonywanych zadań na maszynie:
+      `has_task(task)`, `add_task(task)`;
+    - Jest porównywalna i konwertuje się do stringa w formie, np:
+      "Machine 1
+      | Task1 | 10
+      | Task2 | 12"
+    """
     def __init__(self, id: int) -> None:
         self.tasks = []
         self._id = id

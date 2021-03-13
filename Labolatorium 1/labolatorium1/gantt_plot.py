@@ -4,7 +4,12 @@ from labolatorium1.calculable_lib import AllTaskAreCalculated, MachineTime, Task
 
 class Gantt:
     """
-    Wykonuje wszystkie niezbędne obliczenia nad rozkładem w czasie zadań na maszynach
+    Wykonuje wszystkie niezbędne obliczenia nad rozkładem w czasie zadań na maszynach.
+
+    W konstruktorze dostaje listę maszyn `Machine` z uzupełnionym czasem trawnia zadań i listą zadań.
+    - `plot()` Pozwala rysować wykresy;
+    - `get_duration()` Zwaca czas trawnia całego procesue;
+
     """
     def __init__(self, machines: list) -> int:
         self.machines = []

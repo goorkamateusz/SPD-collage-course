@@ -12,7 +12,7 @@ Praca zespołowa. Kurs na kierunku Automatyka i Robotyka Politechniki Wrocławsk
 
 ## Autorzy
 - Karolina Głuszek,
-- Jakub Kowalski,
+- Michał Kowalski,
 - Mateusz Górka
 
 ## Prowadzący zajęcia
