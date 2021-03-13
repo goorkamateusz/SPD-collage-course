@@ -24,5 +24,5 @@ if __name__ == "__main__":
         print(machine)
 
     gantt = Gantt(machines_with_task)
-    print(f"Czas trwania{gantt.get_duration()}")
+    print(f"Czas trwania: {gantt.get_duration()}")
     gantt.plot()

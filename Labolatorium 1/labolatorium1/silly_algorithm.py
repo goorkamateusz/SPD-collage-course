@@ -1,7 +1,8 @@
 from labolatorium1.general_lib import *
+from typing import List
 
 class SillyAlgorithm:
-    def run(self, machines: list, tasks: list) -> list:
+    def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
         """ Dodaje zadania pokoleii do maszyn
 
         Parameters

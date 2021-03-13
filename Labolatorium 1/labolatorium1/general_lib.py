@@ -12,10 +12,7 @@ class Task:
         return self._id
 
     def __eq__(self, other) -> bool:
-        if (other is not Task):
-            return False
-        else:
-            return self._id == other._id
+        return self._id == other._id if isinstance(other, Task) else False
 
     def __ne__(self, other) -> bool:
         return not (self == other)
