@@ -1,7 +1,9 @@
 from labolatorium1.gantt_plot import Gantt
 from labolatorium1.general_lib import Task, Machine
+from labolatorium1.silly_algorithm import SillyAlgorithm
 
 if __name__ == "__main__":
+    # import danych
     tasks = [Task(i) for i in range(1,6)]
     A = Machine(1)
     B = Machine(2)
@@ -12,12 +14,15 @@ if __name__ == "__main__":
         task = tasks[i]
         A.add_task_duration(task, time_A[i])
         B.add_task_duration(task, time_B[i])
-        A.add_task(task)
-        B.add_task(task)
 
-    print(A)
-    print(B)
+    # algorytm
+    algorithm = SillyAlgorithm()
+    machines_with_task = algorithm.run([A, B], tasks)
 
-    gantt = Gantt([A, B])
-    print(gantt.get_duration())
+    # wyswietlenie i obliczenia
+    for machine in machines_with_task:
+        print(machine)
+
+    gantt = Gantt(machines_with_task)
+    print(f"Czas trwania{gantt.get_duration()}")
     gantt.plot()
