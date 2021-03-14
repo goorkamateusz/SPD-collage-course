@@ -1,6 +1,7 @@
 from labolatorium1.gantt_plot import Gantt
 from labolatorium1.general_lib import Task, Machine
 from labolatorium1.silly_algorithm import SillyAlgorithm
+from labolatorium1.johnson_rule import JohnsonRule
 
 if __name__ == "__main__":
     # import danych
