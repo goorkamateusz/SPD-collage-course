@@ -2,8 +2,23 @@ from labolatorium1.general_lib import *
 
 class JohnsonRule:
 
-    def taskWminDuration(self, machines: list, tasks: list) -> Task:
+    def task_w_min_duration(self, machines: list, tasks: list) -> Task:
 
+        """ Wyszukiwanie i usuwanie najkrótszego zadania
+        Parameters
+        ----------
+        machines : list
+            Lista maszyn z ustawionymi czasami zadań;
+        tasks : list
+            Lista zadań;
+
+        Returns
+        -------
+        task
+            Zadanie z najkrótszym czasem wykonywania (niezależnie od maszyny);
+        """
+
+        # Szukanie taska z najkrótszym czasem
         tmpTsk = tasks[0]
         min = 9999
         for task in tasks:
@@ -12,6 +27,8 @@ class JohnsonRule:
                     min = machine.get_task_duration(task)
                     tmpTsk = task
 
+
+        # Usuwanie znalezionego taska
         for task in tasks:
             if task is tmpTsk:
                 tasks.remove(task)
@@ -41,12 +58,12 @@ class JohnsonRule:
 
         while beginInd < endInd:
             
-            minTask = self.taskWminDuration(machines, tasks)
+            minTask = self.task_w_min_duration(machines, tasks)
 
             machineA = machines[0]
 
             if machineA.has_task(minTask):
-                newTasks[0] = minTask
+                newTasks[beginInd] = minTask
                 beginInd += 1
             else:
                 newTasks[endInd - 1] = minTask
