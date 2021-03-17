@@ -1,42 +1,9 @@
-from labolatorium1.general_lib import *
+from labolatorium1.johnson_virtual import *
 
 class JohnsonRule:
 
-    def task_w_min_duration(self, machines: list, tasks: list) -> Task:
-
-        """ Wyszukiwanie i usuwanie najkrótszego zadania
-        Parameters
-        ----------
-        machines : list
-            Lista maszyn z ustawionymi czasami zadań;
-        tasks : list
-            Lista zadań;
-
-        Returns
-        -------
-        task
-            Zadanie z najkrótszym czasem wykonywania (niezależnie od maszyny);
-        """
-
-        # Szukanie taska z najkrótszym czasem
-        tmpTsk = tasks[0]
-        min = 9999
-        for task in tasks:
-            for machine in machines:
-                if machine.get_task_duration(task) < min:
-                    min = machine.get_task_duration(task)
-                    tmpTsk = task
-
-
-        # Usuwanie znalezionego taska
-        for task in tasks:
-            if task is tmpTsk:
-                tasks.remove(task)
-        
-        return tmpTsk
-
     def run(self, machines: list, tasks: list) -> list:
-        """ Algorytm Johnsona
+        """ Algorytm Johnsona - funkcja przygotowawcza
 
         Parameters
         ----------
@@ -51,23 +18,21 @@ class JohnsonRule:
             Lista maszyn z dodanymi zadaniami do listy;
         """
 
-        beginInd = 0
-        endInd = len(tasks)
+        johnsonV = JohnsonVirtual()
 
-        newTasks = [None] * endInd
+        if len(machines) == 2:
 
-        while beginInd < endInd:
+            newTasks = johnsonV.jonson_2_Machines(machines[0], machines[1], tasks)
+
+        elif len(machines) % 2:
             
-            minTask = self.task_w_min_duration(machines, tasks)
+            newTasks = tasks
 
-            machineA = machines[0]
+        else:
+            
+            newTasks = tasks
 
-            if machineA.has_task(minTask):
-                newTasks[beginInd] = minTask
-                beginInd += 1
-            else:
-                newTasks[endInd - 1] = minTask
-                endInd -= 1
+
 
 
         for task in newTasks:
