@@ -20,21 +20,44 @@ class JohnsonRule:
 
         johnsonV = JohnsonVirtual()
 
+        if len(machines) < 2:
+            print("Blad - za malo maszyn")
+            exit()
+
+        # Dla 2 maszyn:
         if len(machines) == 2:
 
             newTasks = johnsonV.jonson_2_Machines(machines[0], machines[1], tasks)
 
-        elif len(machines) % 2:
-            
-            newTasks = tasks
-
+        # Dla więcej niż 2 maszyn - tworzenie maszyn wirtualnych:
         else:
             
-            newTasks = tasks
+            vMachineA = Machine(1)
+            vMachineB = Machine(2)
+            
+            for task in tasks:
+                
+                half = int(len(machines)/2)
+                if len(machines) % 2:
+                    half += 1
 
+                print("0-" + str(half-1)) # - dla debugu
+    
+                time = 0
+                for i in range(0, half):
+                    time += machines[i].get_task_duration(task)
+                vMachineA.add_task_duration(task, time)
+                
+                print(str(int(len(machines)/2)) + "-" + str(len(machines)-1)) # - dla debugu
+                
+                time = 0
+                for i in range(int(len(machines)/2), len(machines)):
+                    time += machines[i].get_task_duration(task)
+                vMachineB.add_task_duration(task, time)
 
+            newTasks = johnsonV.jonson_2_Machines(vMachineA, vMachineB, tasks)
 
-
+        # Finalne przydzielanie zadań do maszyn:
         for task in newTasks:
             for machine in machines:
                 machine.add_task(task)
