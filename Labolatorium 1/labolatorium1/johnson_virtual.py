@@ -64,9 +64,10 @@ class JohnsonVirtual:
             
             minTask = self.task_w_min_duration(vMachines, tasks)
 
-            if vMachineA.has_task(minTask):
+            if vMachineA.get_task_duration(minTask) < vMachineB.get_task_duration(minTask):
                 newTasks[beginInd] = minTask
                 beginInd += 1
+                
             else:
                 newTasks[endInd - 1] = minTask
                 endInd -= 1

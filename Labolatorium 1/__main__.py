@@ -23,12 +23,12 @@ if __name__ == "__main__":
 
     # algorytm
     algorithm = JohnsonRule()
-    machines_with_task = algorithm.run([A, B], tasks)
+    machines_with_task = algorithm.run([A, B, C], tasks)
 
     # wyswietlenie i obliczenia
     for machine in machines_with_task:
         print(machine)
 
     gantt = Gantt(machines_with_task)
-    print(f"Czas trwania{gantt.get_duration()}")
+    print(f"Czas trwania {gantt.get_duration()}")
     gantt.plot()
