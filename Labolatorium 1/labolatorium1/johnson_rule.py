@@ -1,5 +1,6 @@
 from labolatorium1.general_lib import *
 
+
 class JohnsonRule:
 
     def task_w_min_duration(self, machines: list, tasks: list) -> Task:
