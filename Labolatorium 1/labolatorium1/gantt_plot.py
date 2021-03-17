@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from labolatorium1.general_lib import Machine, Task
 from labolatorium1.calculable_lib import AllTaskAreCalculated, MachineTime, TaskTime
 
+
 class Gantt:
     """
     Wykonuje wszystkie niezbędne obliczenia nad rozkładem w czasie zadań na maszynach.
@@ -11,7 +12,7 @@ class Gantt:
     - `get_duration()` Zwaca czas trawnia całego procesue;
 
     """
-    def __init__(self, machines: list) -> int:
+    def __init__(self, machines: list) -> None:
         self.machines = []
         for machine in machines:
             self.machines.append(MachineTime(machine))

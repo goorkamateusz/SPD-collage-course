@@ -2,6 +2,9 @@
 .vscode
 *.code-workspace
 
+# PyCharm
+.idea
+
 # Temporary and local
 **_local**
 **_temp**

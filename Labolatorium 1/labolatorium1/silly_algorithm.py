@@ -1,5 +1,6 @@
 from labolatorium1.general_lib import *
 
+
 class SillyAlgorithm:
     def run(self, machines: list, tasks: list) -> list:
         """ Dodaje zadania pokoleii do maszyn

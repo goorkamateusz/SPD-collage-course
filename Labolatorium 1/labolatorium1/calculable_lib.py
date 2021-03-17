@@ -1,14 +1,17 @@
 from labolatorium1.general_lib import Task, Machine
 
+
 class TaskTime(Task):
     def __init__(self, task: Task, start: int, duration: int) -> None:
-        super().__init__(task._id)
+        super().__init__(task.get_id())
         self.start = start
         self.duration = duration
         self.finish = start+duration
 
+
 class AllTaskAreCalculated(Exception):
     pass
+
 
 class MachineTime(Machine):
     def __init__(self, machine: Machine) -> None:
@@ -18,7 +21,7 @@ class MachineTime(Machine):
         self.time_line = []
 
     def get_finish_time(self) -> int:
-        if len(self.time_line) == 0:
+        if not self.time_line:
             return 0
         else:
             return self.time_line[-1].finish

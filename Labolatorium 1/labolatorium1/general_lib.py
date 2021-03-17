@@ -1,4 +1,3 @@
-
 class Task:
     """
     Zadanie.
@@ -6,16 +5,15 @@ class Task:
     """
     def __init__(self, id: int) -> None:
         self._id = id
-        pass
 
     def get_id(self) -> int:
         return self._id
 
     def __eq__(self, other) -> bool:
-        if (other is not Task):
-            return False
-        else:
+        if isinstance(other, Task):
             return self._id == other._id
+        else:
+            return False
 
     def __ne__(self, other) -> bool:
         return not (self == other)
@@ -25,6 +23,10 @@ class Task:
 
     def __str__(self) -> str:
         return f"Task {self._id}"
+
+    def __repr__(self) -> str:
+        return f"{self._id}"
+
 
 class Machine:
     """
@@ -52,6 +54,9 @@ class Machine:
     def add_task(self, new_task: Task) -> None:
         self.tasks.append(new_task)
 
+    def clear_tasks(self) -> None:
+        self.tasks.clear()
+
     def get_number_of_tasks(self) -> int:
         return len(self.tasks)
 
@@ -61,13 +66,16 @@ class Machine:
     def get_task_duration(self, task: Task) -> int:
         try:
             return self._tasks_durations[task]
-        except KeyError:
-            raise KeyError
+        except KeyError as error:
+            raise error
 
     def __eq__(self, other) -> bool:
-        return self._id == other.__id
+        if isinstance(other, Machine):
+            return self._id == other._id
+        else:
+            return False
 
-    def __nq__(self, other) -> bool:
+    def __ne__(self, other) -> bool:
         return not (self == other)
 
     def __str__(self) -> str:
