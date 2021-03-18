@@ -1,43 +1,10 @@
-from labolatorium1.general_lib import *
+from labolatorium1.johnson_virtual import *
 
 
 class JohnsonRule:
 
-    def task_w_min_duration(self, machines: list, tasks: list) -> Task:
-
-        """ Wyszukiwanie i usuwanie najkrótszego zadania
-        Parameters
-        ----------
-        machines : list
-            Lista maszyn z ustawionymi czasami zadań;
-        tasks : list
-            Lista zadań;
-
-        Returns
-        -------
-        task
-            Zadanie z najkrótszym czasem wykonywania (niezależnie od maszyny);
-        """
-
-        # Szukanie taska z najkrótszym czasem
-        tmpTsk = tasks[0]
-        min = 9999
-        for task in tasks:
-            for machine in machines:
-                if machine.get_task_duration(task) < min:
-                    min = machine.get_task_duration(task)
-                    tmpTsk = task
-
-
-        # Usuwanie znalezionego taska
-        for task in tasks:
-            if task is tmpTsk:
-                tasks.remove(task)
-        
-        return tmpTsk
-
     def run(self, machines: list, tasks: list) -> list:
-        """ Algorytm Johnsona
+        """ Algorytm Johnsona - funkcja przygotowawcza
 
         Parameters
         ----------
@@ -52,25 +19,45 @@ class JohnsonRule:
             Lista maszyn z dodanymi zadaniami do listy;
         """
 
-        beginInd = 0
-        endInd = len(tasks)
+        johnsonV = JohnsonVirtual()
 
-        newTasks = [None] * endInd
+        if len(machines) < 2:
+            print("Blad - za malo maszyn")
+            raise ValueError
 
-        while beginInd < endInd:
+
+        # Dla 2 maszyn:
+        if len(machines) == 2:
+
+            newTasks = johnsonV.jonson_2_Machines(machines[0], machines[1], tasks)
+
+
+        # Dla więcej niż 2 maszyn - tworzenie maszyn wirtualnych:
+        else:
             
-            minTask = self.task_w_min_duration(machines, tasks)
+            vMachineA = Machine(-1)
+            vMachineB = Machine(-2)
+            
+            for task in tasks:
+                
+                middle = int(len(machines)/2)
+                if len(machines) % 2:
+                    middle += 1
+    
+                time = 0
+                for i in range(0, middle):
+                    time += machines[i].get_task_duration(task)
+                vMachineA.add_task_duration(task, time)
+                
+                time = 0
+                for i in range(int(len(machines)/2), len(machines)):
+                    time += machines[i].get_task_duration(task)
+                vMachineB.add_task_duration(task, time)
 
-            machineA = machines[0]
-
-            if machineA.has_task(minTask):
-                newTasks[beginInd] = minTask
-                beginInd += 1
-            else:
-                newTasks[endInd - 1] = minTask
-                endInd -= 1
+            newTasks = johnsonV.jonson_2_Machines(vMachineA, vMachineB, tasks)
 
 
+        # Finalne przydzielanie zadań do maszyn:
         for task in newTasks:
             for machine in machines:
                 machine.add_task(task)

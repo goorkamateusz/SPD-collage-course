@@ -69,6 +69,12 @@ class Machine:
         except KeyError as error:
             raise error
 
+    def copy_without_task_queue(self):
+        new_machine = Machine(self._id)
+        new_machine.tasks = []
+        new_machine._tasks_durations = self._tasks_durations
+        return new_machine
+
     def __eq__(self, other) -> bool:
         if isinstance(other, Machine):
             return self._id == other._id
