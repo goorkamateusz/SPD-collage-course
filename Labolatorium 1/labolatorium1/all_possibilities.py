@@ -4,6 +4,7 @@ from typing import List
 
 from labolatorium1.gantt_plot import Gantt
 from labolatorium1.general_lib import *
+from typing import List
 
 
 class AllPossibilities:

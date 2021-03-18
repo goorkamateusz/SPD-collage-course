@@ -1,9 +1,11 @@
+from typing import List
+
 from labolatorium1.johnson_virtual import *
+from labolatorium1.general_lib import *
 
 
 class JohnsonRule:
-
-    def run(self, machines: list, tasks: list) -> list:
+    def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
         """ Algorytm Johnsona - funkcja przygotowawcza
 
         Parameters
@@ -37,7 +39,7 @@ class JohnsonRule:
             
             vMachineA = Machine(-1)
             vMachineB = Machine(-2)
-            
+
             for task in tasks:
                 
                 middle = int(len(machines)/2)

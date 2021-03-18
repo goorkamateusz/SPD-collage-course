@@ -60,7 +60,18 @@ class Gantt:
         plot.show()
 
     class Plot:
-        colors = ["red", "blue", "green", "orange"]
+        colors = [
+            "blue",
+            "orange",
+            "green",
+            "red",
+            "purple",
+            "pink",
+            "gray",
+            "olive"
+            "cyan"
+            "brown",
+        ]
 
         def __init__(self, machines: list, duration: int):
             self.__machines = machines
