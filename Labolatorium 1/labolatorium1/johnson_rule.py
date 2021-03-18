@@ -22,7 +22,7 @@ class JohnsonRule:
 
         if len(machines) < 2:
             print("Blad - za malo maszyn")
-            exit()
+            raise ValueError
 
 
         # Dla 2 maszyn:

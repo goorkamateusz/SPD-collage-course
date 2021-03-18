@@ -27,11 +27,8 @@ class JohnsonVirtual:
                     min = machine.get_task_duration(task)
                     tmpTsk = task
 
-
         # Usuwanie znalezionego taska
-        for task in tasks:
-            if task is tmpTsk:
-                tasks.remove(task)
+        tasks.remove(tmpTsk)
         
         return tmpTsk
 
