@@ -68,9 +68,9 @@ class Gantt:
             "purple",
             "pink",
             "gray",
-            "olive"
-            "cyan"
-            "brown",
+            "olive",
+            "cyan",
+            "brown"
         ]
 
         def __init__(self, machines: list, duration: int):
