@@ -72,7 +72,7 @@ class Machine:
     def copy_without_task_queue(self):
         new_machine = Machine(self._id)
         new_machine.tasks = []
-        new_machine._tasks_durations = self._tasks_durations
+        new_machine._tasks_durations = self._tasks_durations.copy()
         return new_machine
 
     def __eq__(self, other) -> bool:
