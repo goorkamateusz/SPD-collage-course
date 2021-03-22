@@ -21,6 +21,10 @@ class UIManager:
         gantt.plot(algorithm.name)
 
     @staticmethod
+    def show_plots():
+        Gantt.Plot.show()
+
+    @staticmethod
     def load_sys_arg() -> str:
         arg_list = sys.argv[1:]
         options = "f:spjah"

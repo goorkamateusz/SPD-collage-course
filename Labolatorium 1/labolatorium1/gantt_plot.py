@@ -57,7 +57,7 @@ class Gantt:
 
     def plot(self, plot_name: str):
         plot = Gantt.Plot(self.machines, self.__duration)
-        plot.show(plot_name)
+        plot.plot(plot_name)
 
     class Plot:
         colors = [
@@ -83,8 +83,12 @@ class Gantt:
             self._set_ticks()
             self._draw_plot()
 
-        def show(self, plot_name = "Bez nazwy"):
+        def plot(self, plot_name = "Bez nazwy"):
             self.gnt.set_title(plot_name)
+            plt.plot()
+
+        @staticmethod
+        def show() -> None:
             plt.show()
 
         def _draw_plot(self):

@@ -1,3 +1,4 @@
+from labolatorium1.gantt_plot import Gantt
 from labolatorium1.general_lib import Task, Machine
 from labolatorium1.file_manager import FileManager
 from labolatorium1.ui_manager import UIManager
@@ -14,3 +15,5 @@ if __name__ == "__main__":
         tasks_copy = tasks.copy()
         machines_with_task = algorithm.run(machines_copy, tasks_copy)
         UIManager.display_and_print(machines_with_task, algorithm)
+
+    UIManager.show_plots()
