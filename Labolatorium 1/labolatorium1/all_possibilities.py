@@ -35,7 +35,7 @@ class AllPossibilities:
                 for task in task_permutation:
                     machine.add_task(task)
             gantt = Gantt(machines)
-            print(f"permutacja {task_permutation} Cmax = {gantt.get_duration()}")
+            # print(f"permutacja {task_permutation} Cmax = {gantt.get_duration()}")
             if gantt.get_duration() < shortest_time:
                 shortest_time = gantt.get_duration()
                 best_permutation = task_permutation

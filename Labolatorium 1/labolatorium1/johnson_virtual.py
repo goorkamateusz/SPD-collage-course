@@ -33,7 +33,6 @@ class JohnsonVirtual:
         return tmpTsk
 
     def jonson_2_Machines(self, vMachineA, vMachineB, tasks: list) -> list:
-
         """ Algorytm Jonsona - problem dwumaszynowy
         Parameters
         ----------
