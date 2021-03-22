@@ -42,8 +42,8 @@ class FileManager:
 
     @staticmethod
     def _create_machine_list(machine_num: int) -> List[Machine]:
-        return [Machine(i) for i in range(machine_num)]
+        return [Machine(i+1) for i in range(machine_num)]
 
     @staticmethod
     def _create_task_list(task_num: int) -> List[Task]:
-        return [Task(i) for i in range(task_num)]
+        return [Task(i+1) for i in range(task_num)]

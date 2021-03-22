@@ -61,6 +61,7 @@ class Gantt:
 
     class Plot:
         colors = [
+            "olive",
             "blue",
             "orange",
             "green",
@@ -68,7 +69,6 @@ class Gantt:
             "purple",
             "pink",
             "gray",
-            "olive",
             "cyan",
             "brown"
         ]
