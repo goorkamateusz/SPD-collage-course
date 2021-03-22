@@ -7,14 +7,7 @@ if __name__ == "__main__":
 
     UIManager.load_sys_arg()
 
-    try:
-        file_name = UIManager.file_name
-        print(f"Wczytano plik {file_name}")
-    except Exception as err:
-        print(str(err))
-        exit()
-
-    machines, tasks = FileManager.load_data(file_name)
+    machines, tasks = FileManager.load_data(UIManager.file_name)
 
     for algorithm in UIManager.algorithm:
         machines_copy = [m.copy_without_task_queue() for m in machines]
