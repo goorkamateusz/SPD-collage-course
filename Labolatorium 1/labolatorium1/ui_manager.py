@@ -68,5 +68,7 @@ class UIManager:
 
     @staticmethod
     def _add_alg(alg) -> None:
-        if alg not in UIManager.algorithm:
-            UIManager.algorithm.append(alg)
+        for alg_on_list in UIManager.algorithm:
+            if type(alg_on_list) == type(alg):
+                return
+        UIManager.algorithm.append(alg)
