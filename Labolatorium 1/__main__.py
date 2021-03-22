@@ -20,4 +20,4 @@ if __name__ == "__main__":
         machines_copy = [m.copy_without_task_queue() for m in machines]
         tasks_copy = tasks.copy()
         machines_with_task = algorithm.run(machines_copy, tasks_copy)
-        UIManager.display_and_print(machines_with_task)
+        UIManager.display_and_print(machines_with_task, algorithm)

@@ -5,6 +5,8 @@ from labolatorium1.general_lib import *
 
 
 class JohnsonRule:
+    name = "Algorytm Johnsona"
+
     def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
         """ Algorytm Johnsona - funkcja przygotowawcza
 
@@ -45,7 +47,7 @@ class JohnsonRule:
                 middle = int(len(machines)/2)
                 if len(machines) % 2:
                     middle += 1
-    
+
                 time = 0
                 for i in range(0, middle):
                     time += machines[i].get_task_duration(task)

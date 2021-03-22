@@ -8,6 +8,8 @@ from typing import List
 
 
 class AllPossibilities:
+    name = "Najlepsza z permutacji"
+
     def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
         """ Sprawdza wszystkie możliwości
 

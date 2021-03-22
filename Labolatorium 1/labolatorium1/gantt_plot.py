@@ -55,9 +55,9 @@ class Gantt:
     def get_duration(self) -> int:
         return self.__duration
 
-    def plot(self):
+    def plot(self, plot_name: str):
         plot = Gantt.Plot(self.machines, self.__duration)
-        plot.show()
+        plot.show(plot_name)
 
     class Plot:
         colors = [
@@ -83,12 +83,12 @@ class Gantt:
             self._set_ticks()
             self._draw_plot()
 
-        def show(self):
+        def show(self, plot_name = "Bez nazwy"):
+            self.gnt.set_title(plot_name)
             plt.show()
 
         def _draw_plot(self):
             self.gnt.grid(True)
-            c_id = 0
 
             for machine_id in range(len(self.__machines)):
                 for task in self.__machines[machine_id].time_line:

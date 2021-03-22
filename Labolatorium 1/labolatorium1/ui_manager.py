@@ -12,13 +12,13 @@ class UIManager:
     algorithm = []
 
     @staticmethod
-    def display_and_print(machines_with_task: list) -> None:
+    def display_and_print(machines_with_task: list, algorithm) -> None:
         for machine in machines_with_task:
             print(machine)
 
         gantt = Gantt(machines_with_task)
         print(f"Czas trwania {gantt.get_duration()}")
-        gantt.plot()
+        gantt.plot(algorithm.name)
 
     @staticmethod
     def load_sys_arg() -> str:

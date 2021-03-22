@@ -3,6 +3,8 @@ from typing import List
 
 
 class SillyAlgorithm:
+    name = "Bezmyślny algorytm"
+
     def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
         """ Dodaje zadania pokoleii do maszyn
 
