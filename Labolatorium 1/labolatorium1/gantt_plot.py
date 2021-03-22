@@ -102,7 +102,7 @@ class Gantt:
                     self.gnt.text(
                             x = task.start + task.duration/2,
                             y = self.y_pos(machine_id) + 0.5,
-                            s = task.get_id(),
+                            s = f"{task.get_id()}\n({task.duration})",
                             ha = 'center',
                             va = 'center',
                             color = 'white',
