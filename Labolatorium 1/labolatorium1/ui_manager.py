@@ -25,14 +25,13 @@ class UIManager:
         Gantt.Plot.show()
 
     @staticmethod
-    def load_sys_arg() -> str:
+    def load_sys_arg():
         arg_list = sys.argv[1:]
         options = "f:spjah"
-        long_options = ["--file", "--silly-alg", "--all-permutation", "--johnson-rule", "--all", "--help"]
+        long_options = ["file=", "silly-alg", "all-permutation", "johnson-rule", "all", "help"]
 
         try:
             args, _ = getopt.getopt(arg_list, options, long_options)
-
             for curr_arg, curr_val in args:
                 if curr_arg in ("-f", "--file"):
                     UIManager.file_name = curr_val
@@ -45,7 +44,7 @@ class UIManager:
                 if curr_arg in ("-s", "--silly-alg"):
                     UIManager._add_alg(SillyAlgorithm())
 
-                if curr_arg in ('-p', "--all-permintation"):
+                if curr_arg in ('-p', "--all-permutation"):
                     UIManager._add_alg(AllPossibilities())
 
                 if curr_arg in ('-j', "--johnson-rule"):
@@ -63,7 +62,7 @@ class UIManager:
             print(str(err))
             exit()
 
-        if UIManager.file_name == None:
+        if UIManager.file_name is None:
             print("Nie podano nazwy pliku wejsciowego")
             exit()
 
