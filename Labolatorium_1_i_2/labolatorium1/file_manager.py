@@ -9,9 +9,23 @@ class FileManager:
     @staticmethod
     def load_data(file_name: str):
         file = FileManager._open_file(file_name)
-        machines_num, tasks_num = FileManager._load_header(file)
-        machines, tasks = FileManager._load_machines_with_tasks(file, machines_num, tasks_num)
+        return FileManager.read_data(file)
+
+    @staticmethod
+    def load_answer(file_name: str):
+        # todo metoda wczytujaca odpowiedzi
+        raise NotImplementedError()
+
+    @staticmethod
+    def read_data(file_handler: FileIO):
+        machines_num, tasks_num = FileManager._load_header(file_handler)
+        machines, tasks = FileManager._load_machines_with_tasks(file_handler, machines_num, tasks_num)
         return (machines, tasks)
+
+    @staticmethod
+    def read_answer(file_handler: FileIO):
+        # todo metoda wczytujaca odpowiedzi
+        raise NotImplementedError()
 
     @staticmethod
     def _open_file(file_name: str) -> FileIO:
