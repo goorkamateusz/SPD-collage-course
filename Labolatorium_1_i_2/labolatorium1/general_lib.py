@@ -25,7 +25,7 @@ class Task:
         return f"Task {self._id}"
 
     def __repr__(self) -> str:
-        return f"{self._id}"
+        return f"Task {self._id}"
 
 
 class Machine:

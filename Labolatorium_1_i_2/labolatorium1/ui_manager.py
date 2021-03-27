@@ -1,10 +1,12 @@
+import sys
+import getopt
+
 from labolatorium1.silly_algorithm import SillyAlgorithm
 from labolatorium1.johnson_rule import JohnsonRule
 from labolatorium1.all_possibilities import AllPossibilities
 from labolatorium1.general_lib import Task, Machine
 from labolatorium1.gantt_plot import Gantt
-
-import sys, getopt
+from labolatorium2.NEH_algorithm import NehAlgorithm
 
 
 class UIManager:
@@ -27,8 +29,8 @@ class UIManager:
     @staticmethod
     def load_sys_arg():
         arg_list = sys.argv[1:]
-        options = "f:spjah"
-        long_options = ["file=", "silly-alg", "all-permutation", "johnson-rule", "all", "help"]
+        options = "f:spjnah"
+        long_options = ["file=", "silly-alg", "all-permutation", "johnson-rule", "neh-algorithm", "all", "help"]
 
         try:
             args, _ = getopt.getopt(arg_list, options, long_options)
@@ -40,6 +42,7 @@ class UIManager:
                     UIManager._add_alg(SillyAlgorithm())
                     UIManager._add_alg(JohnsonRule())
                     UIManager._add_alg(AllPossibilities())
+                    UIManager._add_alg(NehAlgorithm())
 
                 if curr_arg in ("-s", "--silly-alg"):
                     UIManager._add_alg(SillyAlgorithm())
@@ -49,6 +52,9 @@ class UIManager:
 
                 if curr_arg in ('-j', "--johnson-rule"):
                     UIManager._add_alg(JohnsonRule())
+
+                if curr_arg in ('-n', "--neh-algorithm"):
+                    UIManager._add_alg(NehAlgorithm())
 
                 if curr_arg in ("-h", "--help"):
                     for c in options:
