@@ -1,6 +1,5 @@
 import math
 from itertools import permutations
-from typing import List
 
 from labolatorium1.gantt_plot import Gantt
 from labolatorium1.general_lib import *
