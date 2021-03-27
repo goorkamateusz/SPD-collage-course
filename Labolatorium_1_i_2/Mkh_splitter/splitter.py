@@ -1,5 +1,12 @@
 #!/usr/bin/python3
 
+"""
+Splitter plików Dr.a Makuchowskiego.
+Wymaga do działania:
+1. pliku: neh.data.txt
+2. folderu splitted
+"""
+
 file = open("neh.data.txt", "r")
 lines = file.readlines()
 file.close()
