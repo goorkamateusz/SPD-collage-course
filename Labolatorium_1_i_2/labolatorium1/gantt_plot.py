@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from labolatorium1.critial_path import CritialPath
 from labolatorium1.general_lib import Machine, Task
 from labolatorium1.calculable_lib import AllTaskAreCalculated, MachineTime, TaskTime
 
@@ -16,6 +17,7 @@ class Gantt:
     def __init__(self, machines: List[Machine]) -> None:
         self.machines = list(map(MachineTime, machines))
         self.__duration = 0
+        self.critical_path = CritialPath()
         self.__calculate()
 
     def __calculate(self):
@@ -40,11 +42,12 @@ class Gantt:
                         else:
                             start_time = machine.get_finish_time()
 
-                        machine.add_task(task, start_time)
+                        task_time = machine.add_task(task, start_time)
                         finish_time = machine.get_finish_time()
 
                         current_tasks.append(task)
                         task_ending_moment[task] = finish_time
+                        self.critical_path.add(task_time)
 
                 except AllTaskAreCalculated:
                     continue
@@ -55,7 +58,7 @@ class Gantt:
         return self.__duration
 
     def plot(self, plot_name: str):
-        print(f"CP: {self.critcal_path}")
+        print(f"CP: {self.critical_path.get_path()}")
         plot = Gantt.Plot(self.machines, self.__duration)
         plot.plot(plot_name)
 
