@@ -1,4 +1,4 @@
-from labolatorium1.calculable_lib import TaskTime
+from labolatorium1.calculable_lib import TaskAssigned
 
 from typing import List
 
@@ -9,14 +9,14 @@ class CritialPath:
         self._critical_path = []
         self._modified = True
 
-    def add(self, task: TaskTime) -> None:
+    def add(self, task: TaskAssigned) -> None:
         if task.finish in self._dictionary:
             self._dictionary[task.finish].append(task)
         else:
             self._dictionary[task.finish] = [task]
         self._modified = True
 
-    def get_path(self) -> List[TaskTime]:
+    def get_path(self) -> List[TaskAssigned]:
         if self._modified:
             self._calculate()
         return self._critical_path
@@ -31,11 +31,11 @@ class CritialPath:
 
         self._modified = False
 
-    def _get_last_task(self) -> TaskTime:
+    def _get_last_task(self) -> TaskAssigned:
         finish_time = max(self._dictionary.keys())
         return self._dictionary[finish_time][0]
 
-    def _get_task_before(self, task: TaskTime) -> TaskTime:
+    def _get_task_before(self, task: TaskAssigned) -> TaskAssigned:
         for t in self._dictionary[task.start]:
             if t == task:
                 return t

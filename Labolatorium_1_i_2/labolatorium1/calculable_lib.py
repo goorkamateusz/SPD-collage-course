@@ -1,7 +1,7 @@
 from labolatorium1.general_lib import Task, Machine
 
 
-class TaskTime(Task):
+class TaskAssigned(Task):
     def __init__(self, task: Task, start: int, duration: int, machine_id: int) -> None:
         super().__init__(task.get_id())
         self.start = start
@@ -14,7 +14,7 @@ class AllTaskAreCalculated(Exception):
     pass
 
 
-class MachineTime(Machine):
+class MachineDescribed(Machine):
     def __init__(self, machine: Machine) -> None:
         super().__init__(machine.get_id())
         self.tasks = machine.tasks
@@ -32,8 +32,8 @@ class MachineTime(Machine):
             raise AllTaskAreCalculated()
         return self.tasks[len(self.time_line)]
 
-    def add_task(self, task: Task, start_time: int) -> TaskTime:
+    def add_task(self, task: Task, start_time: int) -> TaskAssigned:
         duration = self.get_task_duration(task)
-        task_time = TaskTime(task, start_time, duration, self._id)
+        task_time = TaskAssigned(task, start_time, duration, self._id)
         self.time_line.append(task_time)
         return task_time
