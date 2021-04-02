@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from labolatorium1.general_lib import Machine, Task
 from labolatorium1.calculable_lib import AllTaskAreCalculated, MachineTime, TaskTime
 
+from typing import List
 
 class Gantt:
     """
@@ -12,10 +13,8 @@ class Gantt:
     - `get_duration()` Zwaca czas trawnia całego procesue;
 
     """
-    def __init__(self, machines: list) -> None:
-        self.machines = []
-        for machine in machines:
-            self.machines.append(MachineTime(machine))
+    def __init__(self, machines: List[Machine]) -> None:
+        self.machines = list(map(MachineTime, machines))
         self.__duration = 0
         self.__calculate()
 
@@ -28,14 +27,14 @@ class Gantt:
 
         while not finish:
             finish = True
-            current_task = []
+            current_tasks = []
             for machine in self.machines:
                 try:
                     task = machine.get_first_not_calculated_task()
 
                     finish = False
 
-                    if task not in current_task:
+                    if task not in current_tasks:
                         if task in task_ending_moment:
                             start_time = max(task_ending_moment[task], machine.get_finish_time())
                         else:
@@ -44,7 +43,7 @@ class Gantt:
                         machine.add_task(task, start_time)
                         finish_time = machine.get_finish_time()
 
-                        current_task.append(task)
+                        current_tasks.append(task)
                         task_ending_moment[task] = finish_time
 
                 except AllTaskAreCalculated:
@@ -56,6 +55,7 @@ class Gantt:
         return self.__duration
 
     def plot(self, plot_name: str):
+        print(f"CP: {self.critcal_path}")
         plot = Gantt.Plot(self.machines, self.__duration)
         plot.plot(plot_name)
 
