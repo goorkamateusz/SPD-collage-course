@@ -5,35 +5,42 @@ from typing import List
 
 class CritialPath:
     def __init__(self):
-        self.dictionary = {}
-        self.critical_path = []
+        self._dictionary = {}
+        self._critical_path = []
+        self._modified = True
 
     def add(self, task: TaskTime) -> None:
-        if task.finish in self.dictionary:
-            self.dictionary[task.finish].append(task)
+        if task.finish in self._dictionary:
+            self._dictionary[task.finish].append(task)
         else:
-            self.dictionary[task.finish] = [task]
+            self._dictionary[task.finish] = [task]
+        self._modified = True
 
     def get_path(self) -> List[TaskTime]:
-        task = self.get_last_task()
-        self.critical_path.insert(0, task)
+        if self._modified:
+            self._calculate()
+        return self._critical_path
+
+    def _calculate(self) -> None:
+        task = self._get_last_task()
+        self._critical_path.insert(0, task)
 
         while task.start > 0:
-            task = self.get_task_before(task)
-            self.critical_path.insert(0, task)
+            task = self._get_task_before(task)
+            self._critical_path.insert(0, task)
 
-        return self.critical_path
+        self._modified = False
 
-    def get_last_task(self) -> TaskTime:
-        finish_time = max(self.dictionary.keys())
-        return self.dictionary[finish_time][0]
+    def _get_last_task(self) -> TaskTime:
+        finish_time = max(self._dictionary.keys())
+        return self._dictionary[finish_time][0]
 
-    def get_task_before(self, task: TaskTime) -> TaskTime:
-        for t in self.dictionary[task.start]:
+    def _get_task_before(self, task: TaskTime) -> TaskTime:
+        for t in self._dictionary[task.start]:
             if t == task:
                 return t
 
-        for t in self.dictionary[task.start]:
+        for t in self._dictionary[task.start]:
             if t.machine_id == task.machine_id:
                 return t
 

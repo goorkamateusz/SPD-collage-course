@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
-from labolatorium1.critial_path import CritialPath
 from labolatorium1.general_lib import Machine, Task
 from labolatorium1.calculable_lib import AllTaskAreCalculated, MachineTime, TaskTime
+from labolatorium2.critial_path import CritialPath
 
 from typing import List
 
@@ -56,6 +56,9 @@ class Gantt:
 
     def get_duration(self) -> int:
         return self.__duration
+
+    def get_critical_path(self) -> List[TaskTime]:
+        return self.critical_path.get_path()
 
     def plot(self, plot_name: str):
         print(f"CP: {self.critical_path.get_path()}")
