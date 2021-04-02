@@ -7,11 +7,21 @@ from labolatorium1.all_possibilities import AllPossibilities
 from labolatorium1.general_lib import Task, Machine
 from labolatorium1.gantt_plot import Gantt
 from labolatorium2.NEH_algorithm import NehAlgorithm
+from labolatorium2.NEH_algorithm_modification import NehAlgorithmModification
+from labolatorium2.modifications import *
+from labolatorium2.without_modification import WithoutModification
 
 
 class UIManager:
     file_name = None
     algorithm = []
+    _modifications = {
+        0: WithoutModification(),
+        1: FirstModification(),
+        2: SecondModification(),
+        3: ThirdModification(),
+        4: FourthModification()
+    }
 
     @staticmethod
     def display_and_print(machines_with_task: list, algorithm) -> None:
@@ -29,7 +39,7 @@ class UIManager:
     @staticmethod
     def load_sys_arg():
         arg_list = sys.argv[1:]
-        options = "f:spjnah"
+        options = "f:spjnm:ah"
         long_options = ["file=", "silly-alg", "all-permutation", "johnson-rule", "neh-algorithm", "all", "help"]
 
         try:
@@ -55,6 +65,9 @@ class UIManager:
 
                 if curr_arg in ('-n', "--neh-algorithm"):
                     UIManager._add_alg(NehAlgorithm())
+
+                if curr_arg in ("-m"):
+                    UIManager._add_alg(NehAlgorithmModification(UIManager._modifications[int(curr_val)]))
 
                 if curr_arg in ("-h", "--help"):
                     for c in options:
