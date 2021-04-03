@@ -9,6 +9,15 @@ class TaskAssigned(Task):
         self.finish = start+duration
         self.machine_id = machine_id
 
+    def is_identical(self, other) -> bool:
+        return self==other and self.machine_id == other.machine_id
+
+    def is_on_the_path(self, path: list) -> bool:
+        for task in path:
+            if self.is_identical(task):
+                return True
+        return False
+
 
 class AllTaskAreCalculated(Exception):
     pass

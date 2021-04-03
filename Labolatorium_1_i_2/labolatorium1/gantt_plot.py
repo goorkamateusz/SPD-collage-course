@@ -70,7 +70,7 @@ class Gantt:
 
     def plot(self, plot_name: str):
         print(f"CP: {self.critical_path.get_path()}")
-        plot = Gantt.Plot(self.machines, self.__duration)
+        plot = Gantt.Plot(self)
         plot.plot(plot_name)
 
     class Plot:
@@ -87,10 +87,11 @@ class Gantt:
             "brown"
         ]
 
-        def __init__(self, machines: list, duration: int):
-            self.__machines = machines
+        def __init__(self, gantt):
+            self.__critical_path = gantt.get_critical_path()
+            self.__machines = gantt.machines
+            self.__duration = gantt.get_duration()
             self.__color_i = 0
-            self.__duration = duration
             _, self.gnt = plt.subplots()
             self._set_limit()
             self._set_labels()
@@ -110,10 +111,12 @@ class Gantt:
 
             for machine_id in range(len(self.__machines)):
                 for task in self.__machines[machine_id].time_line:
+                    on_critical_path = task.is_on_the_path(self.__critical_path)
                     self.gnt.broken_barh(
                             [(task.start, task.duration)],
                             (self.y_pos(machine_id), 1),
                             facecolors = (f"tab:{self.colors[self.color_id(task.get_id())]}"),
+                            edgecolors = "white" if on_critical_path else "face",
                             url = task.get_id()
                         )
 
@@ -123,7 +126,7 @@ class Gantt:
                             s = f"{task.get_id()}\n({task.duration})",
                             ha = 'center',
                             va = 'center',
-                            color = 'white',
+                            color = 'white' if on_critical_path else "black",
                         )
 
         def _set_limit(self):
