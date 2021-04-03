@@ -24,13 +24,13 @@ class UIManager:
     }
 
     @staticmethod
-    def display_and_print(machines_with_task: list, algorithm) -> None:
+    def display_and_print(machines_with_task: list, algorithm_name: str) -> None:
         for machine in machines_with_task:
             print(machine)
 
         gantt = Gantt(machines_with_task)
         print(f"Czas trwania {gantt.get_duration()}")
-        gantt.plot(algorithm.name)
+        gantt.plot(algorithm_name)
 
     @staticmethod
     def show_plots():
@@ -53,6 +53,8 @@ class UIManager:
                     UIManager._add_alg(JohnsonRule())
                     UIManager._add_alg(AllPossibilities())
                     UIManager._add_alg(NehAlgorithm())
+                    for modification in UIManager._modifications.values():
+                        UIManager._add_alg(NehAlgorithmModification(modification))
 
                 if curr_arg in ("-s", "--silly-alg"):
                     UIManager._add_alg(SillyAlgorithm())
