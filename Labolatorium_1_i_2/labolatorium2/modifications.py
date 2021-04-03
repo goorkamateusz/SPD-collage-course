@@ -3,9 +3,12 @@
     (1) http://dominik.zelazny.staff.iiar.pwr.wroc.pl/materialy/Algorytm_NEH_(Metoda_wstawien_w_klasycznych_problemach_szeregowania._Cz._I._Problem_przeplywowy).pdf
 """
 
+from labolatorium1.calculable_lib import TaskAssigned
 from labolatorium1.gantt_plot import Gantt
 from labolatorium1.general_lib import Task
 from labolatorium2.critial_path import CritialPath
+
+import math
 
 
 class FirstModification:
@@ -57,7 +60,7 @@ class SecondModification:
 
 
 class ThirdModification:
-    """
+    """ Wymiera zadanie które najczęściej pojawia się na ścieżce krytycznej.
 
         "Wśród zadań z permutacji π (z wyjątkiem zadania j) znajdź zadanie o
         największej liczbie operacji wchodzących w skład ścieŜki krytycznej w grafie G(π ) . JeŜeli
@@ -67,12 +70,23 @@ class ThirdModification:
     name = "trzecia modyf."
 
     def choose(self, sorted_tasks, optimal_task_list, gantt: Gantt) -> Task:
-        # todo
-        return sorted_tasks.popleft()
+        critial_path = gantt.get_critical_path()
+        tasks_on_path = {}
+        for task in critial_path:
+            if task in tasks_on_path:
+                tasks_on_path[task] += 1
+            else:
+                if task != optimal_task_list[-1]:
+                    tasks_on_path[task] = 1
+        if tasks_on_path:
+            chossen_task = max(tasks_on_path, key=tasks_on_path.get)
+            optimal_task_list.remove(chossen_task)
+            return chossen_task
+        return None
 
 
 class FourthModification:
-    """
+    """ Wybiera zadanie, którego usunięcie powoduje najwięszke zmnieszenie Cmax.
 
         " Jako zadanie x przyjmij to zadanie z permutacji π (z wyjątkiem zadania j),
         którego usuniecie z tej permutacji spowoduje największe zmniejszenie wartości funkcji
@@ -81,5 +95,24 @@ class FourthModification:
     name = "czwarta modyf."
 
     def choose(self, sorted_tasks, optimal_task_list, gantt: Gantt) -> Task:
-        # todo
-        return sorted_tasks.popleft()
+        machines_copy = [machine.copy_without_task_queue() for machine in gantt.machines]
+        min_Cmax = math.inf
+        chossen_task = None
+
+        for task_to_remove in optimal_task_list:
+            task_list_copy = optimal_task_list.copy()
+            task_list_copy.remove(task_to_remove)
+
+            for machine in machines_copy:
+                for task in task_list_copy:
+                    machine.add_task(task)
+
+            gantt = Gantt(machines_copy)
+            if gantt.get_duration() < min_Cmax:
+                min_Cmax = gantt.get_duration()
+                chossen_task = task_to_remove
+
+        if chossen_task:
+            optimal_task_list.remove(chossen_task)
+
+        return chossen_task
