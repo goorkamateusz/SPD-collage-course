@@ -36,18 +36,18 @@ class NehAlgorithmModification:
         sorted_tasks = deque(sorted(priorities, key=priorities.get, reverse=True))
         optimal_task_list = []
 
-        even_odd_switch = True
-
-        print ("s" + str(sorted_tasks))
+        even_odd_switch = False
 
         while sorted_tasks:
+            even_odd_switch = not even_odd_switch
             smallest_Cmax = math.inf
 
             if even_odd_switch:
                 current_task = sorted_tasks.popleft()
             else:
                 current_task = self.choose_rule.choose(sorted_tasks, optimal_task_list, optimal_gantt)
-            even_odd_switch = not even_odd_switch
+                if current_task == None:
+                    continue
 
             for i in range(0, len(optimal_task_list) + 1):
                 task_list_copy = optimal_task_list.copy()
