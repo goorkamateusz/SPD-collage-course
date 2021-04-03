@@ -1,6 +1,8 @@
 from labolatorium1.general_lib import *
+from labolatorium2.algorithm import Algorithm
 
-class JohnsonVirtual:
+
+class JohnsonVirtual(Algorithm):
 
     def task_w_min_duration(self, machines: list, tasks: list) -> Task:
 

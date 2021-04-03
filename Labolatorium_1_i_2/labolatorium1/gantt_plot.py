@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 from labolatorium1.general_lib import Machine, Task
-from labolatorium1.calculable_lib import AllTaskAreCalculated, MachineTime, TaskTime
+from labolatorium1.calculable_lib import AllTaskAreCalculated, MachineDescribed, TaskAssigned
+from labolatorium2.critial_path import CritialPath
 
+from typing import List
 
 class Gantt:
     """
@@ -12,11 +14,11 @@ class Gantt:
     - `get_duration()` Zwaca czas trawnia całego procesue;
 
     """
-    def __init__(self, machines: list) -> None:
-        self.machines = []
-        for machine in machines:
-            self.machines.append(MachineTime(machine))
+    def __init__(self, machines: List[Machine]) -> None:
+        self.machines = list(map(MachineDescribed, machines))
+        # self.__assert_me()
         self.__duration = 0
+        self.critical_path = CritialPath()
         self.__calculate()
 
     def __calculate(self):
@@ -28,35 +30,47 @@ class Gantt:
 
         while not finish:
             finish = True
-            current_task = []
+            current_tasks = []
             for machine in self.machines:
                 try:
                     task = machine.get_first_not_calculated_task()
 
                     finish = False
 
-                    if task not in current_task:
+                    if task not in current_tasks:
                         if task in task_ending_moment:
                             start_time = max(task_ending_moment[task], machine.get_finish_time())
                         else:
                             start_time = machine.get_finish_time()
 
-                        machine.add_task(task, start_time)
+                        task_time = machine.add_task(task, start_time)
                         finish_time = machine.get_finish_time()
 
-                        current_task.append(task)
+                        current_tasks.append(task)
                         task_ending_moment[task] = finish_time
+                        self.critical_path.add(task_time)
 
                 except AllTaskAreCalculated:
                     continue
 
         self.__duration = max([m.get_finish_time() for m in self.machines])
 
+    def __assert_me(self):
+        for i in range(1, len(self.machines)):
+            if self.machines[i].get_number_of_tasks() == self.machines[i-1].get_number_of_tasks():
+                assert "gdzies usunieto taska"
+        print(f"ilosc maszyn: {len(self.machines)}")
+        print(f"ilosc zadan: {self.machines[i].get_number_of_tasks()}")
+
     def get_duration(self) -> int:
         return self.__duration
 
+    def get_critical_path(self) -> List[TaskAssigned]:
+        return self.critical_path.get_path()
+
     def plot(self, plot_name: str):
-        plot = Gantt.Plot(self.machines, self.__duration)
+        print(f"CP: {self.critical_path.get_path()}")
+        plot = Gantt.Plot(self)
         plot.plot(plot_name)
 
     class Plot:
@@ -73,10 +87,11 @@ class Gantt:
             "brown"
         ]
 
-        def __init__(self, machines: list, duration: int):
-            self.__machines = machines
+        def __init__(self, gantt):
+            self.__critical_path = gantt.get_critical_path()
+            self.__machines = gantt.machines
+            self.__duration = gantt.get_duration()
             self.__color_i = 0
-            self.__duration = duration
             _, self.gnt = plt.subplots()
             self._set_limit()
             self._set_labels()
@@ -96,10 +111,12 @@ class Gantt:
 
             for machine_id in range(len(self.__machines)):
                 for task in self.__machines[machine_id].time_line:
+                    on_critical_path = task.is_on_the_path(self.__critical_path)
                     self.gnt.broken_barh(
                             [(task.start, task.duration)],
                             (self.y_pos(machine_id), 1),
                             facecolors = (f"tab:{self.colors[self.color_id(task.get_id())]}"),
+                            edgecolors = "white" if on_critical_path else "face",
                             url = task.get_id()
                         )
 
@@ -109,7 +126,7 @@ class Gantt:
                             s = f"{task.get_id()}\n({task.duration})",
                             ha = 'center',
                             va = 'center',
-                            color = 'white',
+                            color = 'white' if on_critical_path else "black",
                         )
 
         def _set_limit(self):
@@ -117,7 +134,7 @@ class Gantt:
             self.gnt.set_xlim(0, self._get_c_max())
 
         def _set_labels(self):
-            self.gnt.set_xlabel("Time")
+            self.gnt.set_xlabel(f"Time [czas trawnia: {self.__duration}]")
             self.gnt.set_ylabel("Machines")
 
         def _set_ticks(self):

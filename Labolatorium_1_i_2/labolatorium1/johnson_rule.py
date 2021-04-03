@@ -2,9 +2,10 @@ from typing import List
 
 from labolatorium1.johnson_virtual import *
 from labolatorium1.general_lib import *
+from labolatorium2.algorithm import Algorithm
 
 
-class JohnsonRule:
+class JohnsonRule(Algorithm):
     name = "Algorytm Johnsona"
 
     def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:

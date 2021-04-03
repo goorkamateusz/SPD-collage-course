@@ -7,20 +7,30 @@ from labolatorium1.all_possibilities import AllPossibilities
 from labolatorium1.general_lib import Task, Machine
 from labolatorium1.gantt_plot import Gantt
 from labolatorium2.NEH_algorithm import NehAlgorithm
+from labolatorium2.NEH_algorithm_modification import NehAlgorithmModification
+from labolatorium2.modifications import *
+from labolatorium2.without_modification import WithoutModification
 
 
 class UIManager:
     file_name = None
     algorithm = []
+    _modifications = {
+        0: WithoutModification(),
+        1: FirstModification(),
+        2: SecondModification(),
+        3: ThirdModification(),
+        4: FourthModification()
+    }
 
     @staticmethod
-    def display_and_print(machines_with_task: list, algorithm) -> None:
+    def display_and_print(machines_with_task: list, algorithm_name: str) -> None:
         for machine in machines_with_task:
             print(machine)
 
         gantt = Gantt(machines_with_task)
         print(f"Czas trwania {gantt.get_duration()}")
-        gantt.plot(algorithm.name)
+        gantt.plot(algorithm_name)
 
     @staticmethod
     def show_plots():
@@ -29,7 +39,7 @@ class UIManager:
     @staticmethod
     def load_sys_arg():
         arg_list = sys.argv[1:]
-        options = "f:spjnah"
+        options = "f:spjnm:ah"
         long_options = ["file=", "silly-alg", "all-permutation", "johnson-rule", "neh-algorithm", "all", "help"]
 
         try:
@@ -43,6 +53,8 @@ class UIManager:
                     UIManager._add_alg(JohnsonRule())
                     UIManager._add_alg(AllPossibilities())
                     UIManager._add_alg(NehAlgorithm())
+                    for modification in UIManager._modifications.values():
+                        UIManager._add_alg(NehAlgorithmModification(modification))
 
                 if curr_arg in ("-s", "--silly-alg"):
                     UIManager._add_alg(SillyAlgorithm())
@@ -55,6 +67,13 @@ class UIManager:
 
                 if curr_arg in ('-n', "--neh-algorithm"):
                     UIManager._add_alg(NehAlgorithm())
+
+                if curr_arg in ("-m"):
+                    if "," in curr_val:
+                        for val in curr_val.split(','):
+                            UIManager._add_alg(NehAlgorithmModification(UIManager._modifications[int(val)]))
+                    else:
+                        UIManager._add_alg(NehAlgorithmModification(UIManager._modifications[int(curr_val)]))
 
                 if curr_arg in ("-h", "--help"):
                     for c in options:
@@ -77,7 +96,5 @@ class UIManager:
 
     @staticmethod
     def _add_alg(alg) -> None:
-        for alg_on_list in UIManager.algorithm:
-            if type(alg_on_list) == type(alg):
-                return
-        UIManager.algorithm.append(alg)
+        if alg not in UIManager.algorithm:
+            UIManager.algorithm.append(alg)
