@@ -38,13 +38,15 @@ class NehAlgorithmModification:
 
         even_odd_switch = True
 
+        print ("s" + str(sorted_tasks))
+
         while sorted_tasks:
             smallest_Cmax = math.inf
 
             if even_odd_switch:
                 current_task = sorted_tasks.popleft()
             else:
-                current_task = self.choose_rule.choose(sorted_tasks, gantt)
+                current_task = self.choose_rule.choose(sorted_tasks, optimal_task_list, optimal_gantt)
             even_odd_switch = not even_odd_switch
 
             for i in range(0, len(optimal_task_list) + 1):
@@ -58,6 +60,7 @@ class NehAlgorithmModification:
                 if current_Cmax < smallest_Cmax:
                     smallest_Cmax = current_Cmax
                     current_optimal_task_list = task_list_copy
+                    optimal_gantt = gantt
                 for machine in machines:
                     machine.clear_tasks()
             optimal_task_list = current_optimal_task_list

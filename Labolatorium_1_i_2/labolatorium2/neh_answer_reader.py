@@ -34,8 +34,13 @@ class NehFileReader(FileManager):
         actual_order = [task.get_id() for task in first_machne.tasks]
         expected_duration, expected_order = self.answer()
 
-        assert gantt.get_duration() == expected_duration, f"Task duration is not equal\nexpected: {expected_duration}, actual: {gantt.get_duration()}\nfile: {self.file_name}"
-        assert actual_order == expected_order, f"Task order is not equal,\nexcpected:\n{expected_order}\nactual:\n{actual_order}\nfile: {self.file_name}"
+        try:
+            assert gantt.get_duration() == expected_duration, f"Task duration is not equal\nexpected: {expected_duration}, actual: {gantt.get_duration()}\nfile: {self.file_name}"
+            assert actual_order == expected_order, f"Task order is not equal,\nexcpected:\n{expected_order}\nactual:\n{actual_order}\nfile: {self.file_name}"
+        except Exception as ex:
+            gantt.plot(self.file_name)
+            Gantt.Plot.show()
+            raise ex
 
     def _find_answer_header(self) -> None:
         while True:
