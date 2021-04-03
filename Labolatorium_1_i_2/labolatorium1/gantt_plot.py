@@ -131,7 +131,7 @@ class Gantt:
             self.gnt.set_xlim(0, self._get_c_max())
 
         def _set_labels(self):
-            self.gnt.set_xlabel("Time")
+            self.gnt.set_xlabel(f"Time [czas trawnia: {self.__duration}]")
             self.gnt.set_ylabel("Machines")
 
         def _set_ticks(self):
