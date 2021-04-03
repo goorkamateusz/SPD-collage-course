@@ -16,6 +16,7 @@ class Gantt:
     """
     def __init__(self, machines: List[Machine]) -> None:
         self.machines = list(map(MachineDescribed, machines))
+        # self.__assert_me()
         self.__duration = 0
         self.critical_path = CritialPath()
         self.__calculate()
@@ -53,6 +54,13 @@ class Gantt:
                     continue
 
         self.__duration = max([m.get_finish_time() for m in self.machines])
+
+    def __assert_me(self):
+        for i in range(1, len(self.machines)):
+            if self.machines[i].get_number_of_tasks() == self.machines[i-1].get_number_of_tasks():
+                assert "gdzies usunieto taska"
+        print(f"ilosc maszyn: {len(self.machines)}")
+        print(f"ilosc zadan: {self.machines[i].get_number_of_tasks()}")
 
     def get_duration(self) -> int:
         return self.__duration
