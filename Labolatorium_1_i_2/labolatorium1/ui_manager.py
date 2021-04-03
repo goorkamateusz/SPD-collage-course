@@ -67,7 +67,11 @@ class UIManager:
                     UIManager._add_alg(NehAlgorithm())
 
                 if curr_arg in ("-m"):
-                    UIManager._add_alg(NehAlgorithmModification(UIManager._modifications[int(curr_val)]))
+                    if "," in curr_val:
+                        for val in curr_val.split(','):
+                            UIManager._add_alg(NehAlgorithmModification(UIManager._modifications[int(val)]))
+                    else:
+                        UIManager._add_alg(NehAlgorithmModification(UIManager._modifications[int(curr_val)]))
 
                 if curr_arg in ("-h", "--help"):
                     for c in options:
@@ -90,7 +94,5 @@ class UIManager:
 
     @staticmethod
     def _add_alg(alg) -> None:
-        for alg_on_list in UIManager.algorithm:
-            if type(alg_on_list) == type(alg):
-                return
-        UIManager.algorithm.append(alg)
+        if alg not in UIManager.algorithm:
+            UIManager.algorithm.append(alg)

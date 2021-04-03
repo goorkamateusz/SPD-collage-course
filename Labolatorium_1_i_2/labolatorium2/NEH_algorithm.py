@@ -1,12 +1,13 @@
 import math
 from collections import deque
+from typing import List
 
 from labolatorium1.gantt_plot import Gantt
 from labolatorium1.general_lib import *
-from typing import List
+from labolatorium2.algorithm import Algorithm
 
 
-class NehAlgorithm:
+class NehAlgorithm(Algorithm):
     name = "Algorytm NEH"
 
     def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:

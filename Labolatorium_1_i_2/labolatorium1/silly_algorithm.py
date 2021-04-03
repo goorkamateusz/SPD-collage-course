@@ -1,8 +1,10 @@
-from labolatorium1.general_lib import *
 from typing import List
 
+from labolatorium1.general_lib import *
+from labolatorium2.algorithm import Algorithm
 
-class SillyAlgorithm:
+
+class SillyAlgorithm(Algorithm):
     name = "Bezmyślny algorytm"
 
     def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
