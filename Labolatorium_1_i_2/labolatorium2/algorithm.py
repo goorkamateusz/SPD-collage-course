@@ -7,10 +7,10 @@ class Algorithm:
     def __eq__(self, oth) -> bool:
         return str(self) == str(oth)
 
-    bench_time = 0.0
+    bench_time_us = 0
 
     def read_start_time(self):
-        self.bench_time = timer()
+        self.bench_time_us = timer()
 
     def read_end_time(self):
-        self.bench_time = timer() - self.bench_time
+        self.bench_time_us = int((timer() - self.bench_time_us) * 1000_000)

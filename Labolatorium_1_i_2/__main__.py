@@ -19,6 +19,7 @@ if __name__ == "__main__":
         algorithm.read_start_time()
         machines_with_task = algorithm.run(machines_copy, tasks_copy)
         algorithm.read_end_time()
+        print(str(algorithm)+" benchmark time: " + str(algorithm.bench_time_us) + "us")
 
         UIManager.display_and_print(machines_with_task, str(algorithm))
 

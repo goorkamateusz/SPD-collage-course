@@ -28,8 +28,8 @@ class UIManager:
         for machine in machines_with_task:
             print(machine)
         
-        for single_algorithm in self.algorithm:
-            print("Benchmark time: " + str(single_algorithm.bench_time))
+        #for single_algorithm in self.algorithm:
+         #   print("Benchmark time: " + str(single_algorithm.bench_time))
 
         gantt = Gantt(machines_with_task)
         print(f"Czas trwania {gantt.get_duration()}")
