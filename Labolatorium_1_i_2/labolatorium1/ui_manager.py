@@ -24,16 +24,15 @@ class UIManager:
     }
 
     @staticmethod
-    def display_and_print(machines_with_task: list, algorithm_name: str) -> None:
+    def display_and_print(machines_with_task: list, algorithm) -> None:
         for machine in machines_with_task:
             print(machine)
-        
-        #for single_algorithm in self.algorithm:
-         #   print("Benchmark time: " + str(single_algorithm.bench_time))
+
+        print(str(algorithm)+" czas liczenia: " + str(algorithm.bench_time_us) + "us")
 
         gantt = Gantt(machines_with_task)
         print(f"Czas trwania {gantt.get_duration()}")
-        gantt.plot(algorithm_name)
+        gantt.plot(str(algorithm))
 
     @staticmethod
     def show_plots():
