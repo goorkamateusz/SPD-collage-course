@@ -7,8 +7,6 @@ class Algorithm:
     def __eq__(self, oth) -> bool:
         return str(self) == str(oth)
 
-    bench_time_us = 0
-
     def read_start_time(self):
         self.bench_time_us = timer()
 
