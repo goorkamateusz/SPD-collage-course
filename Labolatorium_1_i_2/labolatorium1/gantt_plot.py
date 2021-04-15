@@ -69,7 +69,6 @@ class Gantt:
         return self.critical_path.get_path()
 
     def plot(self, plot_name: str):
-        print(f"CP: {self.critical_path.get_path()}")
         plot = Gantt.Plot(self)
         plot.plot(plot_name)
 

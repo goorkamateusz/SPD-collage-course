@@ -24,10 +24,10 @@ class UIManager:
 
     @staticmethod
     def display_and_print(machines_with_task: list, algorithm) -> None:
-        for machine in machines_with_task:
-            print(machine)
+        # for machine in machines_with_task:
+        #     print(machine)
 
-        print(str(algorithm)+" czas liczenia: " + str(algorithm.bench_time_us)) #+ "us")
+        print(str(algorithm) + " | czas obliczeń: " + str(algorithm.bench_time_us/1000) + "ms")
 
         gantt = Gantt(machines_with_task)
         print(f"Czas trwania {gantt.get_duration()}")
