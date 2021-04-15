@@ -8,6 +8,7 @@ from labolatorium2.algorithm import Algorithm
 from laboratorium3.neightbourhood_generator import NeightbourhoodGenerator, SwapAll
 from laboratorium3.initial_solution_generator import InitialSolutionGenerator, CopyTasks
 
+
 class TabuSearch(Algorithm):
     name = "Algorytm tabu search"
 

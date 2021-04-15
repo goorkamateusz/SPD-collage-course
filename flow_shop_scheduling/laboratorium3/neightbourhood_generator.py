@@ -3,7 +3,6 @@ from typing import List, Iterator
 
 from labolatorium1.general_lib import *
 
-
 Solution = List[Task]
 
 
@@ -18,4 +17,3 @@ class SwapAll(NeightbourhoodGenerator):
             solution_copy = solution.copy()
             solution_copy[first_index], solution_copy[second_index] = solution_copy[second_index], solution_copy[first_index]
             yield solution_copy
-            
