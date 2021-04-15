@@ -95,16 +95,17 @@ class FourthModification:
     name = "czwarta modyf."
 
     def choose(self, sorted_tasks, optimal_task_list, gantt: Gantt) -> Task:
-        machines_copy = [machine.copy_without_task_queue() for machine in gantt.machines]
+        machine_without_tasks = [machine.copy_without_task_queue() for machine in gantt.machines]
         min_Cmax = math.inf
         chossen_task = None
 
         for task_to_remove in optimal_task_list:
             task_list_copy = optimal_task_list.copy()
             task_list_copy.remove(task_to_remove)
+            machines_copy = machine_without_tasks.copy()
 
-            for machine in machines_copy:
-                for task in task_list_copy:
+            for task in task_list_copy:
+                for machine in machines_copy:
                     machine.add_task(task)
 
             gantt = Gantt(machines_copy)

@@ -4,12 +4,11 @@ import getopt
 from labolatorium1.silly_algorithm import SillyAlgorithm
 from labolatorium1.johnson_rule import JohnsonRule
 from labolatorium1.all_possibilities import AllPossibilities
-from labolatorium1.general_lib import Task, Machine
-from labolatorium1.gantt_plot import Gantt
 from labolatorium2.NEH_algorithm import NehAlgorithm
 from labolatorium2.NEH_algorithm_modification import NehAlgorithmModification
 from labolatorium2.modifications import *
 from labolatorium2.without_modification import WithoutModification
+from laboratorium3.tabu_search import TabuSearch
 
 
 class UIManager:
@@ -28,7 +27,7 @@ class UIManager:
         for machine in machines_with_task:
             print(machine)
 
-        print(str(algorithm)+" czas liczenia: " + str(algorithm.bench_time_us) + "us")
+        print(str(algorithm)+" czas liczenia: " + str(algorithm.bench_time_us)) #+ "us")
 
         gantt = Gantt(machines_with_task)
         print(f"Czas trwania {gantt.get_duration()}")
@@ -41,8 +40,8 @@ class UIManager:
     @staticmethod
     def load_sys_arg():
         arg_list = sys.argv[1:]
-        options = "f:spjnm:ah"
-        long_options = ["file=", "silly-alg", "all-permutation", "johnson-rule", "neh-algorithm", "all", "help"]
+        options = "f:spjntm:ah"
+        long_options = ["file=", "silly-alg", "all-permutation", "johnson-rule", "neh-algorithm", "tabu-search", "all", "help"]
 
         try:
             args, _ = getopt.getopt(arg_list, options, long_options)
@@ -55,6 +54,7 @@ class UIManager:
                     UIManager._add_alg(JohnsonRule())
                     UIManager._add_alg(AllPossibilities())
                     UIManager._add_alg(NehAlgorithm())
+                    UIManager._add_alg(TabuSearch())
                     for modification in UIManager._modifications.values():
                         UIManager._add_alg(NehAlgorithmModification(modification))
 
@@ -70,7 +70,10 @@ class UIManager:
                 if curr_arg in ('-n', "--neh-algorithm"):
                     UIManager._add_alg(NehAlgorithm())
 
-                if curr_arg in ("-m"):
+                if curr_arg in ('-t', "--tabu-search"):
+                    UIManager._add_alg(TabuSearch())
+
+                if curr_arg in "-m":
                     if "," in curr_val:
                         for val in curr_val.split(','):
                             UIManager._add_alg(NehAlgorithmModification(UIManager._modifications[int(val)]))

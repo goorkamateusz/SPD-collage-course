@@ -1,5 +1,6 @@
 from timeit import default_timer as timer
 
+
 class Algorithm:
     def __str__(self) -> str:
         return self.name
@@ -13,4 +14,4 @@ class Algorithm:
         self.bench_time_us = timer()
 
     def read_end_time(self):
-        self.bench_time_us = int((timer() - self.bench_time_us) * 1000_000)
+        self.bench_time_us = int((timer() - self.bench_time_us) * 1_000_000)

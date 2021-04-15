@@ -4,6 +4,7 @@ from typing import List
 from labolatorium1.gantt_plot import Gantt
 from labolatorium1.general_lib import Machine
 
+
 class FileWithoutAnswer(Exception):
     pass
 
@@ -21,7 +22,7 @@ class NehFileReader(FileManager):
         self._find_answer_header()
         duration = int(self.file.readline())
         tasks_order = self._get_task_order()
-        return (duration, tasks_order)
+        return duration, tasks_order
 
     def verify_algorithm(self, alg):
         (machines, tasks) = self.data()
@@ -36,7 +37,7 @@ class NehFileReader(FileManager):
 
         try:
             assert gantt.get_duration() == expected_duration, f"Task duration is not equal\nexpected: {expected_duration}, actual: {gantt.get_duration()}\nfile: {self.file_name}"
-            assert actual_order == expected_order, f"Task order is not equal,\nexcpected:\n{expected_order}\nactual:\n{actual_order}\nfile: {self.file_name}"
+            assert actual_order == expected_order, f"Task order is not equal,\nexpected:\n{expected_order}\nactual:\n{actual_order}\nfile: {self.file_name}"
         except Exception as ex:
             gantt.plot(self.file_name)
             Gantt.Plot.show()
