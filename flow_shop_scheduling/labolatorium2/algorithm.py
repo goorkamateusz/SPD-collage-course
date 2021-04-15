@@ -1,7 +1,13 @@
 from timeit import default_timer as timer
+from typing import List
+
+from labolatorium1.general_lib import Machine, Task
 
 
 class Algorithm:
+    def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
+        raise NotImplementedError()
+
     def __str__(self) -> str:
         return self.name
 

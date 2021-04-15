@@ -1,5 +1,6 @@
 import sys
 import getopt
+from labolatorium1 import johnson_rule
 
 from labolatorium1.silly_algorithm import SillyAlgorithm
 from labolatorium1.johnson_rule import JohnsonRule
@@ -8,6 +9,8 @@ from labolatorium2.NEH_algorithm import NehAlgorithm
 from labolatorium2.NEH_algorithm_modification import NehAlgorithmModification
 from labolatorium2.modifications import *
 from labolatorium2.without_modification import WithoutModification
+from laboratorium3.initial_solution_generator import CopyTasks, InitialSolutionGenerator, UseAlgorithm
+from laboratorium3.neightbourhood_generator import Insert, Inverse, NeightbourhoodGenerator, SwapAll
 from laboratorium3.tabu_search import TabuSearch
 
 
@@ -40,7 +43,7 @@ class UIManager:
     @staticmethod
     def load_sys_arg():
         arg_list = sys.argv[1:]
-        options = "f:spjntm:ah"
+        options = "f:spjntT:m:ah"
         long_options = ["file=", "silly-alg", "all-permutation", "johnson-rule", "neh-algorithm", "tabu-search", "all", "help"]
 
         try:
@@ -73,6 +76,9 @@ class UIManager:
                 if curr_arg in ('-t', "--tabu-search"):
                     UIManager._add_alg(TabuSearch())
 
+                if curr_arg in ('-T'):
+                    UIManager._add_tabu_serach_with_modification(curr_val)
+
                 if curr_arg in "-m":
                     if "," in curr_val:
                         for val in curr_val.split(','):
@@ -103,3 +109,29 @@ class UIManager:
     def _add_alg(alg) -> None:
         if alg not in UIManager.algorithm:
             UIManager.algorithm.append(alg)
+
+    @staticmethod
+    def _add_tabu_serach_with_modification(curr_val: str) -> None:
+        if "," in curr_val:
+            initial_switch, neighbour_switch = curr_val.split(",")
+            initial = UIManager._get_initial_alg(initial_switch)
+            neighbour = UIManager._get_neighbour_alg(neighbour_switch)
+            UIManager._add_alg(TabuSearch(initial, neighbour))
+        else:
+            UIManager._add_alg(TabuSearch())
+
+    @staticmethod
+    def _get_initial_alg(initial_switch: str) -> InitialSolutionGenerator:
+        if "j" in initial_switch:
+            return UseAlgorithm(JohnsonRule())
+        else:
+            return CopyTasks()
+
+    @staticmethod
+    def _get_neighbour_alg(neighbour_switch: str) -> NeightbourhoodGenerator:
+        if "in" in neighbour_switch:
+            return Insert()
+        elif "iv" in neighbour_switch:
+            return Inverse()
+        else:
+            return SwapAll()

@@ -13,11 +13,12 @@ class TabuSearch(Algorithm):
     name = "Algorytm tabu search"
 
     def __init__(self,
-                neigthbourhood_generator: NeightbourhoodGenerator = SwapAll(),
-                intial_solution_generator: InitialSolutionGenerator = CopyTasks()) -> None:
+                initial_solution_generator: InitialSolutionGenerator = CopyTasks(),
+                neigthbourhood_generator: NeightbourhoodGenerator = SwapAll()) -> None:
         super().__init__()
-        self.intial_solution_generator = intial_solution_generator
+        self.intial_solution_generator = initial_solution_generator
         self.neigthbourhood_generator = neigthbourhood_generator
+        self.name = f"{TabuSearch.name} ({initial_solution_generator.name}, {neigthbourhood_generator.name})"
 
     def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
         """ Tabu search - przeszukiwanie z zabronieniami
@@ -36,7 +37,7 @@ class TabuSearch(Algorithm):
         """
 
         # Generowanie rozwiązania początkowego
-        initial_solution = self.intial_solution_generator.run(tasks)
+        initial_solution = self.intial_solution_generator.run(machines, tasks)
 
         for task in initial_solution:
             for machine in machines:
