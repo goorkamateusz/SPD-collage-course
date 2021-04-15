@@ -1,6 +1,5 @@
 import sys
 import getopt
-from labolatorium1 import johnson_rule
 
 from labolatorium1.silly_algorithm import SillyAlgorithm
 from labolatorium1.johnson_rule import JohnsonRule
@@ -122,8 +121,17 @@ class UIManager:
 
     @staticmethod
     def _get_initial_alg(initial_switch: str) -> InitialSolutionGenerator:
+        if "s" in initial_switch:
+            return UseAlgorithm(SillyAlgorithm())
+        if "p" in initial_switch:
+            return UseAlgorithm(AllPossibilities())
         if "j" in initial_switch:
             return UseAlgorithm(JohnsonRule())
+        if "n" in initial_switch:
+            return UseAlgorithm(NehAlgorithm())
+        if "m" in initial_switch:
+            modifaction_id = int(initial_switch.replace("m", ""))
+            return UseAlgorithm(NehAlgorithmModification(UIManager._modifications[modifaction_id]))
         else:
             return CopyTasks()
 
