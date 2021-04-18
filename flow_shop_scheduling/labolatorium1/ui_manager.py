@@ -106,6 +106,7 @@ class UIManager:
 
                 if curr_arg in ('-t', "--tabu-search"):
                     UIManager._add_alg(TabuSearch())
+                    continue
 
                 if curr_arg in ('-T'):
                     UIManager._add_tabu_serach_with_modification(curr_val)
