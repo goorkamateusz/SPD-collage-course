@@ -24,6 +24,30 @@ class UIManager:
         4: FourthModification()
     }
 
+    class Option:
+        def __init__(self, short: str, long: str, description: str):
+            self.short = short
+            self.long = long
+            self.description = description
+
+        def __str__(self) -> str:
+            short = self.short.replace(":", " arg")
+            return f"{short}\t{self.long}\t - {self.description}"
+
+    _options = [
+        Option("f:", "file", "nazwa pliku"),
+        Option("a", "all", ""),
+        Option("s", "silly-alg", ""),
+        Option("p", "all-permutation", ""),
+        Option("j", "johnson-rule", ""),
+        Option("n", "neh-algorithm", ""),
+        Option("N:", "neh-algorithm-modyfications", ""),
+        Option("t", "tabu-search", ""),
+        Option("T:", "tabu-search-modyfications", ""),
+        Option("", "tabu-list", ""),
+        Option("h", "help", ""),
+    ]
+
     @staticmethod
     def display_and_print(machines_with_task: list, algorithm) -> None:
         # for machine in machines_with_task:
@@ -42,8 +66,8 @@ class UIManager:
     @staticmethod
     def load_sys_arg():
         arg_list = sys.argv[1:]
-        options = "f:spjntT:m:ah"
-        long_options = ["file=", "silly-alg", "all-permutation", "johnson-rule", "neh-algorithm", "tabu-search", "all", "help"]
+        options = "".join([opt.short for opt in UIManager._options])
+        long_options = [opt.long for opt in UIManager._options]
 
         try:
             args, _ = getopt.getopt(arg_list, options, long_options)
@@ -72,25 +96,24 @@ class UIManager:
                 if curr_arg in ('-n', "--neh-algorithm"):
                     UIManager._add_alg(NehAlgorithm())
 
-                if curr_arg in ('-t', "--tabu-search"):
-                    UIManager._add_alg(TabuSearch())
-
-                if curr_arg in ('-T'):
-                    UIManager._add_tabu_serach_with_modification(curr_val)
-
-                if curr_arg in "-m":
+                if curr_arg in "-N":
                     if "," in curr_val:
                         for val in curr_val.split(','):
                             UIManager._add_alg(NehAlgorithmModification(UIManager._modifications[int(val)]))
                     else:
                         UIManager._add_alg(NehAlgorithmModification(UIManager._modifications[int(curr_val)]))
 
+                if curr_arg in ('-t', "--tabu-search"):
+                    UIManager._add_alg(TabuSearch())
+
+                if curr_arg in ('-T'):
+                    UIManager._add_tabu_serach_with_modification(curr_val)
+
+                if curr_arg in "--tabu-list":
+                    TabuSearch.tabu_list_max_length = int(curr_val)
+
                 if curr_arg in ("-h", "--help"):
-                    for c in options:
-                        if c != ":":
-                            print(f"-{c}")
-                    for l in long_options:
-                        print(l)
+                    UIManager.help()
                     exit()
 
         except getopt.error as err:
@@ -143,3 +166,9 @@ class UIManager:
             return Inverse()
         else:
             return SwapAll()
+
+    @staticmethod
+    def help() -> None:
+        for op in UIManager._options:
+            print(op)
+            

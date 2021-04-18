@@ -11,6 +11,7 @@ from laboratorium3.initial_solution_generator import InitialSolutionGenerator, C
 
 class TabuSearch(Algorithm):
     name = "Algorytm tabu search"
+    tabu_list_max_length = 10
 
     def __init__(self,
                 initial_solution_generator: InitialSolutionGenerator = CopyTasks(),
@@ -57,8 +58,7 @@ class TabuSearch(Algorithm):
         iter_max = 10
 
         # Lista tabu jako kolejka FIFO
-        tabu_list_max_length = 10
-        tabu_list = deque(maxlen=tabu_list_max_length)
+        tabu_list = deque(maxlen=TabuSearch.tabu_list_max_length)
 
         while iter_ < iter_max:
             # Generowanie sąsiedztwa
