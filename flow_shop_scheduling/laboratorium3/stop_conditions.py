@@ -1,5 +1,6 @@
 from timeit import default_timer as timer
 import math
+from typing import List
 
 class StopConditions:
     def start(self) -> None:
@@ -45,3 +46,18 @@ class WithoutProgresCondition(StopConditions):
         else:
             self.no_progres_iter += 1
             return self.no_progres_iter > self.max_no_progres_iter
+
+
+class ComplexStopCondition(StopConditions):
+    def __init__(self, conditions: List[StopConditions]) -> None:
+        self.conditions = conditions
+
+    def start(self) -> None:
+        for c in self.conditions:
+            c.start()
+
+    def stop(self, c_max: int) -> None:
+        for c in self.conditions:
+            if c.stop(c_max):
+                return True
+        return False

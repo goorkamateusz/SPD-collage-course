@@ -10,7 +10,7 @@ from labolatorium2.modifications import *
 from labolatorium2.without_modification import WithoutModification
 from laboratorium3.initial_solution_generator import CopyTasks, InitialSolutionGenerator, UseAlgorithm
 from laboratorium3.neightbourhood_generator import Insert, Inverse, NeightbourhoodGenerator, SwapAll
-from laboratorium3.stop_conditions import IterCondition, StopConditions, TimeCondition
+from laboratorium3.stop_conditions import ComplexStopCondition, IterCondition, StopConditions, TimeCondition
 from laboratorium3.tabu_search import TabuSearch
 
 
@@ -174,7 +174,9 @@ class UIManager:
 
     @staticmethod
     def _get_stop_con(stop_switch: str) -> StopConditions:
-        if "i" in stop_switch:
+        if "+" in stop_switch:
+            return UIManager._get_complex_stop_con(stop_switch)
+        elif "i" in stop_switch:
             max_iter = int(stop_switch.replace("i", ""))
             return IterCondition(max_iter)
         elif "t" in stop_switch:
@@ -185,6 +187,14 @@ class UIManager:
             return TimeCondition(max_no_progres)
         else:
             return IterCondition(10)
+
+    @staticmethod
+    def _get_complex_stop_con(stop_switch: str) -> ComplexStopCondition:
+        simple_switches = stop_switch.split("+")
+        conditions = []
+        for switch in simple_switches:
+            conditions.append(UIManager._get_stop_con(switch))
+        return ComplexStopCondition(conditions)
 
     @staticmethod
     def help() -> None:
