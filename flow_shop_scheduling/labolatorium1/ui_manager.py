@@ -10,6 +10,7 @@ from labolatorium2.modifications import *
 from labolatorium2.without_modification import WithoutModification
 from laboratorium3.initial_solution_generator import CopyTasks, InitialSolutionGenerator, UseAlgorithm
 from laboratorium3.neightbourhood_generator import Insert, Inverse, NeightbourhoodGenerator, SwapAll
+from laboratorium3.stop_conditions import IterCondition, StopConditions, TimeCondition
 from laboratorium3.tabu_search import TabuSearch
 
 
@@ -136,10 +137,11 @@ class UIManager:
     @staticmethod
     def _add_tabu_serach_with_modification(curr_val: str) -> None:
         if "," in curr_val:
-            initial_switch, neighbour_switch = curr_val.split(",")
+            initial_switch, neighbour_switch, stop_switch = curr_val.split(",")
             initial = UIManager._get_initial_alg(initial_switch)
             neighbour = UIManager._get_neighbour_alg(neighbour_switch)
-            UIManager._add_alg(TabuSearch(initial, neighbour))
+            stop = UIManager._get_stop_con(stop_switch)
+            UIManager._add_alg(TabuSearch(initial, neighbour, stop))
         else:
             UIManager._add_alg(TabuSearch())
 
@@ -165,6 +167,17 @@ class UIManager:
             return Inverse()
         else:
             return SwapAll()
+
+    @staticmethod
+    def _get_stop_con(stop_switch: str) -> StopConditions:
+        if "i" in stop_switch:
+            max_iter = int(stop_switch.replace("i", ""))
+            return IterCondition(max_iter)
+        elif "t" in stop_switch:
+            max_time = float(stop_switch.replace("t", ""))
+            return TimeCondition(max_time)
+        else:
+            return IterCondition(10)
 
     @staticmethod
     def help() -> None:

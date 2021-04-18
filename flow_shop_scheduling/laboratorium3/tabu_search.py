@@ -82,7 +82,7 @@ class TabuSearch(Algorithm):
                 best_Cmax = current_neighborhood_best_Cmax
                 best_solution = current_neighborhood_best_solution
 
-            if not self.stop_condition.contnue(current_Cmax):
+            if self.stop_condition.stop(current_Cmax):
                 break
 
         print(best_solution, best_Cmax)

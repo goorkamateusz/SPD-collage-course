@@ -4,7 +4,7 @@ class StopConditions:
     def start(self) -> None:
         pass
 
-    def contnue(self, c_max: int) -> None:
+    def stop(self, c_max: int) -> None:
         pass
 
 
@@ -17,14 +17,14 @@ class TimeCondition(StopConditions):
     def start(self) -> None:
         self.time_start = timer()
 
-    def contnue(self, c_max: int) -> None:
-        return timer() - self.time_start > self.duration
+    def stop(self, c_max: int) -> None:
+        return (timer() - self.time_start) > self.duration
 
 
 class IterCondition(StopConditions):
     def __init__(self, max_iter: int) -> None:
         self.iter = max_iter
 
-    def contnue(self, c_max: int) -> None:
+    def stop(self, c_max: int) -> None:
         self.iter -= 1
-        return self.iter > 0
+        return self.iter < 0
