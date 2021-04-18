@@ -110,7 +110,7 @@ class UIManager:
                 if curr_arg in ('-T'):
                     UIManager._add_tabu_serach_with_modification(curr_val)
 
-                if curr_arg in "--tabu-list":
+                if curr_arg in ("--tabu-list", None):
                     TabuSearch.tabu_list_max_length = int(curr_val)
 
                 if curr_arg in ("-h", "--help"):
