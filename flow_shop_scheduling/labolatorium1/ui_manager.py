@@ -10,7 +10,7 @@ from labolatorium2.modifications import *
 from labolatorium2.without_modification import WithoutModification
 from laboratorium3.initial_solution_generator import CopyTasks, InitialSolutionGenerator, UseAlgorithm
 from laboratorium3.neightbourhood_generator import Insert, Inverse, NeightbourhoodGenerator, SwapAll
-from laboratorium3.stop_conditions import ComplexStopCondition, IterCondition, StopConditions, TimeCondition
+from laboratorium3.stop_conditions import ComplexStopCondition, IterCondition, StopConditions, TimeCondition, WithoutProgresCondition
 from laboratorium3.tabu_search import TabuSearch
 
 
@@ -184,7 +184,7 @@ class UIManager:
             return TimeCondition(max_time)
         elif "p" in stop_switch:
             max_no_progres = int(stop_switch.replace("p", ""))
-            return TimeCondition(max_no_progres)
+            return WithoutProgresCondition(max_no_progres)
         else:
             return IterCondition(10)
 
