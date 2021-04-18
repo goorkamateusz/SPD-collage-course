@@ -44,13 +44,12 @@ class UIManager:
         Option("j", "johnson-rule", ""),
         Option("n", "neh-algorithm", ""),
         Option("N:", "neh-algorithm-modyfications", "arg: 0, 1, 2, 3, 4"),
-        Option("t", "tabu-search", ""),
+        Option("t:", "tabu-search", "arg - tabu list length"),
         Option("T:", "tabu-search-modyfications",
-"""arg: <init>,<neighbour>,<stop>
+"""arg: <tabli list length>,<init>,<neighbour>,<stop>
 \t\t\tinit: {c, s, j, n, N1, N2, N3, N4},
 \t\t\tneighbour: {sw, in, iv}
 \t\t\tstop: {i<max_iter>, t<max_time>, p<max_iter_without_progres>}"""),
-        Option("", "tabu-list=", ""),
         Option("h", "help", ""),
     ]
 
@@ -142,11 +141,11 @@ class UIManager:
     @staticmethod
     def _add_tabu_serach_with_modification(curr_val: str) -> None:
         if "," in curr_val:
-            initial_switch, neighbour_switch, stop_switch = curr_val.split(",")
+            list_length, initial_switch, neighbour_switch, stop_switch = curr_val.split(",")
             initial = UIManager._get_initial_alg(initial_switch)
             neighbour = UIManager._get_neighbour_alg(neighbour_switch)
             stop = UIManager._get_stop_con(stop_switch)
-            UIManager._add_alg(TabuSearch(initial, neighbour, stop))
+            UIManager._add_alg(TabuSearch(int(list_length), initial, neighbour, stop))
         else:
             UIManager._add_alg(TabuSearch())
 

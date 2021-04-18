@@ -13,9 +13,9 @@ from laboratorium3.initial_solution_generator import InitialSolutionGenerator, C
 
 class TabuSearch(Algorithm):
     name = "Algorytm tabu search"
-    tabu_list_max_length = 10
 
     def __init__(self,
+                tabu_list_max_length: int = 10,
                 initial_solution_generator: InitialSolutionGenerator = CopyTasks(),
                 neigthbourhood_generator: NeightbourhoodGenerator = SwapAll(),
                 stop_condition: StopConditions = IterCondition(10)) -> None:
@@ -23,7 +23,8 @@ class TabuSearch(Algorithm):
         self.intial_solution_generator = initial_solution_generator
         self.neigthbourhood_generator = neigthbourhood_generator
         self.stop_condition = stop_condition
-        self.name = f"{TabuSearch.name} ({initial_solution_generator.name}, {neigthbourhood_generator.name}, {stop_condition})"
+        self.tabu_list_max_length = tabu_list_max_length
+        self.name = f"{TabuSearch.name} ({tabu_list_max_length}, {initial_solution_generator.name}, {neigthbourhood_generator.name}, {stop_condition})"
 
     def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
         """ Tabu search - przeszukiwanie z zabronieniami
@@ -61,7 +62,7 @@ class TabuSearch(Algorithm):
         self.stop_condition.start()
 
         # Lista tabu jako kolejka FIFO
-        tabu_list = deque(maxlen=TabuSearch.tabu_list_max_length)
+        tabu_list = deque(maxlen=self.tabu_list_max_length)
 
         while True:
             # Generowanie sąsiedztwa
