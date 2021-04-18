@@ -41,9 +41,9 @@ class UIManager:
         Option("p", "all-permutation", ""),
         Option("j", "johnson-rule", ""),
         Option("n", "neh-algorithm", ""),
-        Option("N:", "neh-algorithm-modyfications", ""),
+        Option("N:", "neh-algorithm-modyfications", "arg: 0, 1, 2, 3, 4"),
         Option("t", "tabu-search", ""),
-        Option("T:", "tabu-search-modyfications", ""),
+        Option("T:", "tabu-search-modyfications", "arg: <init>,<neighbour>, init: {c, s, j, n, N1, N2, N3, N4}, neighbour: {sw, in, iv}"),
         Option("", "tabu-list", ""),
         Option("h", "help", ""),
     ]
@@ -146,14 +146,12 @@ class UIManager:
     def _get_initial_alg(initial_switch: str) -> InitialSolutionGenerator:
         if "s" in initial_switch:
             return UseAlgorithm(SillyAlgorithm())
-        if "p" in initial_switch:
-            return UseAlgorithm(AllPossibilities())
         if "j" in initial_switch:
             return UseAlgorithm(JohnsonRule())
         if "n" in initial_switch:
             return UseAlgorithm(NehAlgorithm())
-        if "m" in initial_switch:
-            modifaction_id = int(initial_switch.replace("m", ""))
+        if "N" in initial_switch:
+            modifaction_id = int(initial_switch.replace("N", ""))
             return UseAlgorithm(NehAlgorithmModification(UIManager._modifications[modifaction_id]))
         else:
             return CopyTasks()
@@ -171,4 +169,3 @@ class UIManager:
     def help() -> None:
         for op in UIManager._options:
             print(op)
-            
