@@ -32,10 +32,11 @@ class UIManager:
 
         def __str__(self) -> str:
             short = self.short.replace(":", " arg")
-            return f"{short}\t{self.long}\t - {self.description}"
+            long = self.long.replace("=", "=arg")
+            return f"{short}\t{long}\t - {self.description}"
 
     _options = [
-        Option("f:", "file", "nazwa pliku"),
+        Option("f:", "file=", "nazwa pliku"),
         Option("a", "all", ""),
         Option("s", "silly-alg", ""),
         Option("p", "all-permutation", ""),
@@ -44,7 +45,7 @@ class UIManager:
         Option("N:", "neh-algorithm-modyfications", "arg: 0, 1, 2, 3, 4"),
         Option("t", "tabu-search", ""),
         Option("T:", "tabu-search-modyfications", "arg: <init>,<neighbour>, init: {c, s, j, n, N1, N2, N3, N4}, neighbour: {sw, in, iv}"),
-        Option("", "tabu-list", ""),
+        Option("", "tabu-list=", ""),
         Option("h", "help", ""),
     ]
 
