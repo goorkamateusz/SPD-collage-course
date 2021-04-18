@@ -1,4 +1,5 @@
 from timeit import default_timer as timer
+import math
 
 class StopConditions:
     def start(self) -> None:
@@ -28,3 +29,19 @@ class IterCondition(StopConditions):
     def stop(self, c_max: int) -> None:
         self.iter -= 1
         return self.iter < 0
+
+
+class WithoutProgresCondition(StopConditions):
+    def __init__(self, max_no_progres_iter) -> None:
+        self.max_no_progres_iter = max_no_progres_iter
+        self.no_progres_iter = 0
+        self.last_better_cmax = math.inf
+
+    def stop(self, c_max: int) -> None:
+        if c_max < self.last_better_cmax:
+            self.no_progres_iter = 0
+            self.last_better_cmax = c_max
+            return False
+        else:
+            self.no_progres_iter += 1
+            return self.no_progres_iter > self.max_no_progres_iter

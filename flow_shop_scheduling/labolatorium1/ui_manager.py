@@ -45,7 +45,11 @@ class UIManager:
         Option("n", "neh-algorithm", ""),
         Option("N:", "neh-algorithm-modyfications", "arg: 0, 1, 2, 3, 4"),
         Option("t", "tabu-search", ""),
-        Option("T:", "tabu-search-modyfications", "arg: <init>,<neighbour>, init: {c, s, j, n, N1, N2, N3, N4}, neighbour: {sw, in, iv}"),
+        Option("T:", "tabu-search-modyfications",
+"""arg: <init>,<neighbour>,<stop>
+\t\t\tinit: {c, s, j, n, N1, N2, N3, N4},
+\t\t\tneighbour: {sw, in, iv}
+\t\t\tstop: {i<max_iter>, t<max_time>, p<max_iter_without_progres>}"""),
         Option("", "tabu-list=", ""),
         Option("h", "help", ""),
     ]
@@ -176,6 +180,9 @@ class UIManager:
         elif "t" in stop_switch:
             max_time = float(stop_switch.replace("t", ""))
             return TimeCondition(max_time)
+        elif "p" in stop_switch:
+            max_no_progres = int(stop_switch.replace("p", ""))
+            return TimeCondition(max_no_progres)
         else:
             return IterCondition(10)
 
