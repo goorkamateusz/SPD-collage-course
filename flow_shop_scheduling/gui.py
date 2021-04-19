@@ -8,12 +8,18 @@ import sys
 class Gui:
 
     command = []
-    window = tk.Tk()
+    root = tk.Tk()
 
     var_s = tk.IntVar()
     var_p = tk.IntVar()
     var_j = tk.IntVar()
     var_n = tk.IntVar()
+
+    var_t = tk.IntVar()
+    var_t_text = tk.Entry(root)
+
+    var_T = tk.IntVar()
+    var_T_text = tk.Entry(root)
 
     var_N = tk.IntVar()
     var_N_track = tk.IntVar()
@@ -39,15 +45,19 @@ class Gui:
             self.command.append("-n")   
 
         if self.var_N.get() == 1:
-            self.command.append("-N " + str(self.var_N_track.get()))   
+            self.command.append("-N " + str(self.var_N_track.get()))  
+
+        if self.var_t.get() == 1:
+            self.command.append("-t " + self.var_t_text.get())
+
+        if self.var_T.get() == 1:
+            self.command.append("-T " + self.var_t_text.get() + "," + self.var_T_text.get())
 
         print(self.command)
         subprocess.run(self.command)
+        exit()
 
     def __init__(self):
-
-        root = tk.Tk()
-        root.withdraw()
 
         self.command.append("python3")
         self.command.append("__main__.py")
@@ -55,35 +65,46 @@ class Gui:
         self.command.append("-f")
         self.command.append(fd.askopenfilename())
 
-        self.window.title("Wybór algorytmu")
-        self.window.geometry("640x480")
+        self.root.title("Wybór algorytmu")
+        self.root.geometry("640x480")
 
-        s_box = tk.Checkbutton(self.window,  text="Kolejność domyślna",  variable = self.var_s)
-        p_box = tk.Checkbutton(self.window,  text="Przegląd zupełny",    variable = self.var_p)
-        j_box = tk.Checkbutton(self.window,  text="Reguła Johnsona",     variable = self.var_j)
-        n_box = tk.Checkbutton(self.window,  text="Algorytm Neh",        variable = self.var_n)
+        # CheckBoxy:
+        s_box = tk.Checkbutton(self.root,  text="Kolejność domyślna",  variable = self.var_s)
+        p_box = tk.Checkbutton(self.root,  text="Przegląd zupełny",    variable = self.var_p)
+        j_box = tk.Checkbutton(self.root,  text="Reguła Johnsona",     variable = self.var_j)
+        n_box = tk.Checkbutton(self.root,  text="Algorytm Neh",        variable = self.var_n)
 
-        N_box = tk.Checkbutton(self.window,  text="Neh zmodyfikowany:",  variable = self.var_N)
-        N_trackBar = tk.Scale(self.window, to = 4, variable = self.var_N_track)
+        N_box = tk.Checkbutton(self.root,  text="Neh zmodyfikowany:",  variable = self.var_N)
+        N_trackBar = tk.Scale(self.root, to = 4, variable = self.var_N_track)
 
-        button = tk.Button(self.window,         text ="Uruchom",    command = self.button_interrupt)
-        exit_button = tk.Button(self.window,    text ="Wyjście",    command = self.exit_interrupt)
-        reset_button = tk.Button(self.window,   text ="Inny plik",  command = self.reset_interrupt)
+        t_box = tk.Checkbutton(self.root,  text="Tabu search - podaj długość tablicy Tabu:", variable = self.var_t)
+        T_box = tk.Checkbutton(self.root,  text="Tabu search z modyfikacjami\nPodaj długość tablicy Tabu powyżej oraz modyfikacje poniżej:", variable = self.var_T)
 
+        # Przyciski:
+        button = tk.Button(self.root,         text ="Uruchom",    command = self.button_interrupt)
+        exit_button = tk.Button(self.root,    text ="Wyjście",    command = self.exit_interrupt)
+        reset_button = tk.Button(self.root,   text ="Inny plik",  command = self.reset_interrupt)
 
-
-
+        # Zapakowanie wszystkiego do okna:
         reset_button.pack()
+
         s_box.pack()
         p_box.pack()
         j_box.pack()
         n_box.pack()
+
         N_box.pack()
         N_trackBar.pack()
+
+        t_box.pack()
+        self.var_t_text.pack()
+        T_box.pack()
+        self.var_T_text.pack()
+
         button.pack()
         exit_button.pack()
 
-        self.window.mainloop()
+        self.root.mainloop()
 
 
 gui = Gui()
