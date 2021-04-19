@@ -6,15 +6,16 @@ import subprocess
 class Gui:
 
     command = []
+    window = tk.Tk()
 
-    var_s = None
-    var_p = None
-    var_j = None
-    var_n = None
+    var_s = tk.IntVar()
+    var_p = tk.IntVar()
+    var_j = tk.IntVar()
+    var_n = tk.IntVar()
 
 
     def button_interrupt(self):
-        
+
         if self.var_s.get() == 1:
             self.command.append("-s")
 
@@ -43,23 +44,14 @@ class Gui:
         self.command.append("-f")
         self.command.append(fd.askopenfilename())
 
+        self.window.title("Wybór algorytmu")
+        self.window.geometry("320x320")
 
-        window = tk.Tk()
-        window.title("Wybór algorytmu")
-        window.geometry("200x200")
-
-        self.var_s = tk.IntVar()
-        self.var_p = tk.IntVar()
-        self.var_j = tk.IntVar()
-        self.var_n = tk.IntVar()
-
-
-        s_box = tk.Checkbutton(window,  text="Kolejność domyślna",  variable = self.var_s)
-        p_box = tk.Checkbutton(window,  text="Przegląd zupełny",    variable = self.var_p)
-        j_box = tk.Checkbutton(window,  text="Reguła Johnsona",     variable = self.var_j)
-        n_box = tk.Checkbutton(window,  text="Algorytm Neh",        variable = self.var_n)
-        button = tk.Button(window,      text ="Uruchom", command = self.button_interrupt)
-
+        s_box = tk.Checkbutton(self.window,  text="Kolejność domyślna",  variable = self.var_s, onvalue = 1, offvalue = 0)
+        p_box = tk.Checkbutton(self.window,  text="Przegląd zupełny",    variable = self.var_p, onvalue = 1, offvalue = 0)
+        j_box = tk.Checkbutton(self.window,  text="Reguła Johnsona",     variable = self.var_j, onvalue = 1, offvalue = 0)
+        n_box = tk.Checkbutton(self.window,  text="Algorytm Neh",        variable = self.var_n, onvalue = 1, offvalue = 0)
+        button = tk.Button(self.window,      text ="Uruchom", command = self.button_interrupt)
 
         s_box.pack()
         p_box.pack()
@@ -67,7 +59,7 @@ class Gui:
         n_box.pack()
         button.pack()
 
-        window.mainloop()
+        self.window.mainloop()
 
 
 gui = Gui()
