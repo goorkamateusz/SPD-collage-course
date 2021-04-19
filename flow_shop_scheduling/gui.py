@@ -2,6 +2,8 @@
 import tkinter as tk
 import tkinter.filedialog as fd
 import subprocess
+import os
+import sys
 
 class Gui:
 
@@ -16,6 +18,11 @@ class Gui:
     var_N = tk.IntVar()
     var_N_track = tk.IntVar()
 
+    def exit_interrupt(self):
+        exit()
+
+    def reset_interrupt(self):
+        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
 
     def button_interrupt(self):
 
@@ -36,8 +43,6 @@ class Gui:
 
         print(self.command)
         subprocess.run(self.command)
-        exit() # opcjonalnie
-
 
     def __init__(self):
 
@@ -51,7 +56,7 @@ class Gui:
         self.command.append(fd.askopenfilename())
 
         self.window.title("Wybór algorytmu")
-        self.window.geometry("320x320")
+        self.window.geometry("640x480")
 
         s_box = tk.Checkbutton(self.window,  text="Kolejność domyślna",  variable = self.var_s)
         p_box = tk.Checkbutton(self.window,  text="Przegląd zupełny",    variable = self.var_p)
@@ -61,8 +66,14 @@ class Gui:
         N_box = tk.Checkbutton(self.window,  text="Neh zmodyfikowany:",  variable = self.var_N)
         N_trackBar = tk.Scale(self.window, to = 4, variable = self.var_N_track)
 
-        button = tk.Button(self.window,      text ="Uruchom", command = self.button_interrupt)
+        button = tk.Button(self.window,         text ="Uruchom",    command = self.button_interrupt)
+        exit_button = tk.Button(self.window,    text ="Wyjście",    command = self.exit_interrupt)
+        reset_button = tk.Button(self.window,   text ="Inny plik",  command = self.reset_interrupt)
 
+
+
+
+        reset_button.pack()
         s_box.pack()
         p_box.pack()
         j_box.pack()
@@ -70,6 +81,7 @@ class Gui:
         N_box.pack()
         N_trackBar.pack()
         button.pack()
+        exit_button.pack()
 
         self.window.mainloop()
 
