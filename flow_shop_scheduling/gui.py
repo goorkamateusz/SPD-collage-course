@@ -59,7 +59,7 @@ class Gui:
 
     def __init__(self):
 
-        self.command.append("python3")
+        self.command.append("python")
         self.command.append("__main__.py")
 
         self.command.append("-f")
