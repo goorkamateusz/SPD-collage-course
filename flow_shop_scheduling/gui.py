@@ -13,7 +13,6 @@ class Gui:
     var_s = tk.IntVar()
     var_p = tk.IntVar()
     var_j = tk.IntVar()
-    var_n = tk.IntVar()
 
     var_t = tk.IntVar()
     var_t_text = tk.Entry(root)
@@ -39,10 +38,7 @@ class Gui:
             self.command.append("-p")
 
         if self.var_j.get() == 1:
-            self.command.append("-j")
-
-        if self.var_n.get() == 1:
-            self.command.append("-n")   
+            self.command.append("-j") 
 
         if self.var_N.get() == 1:
             self.command.append("-N " + str(self.var_N_track.get()))  
@@ -72,12 +68,11 @@ class Gui:
         s_box = tk.Checkbutton(self.root,  text="Kolejność domyślna",  variable = self.var_s)
         p_box = tk.Checkbutton(self.root,  text="Przegląd zupełny",    variable = self.var_p)
         j_box = tk.Checkbutton(self.root,  text="Reguła Johnsona",     variable = self.var_j)
-        n_box = tk.Checkbutton(self.root,  text="Algorytm Neh",        variable = self.var_n)
 
-        N_box = tk.Checkbutton(self.root,  text="Neh zmodyfikowany:",  variable = self.var_N)
+        N_box = tk.Checkbutton(self.root,  text="Neh z modyfikacjami:",  variable = self.var_N)
         N_trackBar = tk.Scale(self.root, to = 4, variable = self.var_N_track)
 
-        t_box = tk.Checkbutton(self.root,  text="Tabu search - podaj długość tablicy Tabu:", variable = self.var_t)
+        t_box = tk.Checkbutton(self.root,  text="Tabu search", variable = self.var_t)
         T_box = tk.Checkbutton(self.root,  text="Tabu search z modyfikacjami\nPodaj długość tablicy Tabu powyżej oraz modyfikacje poniżej:", variable = self.var_T)
 
         # Przyciski:
@@ -91,7 +86,6 @@ class Gui:
         s_box.pack()
         p_box.pack()
         j_box.pack()
-        n_box.pack()
 
         N_box.pack()
         N_trackBar.pack()
