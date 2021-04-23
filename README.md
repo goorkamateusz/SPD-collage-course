@@ -7,6 +7,7 @@ Praca zespołowa. Kurs na kierunku Automatyka i Robotyka Politechniki Wrocławsk
   - [Spis Treści](#spis-treści)
   - [Autorzy](#autorzy)
   - [Prowadzący zajęcia](#prowadzący-zajęcia)
+  - [Autorzy przykładowych danych](#autorzy-przykładowych-danych)
   - [Styl kodu](#styl-kodu)
 
 
@@ -17,6 +18,10 @@ Praca zespołowa. Kurs na kierunku Automatyka i Robotyka Politechniki Wrocławsk
 
 ## Prowadzący zajęcia
 Mgr inż. Teodor Niżyński
+
+## Autorzy przykładowych danych
+- Mgr inż. Teodor Niżyński
+- Dr inż. Mariusz Makuchowski
 
 ## Styl kodu
 [CONTRIBUTING](CONTRIBUTING.md)
