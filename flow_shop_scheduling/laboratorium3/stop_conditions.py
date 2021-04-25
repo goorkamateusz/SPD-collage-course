@@ -2,6 +2,7 @@ from timeit import default_timer as timer
 import math
 from typing import List
 
+
 class StopConditions:
     def __init__(self) -> None:
         self.name = None
