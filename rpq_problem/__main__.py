@@ -3,19 +3,23 @@ from laboratorium4.Cmax_calculator import CMaxCalculator
 from laboratorium4.rpq_task_reader import RpqTaskReader
 from laboratorium4.schrage_algorithm import SchrageAlgorithm
 from laboratorium4.schrage_n_log_n import SchrageNLogNAlgorithm
+from laboratorium4.time_profiler import TimeProfiler
+from laboratorium4.ui_manager import UIManager
 
 
 if __name__ == "__main__":
     c_max_calculator = CMaxCalculator()
+    time_profiler = TimeProfiler()
 
-    print('SCHRAGE')
-    tasks = RpqTaskReader.read('example_data/in200.txt')
-    result = SchrageAlgorithm().run(tasks)
-    c_max = c_max_calculator.get_Cmax(result)
-    print('C MAX', c_max)
+    UIManager.default_alg()
+    UIManager.load_sys_arg()
 
-    print('SCHRAGE n log n')
-    tasks = RpqTaskReader.read('example_data/in200.txt')
-    result = SchrageNLogNAlgorithm().run(tasks)
-    c_max = c_max_calculator.get_Cmax(result)
-    print('C MAX', c_max)
+    tasks = RpqTaskReader.read(UIManager.file_name)
+
+    for algorithm in UIManager._algorithm:
+        tasks_copy = tasks.copy()
+        time_profiler.start()
+        result = algorithm.run(tasks_copy)
+        time_profiler.stop()
+        c_max = c_max_calculator.get_Cmax(result)
+        UIManager.print(c_max, algorithm, time_profiler)
