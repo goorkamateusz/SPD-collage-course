@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 from laboratorium4.Cmax_calculator import CMaxCalculator
 from laboratorium4.rpq_task_reader import RpqTaskReader
-from laboratorium4.schrage_algorithm import SchrageAlgorithm
-from laboratorium4.schrage_n_log_n import SchrageNLogNAlgorithm
 from laboratorium4.time_profiler import TimeProfiler
 from laboratorium4.ui_manager import UIManager
 

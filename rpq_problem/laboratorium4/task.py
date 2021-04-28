@@ -22,6 +22,9 @@ class Task:
     def get_delivery_time(self) -> int:
         return self._delivery_time
 
+    def set_execution_time(self, execution_time: int) -> None:
+        self._execution_time = execution_time
+
     def __eq__(self, other) -> bool:
         if isinstance(other, Task):
             return self._id == other._id
