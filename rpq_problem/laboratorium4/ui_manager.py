@@ -1,17 +1,20 @@
 import sys
 import getopt
 from typing import List
+from laboratorium4.Cmax_calculator import CMaxCalculator
 
 from laboratorium4.algorithm import Algorithm
 from laboratorium4.schrage_algorithm import SchrageAlgorithm
 from laboratorium4.schrage_n_log_n import SchrageNLogNAlgorithm
 from laboratorium4.schrage_pmtn import SchragePMTNAlgorithm
+from laboratorium4.task import Task
 from laboratorium4.time_profiler import TimeProfiler
 
 
 class UIManager:
     file_name = None
     _algorithm = []
+    _print_result = False
 
     class Option:
         def __init__(self, short: str, long: str, description: str):
@@ -27,6 +30,7 @@ class UIManager:
     _options = [
         Option("f:", "file=", "nazwa pliku"),
         Option("h", "help", ""),
+        Option("r", "result", "wyświetl resultat")
     ]
 
     @staticmethod
@@ -51,6 +55,9 @@ class UIManager:
                 if curr_arg in ("-f", "--file"):
                     UIManager.file_name = curr_val
 
+                if curr_arg in ("-r", "--result"):
+                    UIManager._print_result = True
+
                 if curr_arg in ("-h", "--help"):
                     UIManager.help()
                     exit()
@@ -67,10 +74,19 @@ class UIManager:
             print("Nie wybrano algorytmu")
 
     @staticmethod
-    def print(c_max: int, algorithm: Algorithm, profiler: TimeProfiler) -> None:
+    def print(result, algorithm: Algorithm, profiler: TimeProfiler) -> None:
+        if isinstance(result, list):
+            c_max_calculator = CMaxCalculator()
+            c_max = c_max_calculator.get_Cmax(result)
+        else:
+            c_max = result
+
         print(algorithm.name)
         print(f"| C_max = {c_max}")
         print(f"| Czas obliczeń = {profiler}")
+        if UIManager._print_result:
+            print(f"| Resultat:\n{result}")
+        print("")
 
     @staticmethod
     def help() -> None:

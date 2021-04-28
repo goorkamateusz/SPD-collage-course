@@ -8,12 +8,12 @@ from laboratorium4.task import Task
 class SchragePMTNAlgorithm(Algorithm):
     name = 'Schrage PMTN Algorithm'
 
-    def run(self, tasks: List[Task]) -> List[Task]:
-        partial_tasks_order = []
+    def run(self, tasks: List[Task]) -> int:
         tasks_ready = set()
         tasks_not_ready = set(tasks)
         l = Task(-1, 0, 0, math.inf)
         t = min(task.get_preparation_time() for task in tasks_not_ready)
+        c_max = 0
 
         while tasks_ready or tasks_not_ready:
             while tasks_not_ready and min(task.get_preparation_time() for task in tasks_not_ready) <= t:
@@ -26,15 +26,15 @@ class SchragePMTNAlgorithm(Algorithm):
                     t = j_star.get_preparation_time()
 
                     if l.get_execution_time() > 0:
-                        tasks_ready.add(j_star) # w pseudo kodzie jest l*?
+                        tasks_ready.add(l)
 
             if not tasks_ready:
                 t = min(task.get_preparation_time() for task in tasks_not_ready)
             else:
                 j_star = max(tasks_ready, key=Task.get_delivery_time)
                 tasks_ready.remove(j_star)
-                partial_tasks_order.append(j_star)
-                t += j_star.get_execution_time()
                 l = j_star
+                t += j_star.get_execution_time()
+                c_max = max(c_max, t + j_star.get_delivery_time())
 
-        return partial_tasks_order
+        return c_max
