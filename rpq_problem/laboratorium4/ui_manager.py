@@ -7,6 +7,7 @@ from laboratorium4.algorithm import Algorithm
 from laboratorium4.schrage_algorithm import SchrageAlgorithm
 from laboratorium4.schrage_n_log_n import SchrageNLogNAlgorithm
 from laboratorium4.schrage_pmtn import SchragePMTNAlgorithm
+from laboratorium4.schrage_pmtn_n_log_n import SchragePMTNNLogNAlgorithm
 from laboratorium4.task import Task
 from laboratorium4.time_profiler import TimeProfiler
 
@@ -38,6 +39,7 @@ class UIManager:
         UIManager._add_alg(SchrageAlgorithm())
         UIManager._add_alg(SchrageNLogNAlgorithm())
         UIManager._add_alg(SchragePMTNAlgorithm())
+        UIManager._add_alg(SchragePMTNNLogNAlgorithm())
 
     @staticmethod
     def algorithms() -> List[Algorithm]:
