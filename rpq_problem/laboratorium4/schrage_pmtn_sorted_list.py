@@ -22,7 +22,7 @@ class SchragePMTNSortedListAlgorithm(Algorithm):
                 tasks_ready.insert(j_star)
 
                 if j_star.get_delivery_time() > l.get_delivery_time():
-                    l.set_execution_time(t - j_star.get_preparation_time())
+                    l = l.copy().change_execution_time(t - j_star.get_preparation_time())
                     t = j_star.get_preparation_time()
 
                     if l.get_execution_time() > 0:

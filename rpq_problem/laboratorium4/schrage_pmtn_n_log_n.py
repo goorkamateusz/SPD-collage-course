@@ -3,6 +3,7 @@ import math
 
 from laboratorium4.priority_queue import PriorityQueue
 from laboratorium4.algorithm import Algorithm
+from laboratorium4.sorted_list import SortedList
 from laboratorium4.task import Task
 
 
@@ -22,7 +23,7 @@ class SchragePMTNNLogNAlgorithm(Algorithm):
                 tasks_ready.insert(j_star)
 
                 if j_star.get_delivery_time() > l.get_delivery_time():
-                    l.set_execution_time(t - j_star.get_preparation_time())
+                    l = l.copy().change_execution_time(t - j_star.get_preparation_time())
                     t = j_star.get_preparation_time()
 
                     if l.get_execution_time() > 0:
