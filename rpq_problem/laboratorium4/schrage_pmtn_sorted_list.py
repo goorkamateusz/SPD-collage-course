@@ -7,12 +7,12 @@ from laboratorium4.sorted_list import SortedList
 from laboratorium4.task import Task
 
 
-class SchragePMTNNLogNAlgorithm(Algorithm):
-    name = 'Schrage PMTN nLog(n) Algorithm'
+class SchragePMTNSortedListAlgorithm(Algorithm):
+    name = 'Schrage PMTN Sorted List Algorithm'
 
     def run(self, tasks: List[Task]) -> int:
-        tasks_ready = PriorityQueue(key=Task.get_delivery_time)
-        tasks_not_ready = PriorityQueue(tasks, key=Task.get_preparation_time, reverse=True)
+        tasks_ready = SortedList(key=Task.get_delivery_time)
+        tasks_not_ready = SortedList(tasks, key=Task.get_preparation_time, reverse=True)
         l = Task(-1, 0, 0, math.inf)
         t = tasks_not_ready.top().get_preparation_time()
         c_max = 0
