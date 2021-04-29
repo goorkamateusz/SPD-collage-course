@@ -1,7 +1,6 @@
 from typing import List
 import math
 
-from laboratorium4.priority_queue import PriorityQueue
 from laboratorium4.algorithm import Algorithm
 from laboratorium4.sorted_list import SortedList
 from laboratorium4.task import Task
