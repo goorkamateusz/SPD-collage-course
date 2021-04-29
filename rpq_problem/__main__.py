@@ -10,11 +10,13 @@ if __name__ == "__main__":
     UIManager.default_alg()
     UIManager.load_sys_arg()
 
-    tasks = RpqTaskReader.read(UIManager.file_name)
+    for filename in UIManager.filenames:
+        print(f"--- {filename} ---")
+        tasks = RpqTaskReader.read(filename)
 
-    for algorithm in UIManager._algorithm:
-        tasks_copy = tasks.copy()
-        time_profiler.start()
-        result = algorithm.run(tasks_copy)
-        time_profiler.stop()
-        UIManager.print(result, algorithm, time_profiler)
+        for algorithm in UIManager._algorithm:
+            tasks_copy = tasks.copy()
+            time_profiler.start()
+            result = algorithm.run(tasks_copy)
+            time_profiler.stop()
+            UIManager.print(result, algorithm, time_profiler)

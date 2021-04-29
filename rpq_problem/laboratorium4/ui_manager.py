@@ -4,6 +4,7 @@ from typing import List
 from laboratorium4.Cmax_calculator import CMaxCalculator
 
 from laboratorium4.algorithm import Algorithm
+from laboratorium4.rpq_task_reader import RpqTaskReader
 from laboratorium4.schrage_algorithm import SchrageAlgorithm
 from laboratorium4.schrage_n_log_n import SchrageNLogNAlgorithm
 from laboratorium4.schrage_pmtn import SchragePMTNAlgorithm
@@ -13,7 +14,7 @@ from laboratorium4.time_profiler import TimeProfiler
 
 
 class UIManager:
-    file_name = None
+    filenames = []
     _algorithm = []
     _print_result = False
 
@@ -29,7 +30,8 @@ class UIManager:
             return f"{short}\t{long}\t - {self.description}"
 
     _options = [
-        Option("f:", "file=", "nazwa pliku"),
+        Option("f:", "file=", "śceżka do pliku"),
+        Option("d:", "dir=", "ścieżka do katalogu"),
         Option("h", "help", ""),
         Option("r", "result", "wyświetl resultat")
     ]
@@ -56,7 +58,11 @@ class UIManager:
             args, _ = getopt.getopt(arg_list, options, long_options)
             for curr_arg, curr_val in args:
                 if curr_arg in ("-f", "--file"):
-                    UIManager.file_name = curr_val
+                    UIManager.filenames.append(curr_val)
+
+                if curr_arg in ("-d", "--dir"):
+                    for filename in RpqTaskReader.all_in_dir(curr_val):
+                        UIManager.filenames.append(filename)
 
                 if curr_arg in ("-r", "--result"):
                     UIManager._print_result = True
@@ -69,7 +75,7 @@ class UIManager:
             print(str(err))
             exit()
 
-        if UIManager.file_name is None:
+        if UIManager.filenames is None:
             print("Nie podano nazwy pliku wejsciowego")
             exit()
 

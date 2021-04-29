@@ -1,5 +1,6 @@
 from itertools import count
 from typing import List
+from os import walk
 
 from laboratorium4.task import Task
 
@@ -22,3 +23,8 @@ class RpqTaskReader:
                 tasks.append(task)
 
             return tasks
+
+    @staticmethod
+    def all_in_dir(path: str) -> List[str]:
+        _, _, filenames = next(walk(path))
+        return [f"{path}/{filename}" for filename in filenames]
