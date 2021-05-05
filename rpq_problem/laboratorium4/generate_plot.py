@@ -36,6 +36,8 @@ class GeneratePlot:
                     y.append(sub_list[2])
                     alg_name = sub_list[0]
 
+            x.sort()
+            y.sort()
             ax1.plot(x, y, label = alg_name)
         
         plt.title("Wykres zależności C_max od ilości zadań")
@@ -56,6 +58,8 @@ class GeneratePlot:
                     y.append(sub_list[3])
                     alg_name = sub_list[0]
 
+            x.sort()
+            y.sort()
             ax2.plot(x, y, label = alg_name)
         
         plt.title("Wykres zależności czasu liczenia od ilości zadań")
