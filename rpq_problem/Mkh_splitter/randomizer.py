@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import random
 
-examples_nb = [10, 20, 50, 100, 200, 500, 1000, 2000]
+examples_nb = [5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]
 max_t = 2000
 
 for nb in examples_nb:

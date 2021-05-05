@@ -38,11 +38,12 @@ class GeneratePlot:
 
             x.sort()
             y.sort()
-            ax1.plot(x, y, label = alg_name)
+            ax1.plot(x, y, "-", label = alg_name, alpha=0.7)
         
         plt.title("Wykres zależności C_max od ilości zadań")
         plt.xlabel("Ilość zadań")
         plt.ylabel("C_max")
+        plt.grid()
         ax1.legend()
 
         # Czas liczenia:
@@ -60,11 +61,12 @@ class GeneratePlot:
 
             x.sort()
             y.sort()
-            ax2.plot(x, y, label = alg_name)
+            ax2.plot(x, y, "-", label = alg_name, alpha=0.7)
         
         plt.title("Wykres zależności czasu liczenia od ilości zadań")
         plt.xlabel("Ilość zadań")
         plt.ylabel("Czas liczenia [us]")
+        plt.grid()
         ax2.legend()
 
         plt.show()
