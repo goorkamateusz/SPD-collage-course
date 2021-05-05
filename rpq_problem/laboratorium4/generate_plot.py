@@ -5,14 +5,10 @@ from laboratorium4.Cmax_calculator import CMaxCalculator
 
 class GeneratePlot:
 
-    Schrage_data = []
-    SchrageNLogN_data = []
-    SchragePMTN_data = []
-    SchragePMTNNLogN_data = []
-    SchragePMTNSortedList_data = []
+    algorithm_data = []
 
     @staticmethod
-    def add_data(result, added_algorithm, time_profiler, task_number):
+    def add_data(result, algorithm, time_profiler, task_number):
 
         if isinstance(result, list):
             c_max_calculator = CMaxCalculator()
@@ -20,44 +16,48 @@ class GeneratePlot:
         else:
             c_max = result
 
-        data = [task_number, c_max, int(str(time_profiler))]
+        data = [algorithm, task_number, c_max, int(str(time_profiler))]
 
-        if added_algorithm.id == 0:
-            GeneratePlot.Schrage_data.append(data)
-
-        elif added_algorithm.id == 1:
-            GeneratePlot.SchrageNLogN_data.append(data)
-
-        elif added_algorithm.id == 2:
-            GeneratePlot.SchragePMTN_data.append(data)
-
-        elif added_algorithm.id == 3:
-            GeneratePlot.SchragePMTNNLogN_data.append(data)
-
-        elif added_algorithm.id == 4:
-            GeneratePlot.SchragePMTNSortedList_data.append(data)
-
-        else:
-            raise ValueError
+        GeneratePlot.algorithm_data.append(data)
 
 
     def __init__(self):
         
+        # C_max:
         fig1, ax1 = plt.subplots()
 
-        x = [sub_list[0] for sub_list in self.Schrage_data]
-        y = [sub_list[1] for sub_list in self.Schrage_data]
+        for i in range(0, 5):
+            x = []
+            y = []
+            alg_name = ""
+            for sub_list in self.algorithm_data:
+                if sub_list[0].id == i:
+                    x.append(sub_list[1])
+                    y.append(sub_list[2])
+                    alg_name = sub_list[0]
 
-        ax1.plot(x, y, label="Schrage")
+            ax1.plot(x, y, label = alg_name)
         
-        """
-        ax1.plot(self.SchrageNLogN_data[0],          self.SchrageNLogN_data[1],          label="Schrage nlogn")
-        ax1.plot(self.SchragePMTN_data[0],           self.SchragePMTN_data[1],           label="Schrage z przerywaniem")
-        ax1.plot(self.SchragePMTNNLogN_data[0],      self.SchragePMTNNLogN_data[1],      label="Schrage z przerywaniem nlogn")
-        ax1.plot(self.SchragePMTNSortedList_data[0], self.SchragePMTNSortedList_data[1], label="Schrage z przerywaniem lista sortowana")
-        """
 
         ax1.legend()
+
+        # Czas liczenia:
+        fig2, ax2 = plt.subplots()
+
+        for i in range(0, 5):
+            x = []
+            y = []
+            alg_name = ""
+            for sub_list in self.algorithm_data:
+                if sub_list[0].id == i:
+                    x.append(sub_list[1])
+                    y.append(sub_list[3])
+                    alg_name = sub_list[0]
+
+            ax2.plot(x, y, label = alg_name)
+        
+
+        ax2.legend()
 
         plt.show()
         
