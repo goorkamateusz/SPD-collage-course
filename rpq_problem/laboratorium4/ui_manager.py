@@ -91,7 +91,6 @@ class UIManager:
         else:
             c_max = result
 
-        GeneratePlot.add_c_max(c_max)
         print(algorithm.name)
         print(f"| C_max = {c_max}")
         print(f"| Czas obliczeń = {profiler}")

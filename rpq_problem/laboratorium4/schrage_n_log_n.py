@@ -7,6 +7,7 @@ from laboratorium4.algorithm import Algorithm
 
 class SchrageNLogNAlgorithm(Algorithm):
     name = 'Schrage n log n Algorithm'
+    id = 1
 
     def run(self, tasks: List[Task]) -> List[Task]:
         partial_tasks_order = []

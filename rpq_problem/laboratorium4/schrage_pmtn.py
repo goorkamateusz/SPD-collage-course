@@ -7,6 +7,7 @@ from laboratorium4.task import Task
 
 class SchragePMTNAlgorithm(Algorithm):
     name = 'Schrage PMTN Algorithm'
+    id = 2
 
     def run(self, tasks: List[Task]) -> int:
         tasks_ready = set()

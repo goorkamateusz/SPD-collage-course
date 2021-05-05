@@ -13,7 +13,6 @@ if __name__ == "__main__":
     for filename in UIManager.filenames:
         print(f"--- {filename} ---")
         tasks = RpqTaskReader.read(filename)
-        GeneratePlot.add_task_number(len(tasks))
 
         for algorithm in UIManager._algorithm:
 
@@ -23,6 +22,6 @@ if __name__ == "__main__":
             time_profiler.stop()            
             
             UIManager.print(result, algorithm, time_profiler)
-            GeneratePlot.add_alhorithm_and_time(algorithm, time_profiler)
+            GeneratePlot.add_data(result, algorithm, time_profiler, len(tasks))
 
     GeneratePlot()

@@ -6,6 +6,7 @@ from laboratorium4.task import Task
 
 class SchrageAlgorithm(Algorithm):
     name = 'Schrage Algorithm'
+    id = 0
 
     def run(self, tasks: List[Task]) -> List[Task]:
         partial_tasks_order = []

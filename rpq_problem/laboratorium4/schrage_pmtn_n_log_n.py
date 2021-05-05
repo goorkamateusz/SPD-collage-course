@@ -9,6 +9,7 @@ from laboratorium4.task import Task
 
 class SchragePMTNNLogNAlgorithm(Algorithm):
     name = 'Schrage PMTN nLog(n) Algorithm'
+    id = 3
 
     def run(self, tasks: List[Task]) -> int:
         tasks_ready = PriorityQueue(key=Task.get_delivery_time)

@@ -8,6 +8,7 @@ from laboratorium4.task import Task
 
 class SchragePMTNSortedListAlgorithm(Algorithm):
     name = 'Schrage PMTN Sorted List Algorithm'
+    id = 4
 
     def run(self, tasks: List[Task]) -> int:
         tasks_ready = SortedList(key=Task.get_delivery_time)
