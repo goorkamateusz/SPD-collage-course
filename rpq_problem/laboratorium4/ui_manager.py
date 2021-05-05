@@ -34,7 +34,7 @@ class UIManager:
         Option("f:", "file=", "śceżka do pliku"),
         Option("d:", "dir=", "ścieżka do katalogu"),
         Option("h", "help", ""),
-        Option("r", "result", "wyświetl resultat")
+        Option("r", "result", "wyświetl resultat"),
     ]
 
     @staticmethod

@@ -11,7 +11,8 @@ class RpqTaskReader:
     Obecnie działa jedynie dla plików in50.txt, in100.txt i in200.txt.
     """
     @staticmethod
-    def read(path: str) -> List[Task]:
+    def read(path: str, ifRand = False) -> List[Task]:
+
         with open(path, 'r') as file:
             tasks = []
             lines = file.readlines()
