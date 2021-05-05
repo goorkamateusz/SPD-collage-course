@@ -38,7 +38,9 @@ class GeneratePlot:
 
             ax1.plot(x, y, label = alg_name)
         
-
+        plt.title("Wykres zależności C_max od ilości zadań")
+        plt.xlabel("Ilość zadań")
+        plt.ylabel("C_max")
         ax1.legend()
 
         # Czas liczenia:
@@ -56,7 +58,9 @@ class GeneratePlot:
 
             ax2.plot(x, y, label = alg_name)
         
-
+        plt.title("Wykres zależności czasu liczenia od ilości zadań")
+        plt.xlabel("Ilość zadań")
+        plt.ylabel("Czas liczenia [us]")
         ax2.legend()
 
         plt.show()
