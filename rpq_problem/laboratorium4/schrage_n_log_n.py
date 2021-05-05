@@ -2,9 +2,10 @@ from typing import List
 
 from laboratorium4.priority_queue import PriorityQueue
 from laboratorium4.task import Task
+from laboratorium4.algorithm import Algorithm
 
 
-class SchrageNLogNAlgorithm:
+class SchrageNLogNAlgorithm(Algorithm):
     name = 'Schrage n log n Algorithm'
 
     def run(self, tasks: List[Task]) -> List[Task]:
