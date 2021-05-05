@@ -8,6 +8,7 @@ Praca zespołowa. Kurs na kierunku Automatyka i Robotyka Politechniki Wrocławsk
   - [Autorzy](#autorzy)
   - [Prowadzący zajęcia](#prowadzący-zajęcia)
   - [Autorzy przykładowych danych](#autorzy-przykładowych-danych)
+  - [Instalacja potrzebnych paczek](#instalacja-potrzebnych-paczek)
   - [Styl kodu](#styl-kodu)
 
 
@@ -22,6 +23,12 @@ Mgr inż. Teodor Niżyński
 ## Autorzy przykładowych danych
 - Mgr inż. Teodor Niżyński
 - Dr inż. Mariusz Makuchowski
+
+## Instalacja potrzebnych paczek
+```
+pip install -r requirements.txt
+```
+Windows: `pip`, Linux: `pip3`
 
 ## Styl kodu
 [CONTRIBUTING](CONTRIBUTING.md)
