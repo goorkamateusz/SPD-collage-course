@@ -39,19 +39,24 @@ class GeneratePlot:
 
         else:
             raise ValueError
-        
+
 
     def __init__(self):
         
         fig1, ax1 = plt.subplots()
-        
 
-        ax1.plot(self.Schrage_data[0],               self.Schrage_data[1],               label="Schrage")
+        x = [sub_list[0] for sub_list in self.Schrage_data]
+        y = [sub_list[1] for sub_list in self.Schrage_data]
+
+        ax1.plot(x, y, label="Schrage")
+        
+        """
         ax1.plot(self.SchrageNLogN_data[0],          self.SchrageNLogN_data[1],          label="Schrage nlogn")
         ax1.plot(self.SchragePMTN_data[0],           self.SchragePMTN_data[1],           label="Schrage z przerywaniem")
         ax1.plot(self.SchragePMTNNLogN_data[0],      self.SchragePMTNNLogN_data[1],      label="Schrage z przerywaniem nlogn")
         ax1.plot(self.SchragePMTNSortedList_data[0], self.SchragePMTNSortedList_data[1], label="Schrage z przerywaniem lista sortowana")
-                
+        """
+
         ax1.legend()
 
         plt.show()
