@@ -1,15 +1,38 @@
 import sys
 import matplotlib as mp
 
-from laboratorium4.ui_manager import UIManager
-
 class GeneratePlot:
 
-    group_names = []
-    plot_data = []
+    task_numbers = []
+    c_maxes = []
+    algoritms = []
+    times = []
 
-    def add_group_names(self, names):
-        self.group_names.append(names)
+    @staticmethod
+    def add_task_number(task_number):
+        GeneratePlot.task_numbers.append(task_number)
 
-    def add_data(self, data):
-        self.plot_data.append(data)
+    @staticmethod
+    def add_c_max(c_max):
+        GeneratePlot.c_maxes.append(c_max)
+
+    @staticmethod
+    def add_alhorithm_and_time(algorithm, time_profiler):
+        GeneratePlot.algoritms.append(str(algorithm))
+        GeneratePlot.times.append(int(str(time_profiler)))
+
+    def __init__(self):
+
+        print("\n")
+        print(self.task_numbers)
+        print(self.c_maxes)
+        print(self.algoritms)
+        print(self.times)
+
+        """
+        fig1, ax1 = plt.subplots()
+        ax1.plot(self.group_names, self.c_maxes, label="dog")
+        ax1.legend()
+
+        plt.show()
+        """

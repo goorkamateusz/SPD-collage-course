@@ -11,6 +11,7 @@ from laboratorium4.schrage_pmtn import SchragePMTNAlgorithm
 from laboratorium4.schrage_pmtn_n_log_n import SchragePMTNNLogNAlgorithm
 from laboratorium4.schrage_pmtn_sorted_list import SchragePMTNSortedListAlgorithm
 from laboratorium4.time_profiler import TimeProfiler
+from laboratorium4.generate_plot import GeneratePlot
 
 
 class UIManager:
@@ -90,6 +91,7 @@ class UIManager:
         else:
             c_max = result
 
+        GeneratePlot.add_c_max(c_max)
         print(algorithm.name)
         print(f"| C_max = {c_max}")
         print(f"| Czas obliczeń = {profiler}")
