@@ -13,6 +13,8 @@ from laboratorium4.schrage_pmtn_sorted_list import SchragePMTNSortedListAlgorith
 from laboratorium4.time_profiler import TimeProfiler
 from laboratorium4.generate_plot import GeneratePlot
 
+from laboratorium5.calier_algorithm import CalierAlgorithm
+
 
 class UIManager:
     filenames = []
@@ -44,6 +46,7 @@ class UIManager:
         UIManager._add_alg(SchragePMTNAlgorithm())
         UIManager._add_alg(SchragePMTNNLogNAlgorithm())
         UIManager._add_alg(SchragePMTNSortedListAlgorithm())
+        UIManager._add_alg(CalierAlgorithm())
 
     @staticmethod
     def algorithms() -> List[Algorithm]:
