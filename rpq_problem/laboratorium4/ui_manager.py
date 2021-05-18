@@ -42,10 +42,10 @@ class UIManager:
     @staticmethod
     def default_alg():
         UIManager._add_alg(SchrageAlgorithm())
-        UIManager._add_alg(SchrageNLogNAlgorithm())
-        UIManager._add_alg(SchragePMTNAlgorithm())
-        UIManager._add_alg(SchragePMTNNLogNAlgorithm())
-        UIManager._add_alg(SchragePMTNSortedListAlgorithm())
+        #UIManager._add_alg(SchrageNLogNAlgorithm())
+        #UIManager._add_alg(SchragePMTNAlgorithm())
+        #UIManager._add_alg(SchragePMTNNLogNAlgorithm())
+        #UIManager._add_alg(SchragePMTNSortedListAlgorithm())
         UIManager._add_alg(CalierAlgorithm())
 
     @staticmethod
