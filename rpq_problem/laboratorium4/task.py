@@ -22,8 +22,16 @@ class Task:
     def get_delivery_time(self) -> int:
         return self._delivery_time
 
+    def change_preparation_time(self, preparation_time: int):
+        self._preparation_time = preparation_time
+        return self
+
     def change_execution_time(self, execution_time: int):
         self._execution_time = execution_time
+        return self
+
+    def change_delivery_time(self, delivery_time: int):
+        self._delivery_time = delivery_time
         return self
 
     def copy(self):

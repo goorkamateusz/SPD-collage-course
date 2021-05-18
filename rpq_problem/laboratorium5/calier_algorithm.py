@@ -3,11 +3,15 @@ from typing import List
 from laboratorium4.algorithm import Algorithm
 from laboratorium4.task import Task
 from laboratorium4.schrage_algorithm import SchrageAlgorithm
+from laboratorium4.schrage_pmtn import SchragePMTNAlgorithm
 
 
 class CalierAlgorithm(Algorithm):
     name = 'Calier Algorithm'
     id = 5
+
+    #######################################################################
+    #TODO!!!
 
     def count_task_b(self, tasks: List[Task]) -> Task:
 
@@ -16,6 +20,7 @@ class CalierAlgorithm(Algorithm):
         return tempTask
 
     #######################################################################
+    #TODO!!!
 
     def count_task_a(self, tasks: List[Task]) -> Task:
 
@@ -24,20 +29,32 @@ class CalierAlgorithm(Algorithm):
         return tempTask
 
     #######################################################################
+    #TODO!!!
 
     def count_task_c(self, tasks: List[Task]) -> Task:
 
-        tempTask = Task(0,0,0,0)
+        tempTask = Task(0,-1,0,0)
 
         return tempTask
+
+    #######################################################################
+    #TODO!!!
+
+    def count_h_K(self, tasks: List[Task]) -> int:
+
+        return 0
     
     #######################################################################
+    #TODO!!!
 
     def fill_list_k(self, tasks: List[Task]) -> Task:
 
-        return []
+        list_k = []
+
+        return list_k
 
     #######################################################################
+    #TODO!!!
 
     def run(self, tasks: List[Task]) -> List[Task]:
         
@@ -55,26 +72,32 @@ class CalierAlgorithm(Algorithm):
         if task_c.get_delivery_time() == -1:
             return partial_tasks_order
 
-        list_k = self.fill_list_k(tasks)
+        list_K = self.fill_list_k(tasks)
 
-        """
-        tasks_ready_for_scheduling = set()
-        tasks_not_ready_for_scheduling = set(tasks)
-        t = min(task.get_preparation_time() for task in tasks_not_ready_for_scheduling)
+        r_K = min(task.get_preparation_time() for task in tasks)
+        q_K = min(task.get_delivery_time() for task in tasks)
+        p_K = 0
+        for task in list_K:
+            p_K += task.get_execution_time()
 
-        while tasks_ready_for_scheduling or tasks_not_ready_for_scheduling:
-            while tasks_not_ready_for_scheduling and min(task.get_preparation_time() for task in tasks_not_ready_for_scheduling) <= t:
-                j_star = min(tasks_not_ready_for_scheduling, key=Task.get_preparation_time)
-                tasks_ready_for_scheduling.add(j_star)
-                tasks_not_ready_for_scheduling.remove(j_star)
+        task_c.change_preparation_time(max([task_c.get_preparation_time(), r_K + p_K]))
+        
+        lower_band = SchragePMTNAlgorithm.run(tasks)
+        lower_band = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K, lower_band))
 
-            if not tasks_ready_for_scheduling:
-                t = min(task.get_preparation_time() for task in tasks_not_ready_for_scheduling)
-            else:
-                j_star = max(tasks_ready_for_scheduling, key=Task.get_delivery_time)
-                tasks_ready_for_scheduling.remove(j_star)
-                partial_tasks_order.append(j_star)
-                t += j_star.get_execution_time()
-        """
+        if lower_band < upper_band:
+            self.run(tasks)
+        
+        # odtworzenie r_pi_c...
+
+        task_c.change_delivery_time(max([task_c.get_delivery_time(), r_K + p_K]))
+
+        lower_band = SchragePMTNAlgorithm.run(tasks)
+        lower_band = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K, lower_band))
+
+        if lower_band < upper_band:
+            self.run(tasks)
+
+        # odtworzenie q_pi_c...
 
         return partial_tasks_order
