@@ -80,6 +80,7 @@ class CalierAlgorithm(Algorithm):
         for task in list_K:
             p_K += task.get_execution_time()
 
+        task_c_copy = task_c.copy()
         task_c.change_preparation_time(max([task_c.get_preparation_time(), r_K + p_K]))
         
         lower_band = SchragePMTNAlgorithm.run(tasks)
@@ -88,7 +89,7 @@ class CalierAlgorithm(Algorithm):
         if lower_band < upper_band:
             self.run(tasks)
         
-        # odtworzenie r_pi_c...
+        task_c = task_c_copy.copy()
 
         task_c.change_delivery_time(max([task_c.get_delivery_time(), r_K + p_K]))
 
@@ -98,6 +99,6 @@ class CalierAlgorithm(Algorithm):
         if lower_band < upper_band:
             self.run(tasks)
 
-        # odtworzenie q_pi_c...
+        task_c = task_c_copy.copy()
 
         return partial_tasks_order
