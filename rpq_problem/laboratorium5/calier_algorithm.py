@@ -36,7 +36,7 @@ class CalierAlgorithm(Algorithm):
 
     def count_task_a(self, tasks: List[Task]) -> Task:
 
-        tempTask = Task(0,0,0,0)
+        tempTask = Task(1,0,0,0)
 
         return tempTask
 
