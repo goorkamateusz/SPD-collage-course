@@ -14,7 +14,7 @@ class CalierAlgorithm(Algorithm):
     cmax_calc = CMaxCalculator()
 
     #######################################################################
-    #TODO!!!
+    #TODO!!! test
 
     def count_task_b(self, tasks: List[Task]) -> Task:
 
@@ -32,7 +32,7 @@ class CalierAlgorithm(Algorithm):
         return tempTask
 
     #######################################################################
-    #TODO!!!
+    #TODO!!! do
 
     def count_task_a(self, tasks: List[Task]) -> Task:
 
@@ -41,33 +41,38 @@ class CalierAlgorithm(Algorithm):
         return tempTask
 
     #######################################################################
-    #TODO!!!
+    #TODO!!! test
 
-    def count_task_c(self, tasks: List[Task], task_a, task_b) -> Task:
+    def count_task_c(self, tasks: List[Task], task_a: Task, task_b: Task) -> Task:
 
         tempTask = Task(0,-1,0,0)
 
         sublist = tasks[tasks.index(task_a) + 1:tasks.index(task_b)]
 
+        for task in sublist:
+            if task.get_delivery_time() < task_b.get_delivery_time():
+                tempTask = task
 
         return tempTask
 
     #######################################################################
-    #TODO!!!
+    #TODO!!! test
 
-    def count_h_K(self, tasks: List[Task]) -> int:
+    def count_h_K(self, tasks: List[Task], r_k, p_k, q_k) -> int:
 
-        return 0
+        return r_k + p_k + q_k
     
     #######################################################################
-    #TODO!!!
+    #TODO!!! test
 
     def fill_list_k(self, tasks: List[Task], task_c, task_b) -> Task:
 
         return tasks[tasks.index(task_c) + 1:tasks.index(task_b) + 1]
 
     #######################################################################
-    #TODO!!!
+    #######################################################################
+    #######################################################################
+    #TODO!!! test
 
     def run(self, tasks: List[Task], upper_band = 9999) -> List[Task]:
         
@@ -83,7 +88,7 @@ class CalierAlgorithm(Algorithm):
 
         if var_u < upper_band:
             upper_band = var_u
-            partial_tasks_order = temp_tasks_order
+            tasks_order = temp_tasks_order
         
         task_b = self.count_task_b(tasks)
         task_a = self.count_task_a(tasks)
@@ -93,7 +98,7 @@ class CalierAlgorithm(Algorithm):
 
         # -1 w delivery time oznacza, że nie znaleziono zadania c
         if task_c.get_delivery_time() == -1:
-            return partial_tasks_order
+            return tasks_order
 
         list_K = self.fill_list_k(tasks, task_c, task_b)
 
@@ -109,7 +114,7 @@ class CalierAlgorithm(Algorithm):
         task_c.change_preparation_time(max([task_c.get_preparation_time(), r_K + p_K]))
         
         lower_band = schragePMTN.run(tasks)
-        lower_band = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_band)
+        lower_band = max(self.count_h_K(list_K, r_K, p_K, q_K), self.count_h_K([task_c] + list_K, r_K, p_K, q_K), lower_band)
 
         if lower_band < upper_band:
             self.run(tasks, upper_band)
@@ -121,11 +126,11 @@ class CalierAlgorithm(Algorithm):
         task_c.change_delivery_time(max([task_c.get_delivery_time(), r_K + p_K]))
 
         lower_band = schragePMTN.run(tasks)
-        lower_band = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_band)
+        lower_band = max(self.count_h_K(list_K, r_K, p_K, q_K), self.count_h_K([task_c] + list_K, r_K, p_K, q_K), lower_band)
 
         if lower_band < upper_band:
             self.run(tasks, upper_band)
 
         task_c = task_c_copy.copy()
 
-        return partial_tasks_order
+        return tasks_order
