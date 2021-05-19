@@ -38,6 +38,10 @@ class CalierAlgorithm(Algorithm):
 
         tempTask = Task(1,0,0,0)
 
+        begin_times = []
+
+        
+
         return tempTask
 
     #######################################################################
