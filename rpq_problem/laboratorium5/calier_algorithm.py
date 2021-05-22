@@ -12,6 +12,71 @@ class CalierAlgorithm(Algorithm):
     id = 5
 
     cmax_calc = CMaxCalculator()
+    permutations = []
+
+    #######################################################################
+    def calier(self, tasks: List[Task], upper_band = 9999) -> List[Task]:
+
+        partial_tasks_order = List[Task]
+
+        schrage = SchrageAlgorithm()
+        schragePMTN = SchragePMTNAlgorithm()
+
+        #################################
+
+        temp_tasks_order = schrage.run(tasks)
+        var_u = self.cmax_calc.get_Cmax(temp_tasks_order)
+
+        if var_u < upper_band:
+            upper_band = var_u
+            tasks_order = temp_tasks_order
+        
+        task_b = self.count_task_b(tasks)
+        task_a = self.count_task_a(tasks)
+        task_c = self.count_task_c(tasks, task_a, task_b)
+
+        #################################
+
+        # -1 w delivery time oznacza, że nie znaleziono zadania c
+        if task_c.get_delivery_time() == -1:
+            return tasks_order
+
+        list_K = self.fill_list_k(tasks, task_c, task_b)
+
+        r_K = min(task.get_preparation_time() for task in tasks)
+        q_K = min(task.get_delivery_time() for task in tasks)
+        p_K = 0
+        for task in list_K:
+            p_K += task.get_execution_time()
+
+        #################################
+
+        task_c_copy = task_c.copy()
+        task_c.change_preparation_time(max([task_c.get_preparation_time(), r_K + p_K]))
+        
+        lower_band = schragePMTN.run(tasks)
+        lower_band = max(self.count_h_K(list_K, r_K, p_K, q_K), self.count_h_K([task_c] + list_K, r_K, p_K, q_K), lower_band)
+
+        if lower_band < upper_band:
+            #self.run(tasks, upper_band)
+            self.permutations.append([tasks, upper_band])
+        
+        #################################
+
+        task_c = task_c_copy.copy()
+
+        task_c.change_delivery_time(max([task_c.get_delivery_time(), r_K + p_K]))
+
+        lower_band = schragePMTN.run(tasks)
+        lower_band = max(self.count_h_K(list_K, r_K, p_K, q_K), self.count_h_K([task_c] + list_K, r_K, p_K, q_K), lower_band)
+
+        if lower_band < upper_band:
+            #self.run(tasks, upper_band)
+            self.permutations.append([tasks, upper_band])
+
+        task_c = task_c_copy.copy()
+
+        return tasks_order
 
     #######################################################################
     #TODO!!! test
@@ -78,63 +143,24 @@ class CalierAlgorithm(Algorithm):
     #######################################################################
     #TODO!!! test
 
-    def run(self, tasks: List[Task], upper_band = 9999) -> List[Task]:
+    def run(self, tasks: List[Task]) -> List[Task]:
         
-        partial_tasks_order = List[Task]
+        self.permutations.append([tasks, 9999])
 
-        schrage = SchrageAlgorithm()
-        schragePMTN = SchragePMTNAlgorithm()
+        temp_tasks = List[Task]
+        best_tasks = List[Task]
+        tmp_tsk = Task(1, 99999, 99999, 99999)
+        best_tasks.append(tmp_tsk)
 
-        #################################
+        i = 0
+        while len(self.permutations) > 0:
+            [a, b] = self.permutations.pop(0)
+            temp_tasks = self.calier(a, b)
+            if self.cmax_calc.get_Cmax(temp_tasks) < self.cmax_calc.get_Cmax(best_tasks):
+                pass
+                best_tasks = temp_tasks.copy()
+            i += 1
 
-        temp_tasks_order = schrage.run(tasks)
-        var_u = self.cmax_calc.get_Cmax(temp_tasks_order)
+        print("PERM: " + str(i))
 
-        if var_u < upper_band:
-            upper_band = var_u
-            tasks_order = temp_tasks_order
-        
-        task_b = self.count_task_b(tasks)
-        task_a = self.count_task_a(tasks)
-        task_c = self.count_task_c(tasks, task_a, task_b)
-
-        #################################
-
-        # -1 w delivery time oznacza, że nie znaleziono zadania c
-        if task_c.get_delivery_time() == -1:
-            return tasks_order
-
-        list_K = self.fill_list_k(tasks, task_c, task_b)
-
-        r_K = min(task.get_preparation_time() for task in tasks)
-        q_K = min(task.get_delivery_time() for task in tasks)
-        p_K = 0
-        for task in list_K:
-            p_K += task.get_execution_time()
-
-        #################################
-
-        task_c_copy = task_c.copy()
-        task_c.change_preparation_time(max([task_c.get_preparation_time(), r_K + p_K]))
-        
-        lower_band = schragePMTN.run(tasks)
-        lower_band = max(self.count_h_K(list_K, r_K, p_K, q_K), self.count_h_K([task_c] + list_K, r_K, p_K, q_K), lower_band)
-
-        if lower_band < upper_band:
-            self.run(tasks, upper_band)
-        
-        #################################
-
-        task_c = task_c_copy.copy()
-
-        task_c.change_delivery_time(max([task_c.get_delivery_time(), r_K + p_K]))
-
-        lower_band = schragePMTN.run(tasks)
-        lower_band = max(self.count_h_K(list_K, r_K, p_K, q_K), self.count_h_K([task_c] + list_K, r_K, p_K, q_K), lower_band)
-
-        if lower_band < upper_band:
-            self.run(tasks, upper_band)
-
-        task_c = task_c_copy.copy()
-
-        return tasks_order
+        return best_tasks
