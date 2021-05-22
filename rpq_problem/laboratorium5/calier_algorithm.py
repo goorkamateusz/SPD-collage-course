@@ -58,8 +58,8 @@ class CalierAlgorithm(Algorithm):
         lower_band = max(self.count_h_K(list_K, r_K, p_K, q_K), self.count_h_K([task_c] + list_K, r_K, p_K, q_K), lower_band)
 
         if lower_band < upper_band:
-            #self.run(tasks, upper_band)
-            self.permutations.append([tasks, upper_band])
+            self.calier(tasks, upper_band)
+            #self.permutations.append([tasks, upper_band])
         
         #################################
 
@@ -71,8 +71,8 @@ class CalierAlgorithm(Algorithm):
         lower_band = max(self.count_h_K(list_K, r_K, p_K, q_K), self.count_h_K([task_c] + list_K, r_K, p_K, q_K), lower_band)
 
         if lower_band < upper_band:
-            #self.run(tasks, upper_band)
-            self.permutations.append([tasks, upper_band])
+            self.calier(tasks, upper_band)
+            #self.permutations.append([tasks, upper_band])
 
         task_c = task_c_copy.copy()
 
@@ -101,13 +101,20 @@ class CalierAlgorithm(Algorithm):
 
     def count_task_a(self, tasks: List[Task]) -> Task:
 
-        tempTask = Task(1,0,0,0)
+        cmax = self.cmax_calc.get_Cmax(tasks)
 
-        begin_times = []
+        for task in tasks:
+            tmp_p = task.get_execution_time()
+            task.change_execution_time(tmp_p+1)
+            
+            if cmax == self.cmax_calc.get_Cmax(tasks) + 1:
+                tempTask = task
+                task.change_execution_time(tmp_p)
+                return tempTask
+            else:
+                task.change_execution_time(tmp_p)
 
-        
-
-        return tempTask
+        return tasks[0]
 
     #######################################################################
     #TODO!!! test
@@ -145,6 +152,9 @@ class CalierAlgorithm(Algorithm):
 
     def run(self, tasks: List[Task]) -> List[Task]:
         
+        return self.calier(tasks, 99999)
+
+        """
         self.permutations.append([tasks, 9999])
 
         temp_tasks = List[Task]
@@ -164,3 +174,4 @@ class CalierAlgorithm(Algorithm):
         print("PERM: " + str(i))
 
         return best_tasks
+        """
