@@ -2,13 +2,11 @@ import math
 from collections import deque
 from typing import List
 
-from labolatorium1.gantt_plot import Gantt
-from labolatorium1.general_lib import *
-from labolatorium2.algorithm import Algorithm
-from laboratorium3 import stop_conditions
-from laboratorium3.stop_conditions import StopConditions, IterCondition
-from laboratorium3.neightbourhood_generator import NeightbourhoodGenerator, SwapAll
-from laboratorium3.initial_solution_generator import InitialSolutionGenerator, CopyTasks
+from laboratorium4.task import *
+from laboratorium4.algorithm import Algorithm
+from laboratorium5.stop_conditions import StopConditions, IterCondition
+from laboratorium5.neightbourhood_generator import NeightbourhoodGenerator, SwapAll
+from laboratorium5.initial_solution_generator import InitialSolutionGenerator, CopyTasks
 
 
 class TabuSearch(Algorithm):
