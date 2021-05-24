@@ -15,9 +15,7 @@ class CalierAlgorithm(Algorithm):
     permutations = []
 
     #######################################################################
-    def calier(self, tasks: List[Task], upper_band = 9999) -> List[Task]:
-
-        partial_tasks_order = List[Task]
+    def calier(self, tasks: List[Task], upper_band = 99999999) -> List[Task]:
 
         schrage = SchrageAlgorithm()
         schragePMTN = SchragePMTNAlgorithm()
@@ -29,22 +27,22 @@ class CalierAlgorithm(Algorithm):
 
         if var_u < upper_band:
             upper_band = var_u
-            tasks_order = temp_tasks_order
+            tasks = temp_tasks_order
         
         task_b = self.count_task_b(tasks)
-        task_a = self.count_task_a(tasks)
+        task_a = self.count_task_a(tasks, task_b)
         task_c = self.count_task_c(tasks, task_a, task_b)
 
         #################################
 
         # -1 w delivery time oznacza, że nie znaleziono zadania c
-        if task_c.get_delivery_time() == -1:
-            return tasks_order
+        if task_c.get_preparation_time() == -1:
+            return tasks
 
         list_K = self.fill_list_k(tasks, task_c, task_b)
 
-        r_K = min(task.get_preparation_time() for task in tasks)
-        q_K = min(task.get_delivery_time() for task in tasks)
+        r_K = min(task.get_preparation_time() for task in list_K)
+        q_K = min(task.get_delivery_time() for task in list_K)
         p_K = 0
         for task in list_K:
             p_K += task.get_execution_time()
@@ -55,7 +53,7 @@ class CalierAlgorithm(Algorithm):
         task_c.change_preparation_time(max([task_c.get_preparation_time(), r_K + p_K]))
         
         lower_band = schragePMTN.run(tasks)
-        lower_band = max(self.count_h_K(list_K, r_K, p_K, q_K), self.count_h_K([task_c] + list_K, r_K, p_K, q_K), lower_band)
+        lower_band = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_band)
 
         if lower_band < upper_band:
             self.calier(tasks, upper_band)
@@ -68,7 +66,7 @@ class CalierAlgorithm(Algorithm):
         task_c.change_delivery_time(max([task_c.get_delivery_time(), r_K + p_K]))
 
         lower_band = schragePMTN.run(tasks)
-        lower_band = max(self.count_h_K(list_K, r_K, p_K, q_K), self.count_h_K([task_c] + list_K, r_K, p_K, q_K), lower_band)
+        lower_band = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_band)
 
         if lower_band < upper_band:
             self.calier(tasks, upper_band)
@@ -76,7 +74,7 @@ class CalierAlgorithm(Algorithm):
 
         task_c = task_c_copy.copy()
 
-        return tasks_order
+        return tasks
 
     #######################################################################
     #TODO!!! test
@@ -88,9 +86,9 @@ class CalierAlgorithm(Algorithm):
 
         for task in tasks:
             tmp_q = task.get_delivery_time()
-            task.change_delivery_time(tmp_q+1)
+            task.change_delivery_time(tmp_q+10)
             
-            if cmax == self.cmax_calc.get_Cmax(tasks) + 1:
+            if cmax == self.cmax_calc.get_Cmax(tasks) + 10:
                 tempTask = task
             task.change_delivery_time(tmp_q)
 
@@ -99,22 +97,39 @@ class CalierAlgorithm(Algorithm):
     #######################################################################
     #TODO!!! do
 
-    def count_task_a(self, tasks: List[Task]) -> Task:
+    def count_task_a(self, tasks: List[Task], task_b) -> Task:
 
         cmax = self.cmax_calc.get_Cmax(tasks)
 
+        task_a = tasks[0]
+        sum = task_a.get_preparation_time() + task_a.get_execution_time()
+
+        for i in range(1, len(tasks)):
+
+            if sum < tasks[i].get_preparation_time():
+
+                task_a = tasks[i]
+
+            sum += tasks[i].get_preparation_time() + tasks[i].get_execution_time()
+            if tasks[i] == task_b:
+                break
+
+        return task_a
+
+
+        """
         for task in tasks:
-            tmp_p = task.get_execution_time()
-            task.change_execution_time(tmp_p+1)
+            tmp_r = task.get_preparation_time()
+            task.change_preparation_time(tmp_r+10)
             
-            if cmax == self.cmax_calc.get_Cmax(tasks) + 1:
+            if cmax == self.cmax_calc.get_Cmax(tasks) + 10:
                 tempTask = task
-                task.change_execution_time(tmp_p)
+                task.change_preparation_time(tmp_r)
                 return tempTask
             else:
-                task.change_execution_time(tmp_p)
-
-        return tasks[0]
+                task.change_preparation_time(tmp_r)
+        """
+        raise IndexError
 
     #######################################################################
     #TODO!!! test
@@ -134,9 +149,15 @@ class CalierAlgorithm(Algorithm):
     #######################################################################
     #TODO!!! test
 
-    def count_h_K(self, tasks: List[Task], r_k, p_k, q_k) -> int:
+    def count_h_K(self, tasks: List[Task]) -> int:
 
-        return r_k + p_k + q_k
+        r_K = min(task.get_preparation_time() for task in tasks)
+        q_K = min(task.get_delivery_time() for task in tasks)
+        p_K = 0
+        for task in tasks:
+            p_K += task.get_execution_time()
+        
+        return r_K + p_K + q_K
     
     #######################################################################
     #TODO!!! test
