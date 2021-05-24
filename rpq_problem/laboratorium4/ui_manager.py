@@ -48,6 +48,7 @@ class UIManager:
         UIManager._add_alg(SchragePMTNNLogNAlgorithm())
         #UIManager._add_alg(SchragePMTNSortedListAlgorithm())
         UIManager._add_alg(TabuSearch())
+        UIManager._add_alg(TabuSearch(initial_solution_generator=SchrageNLogNAlgorithm()))
         UIManager._add_alg(CalierAlgorithm())
 
     @staticmethod

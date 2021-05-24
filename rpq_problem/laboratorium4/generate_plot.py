@@ -26,7 +26,7 @@ class GeneratePlot:
         # C_max:
         fig1, ax1 = plt.subplots()
 
-        for i in range(0, 6):
+        for i in range(0, 7):
             x = []
             y = []
             alg_name = ""
@@ -49,7 +49,7 @@ class GeneratePlot:
         # Czas liczenia:
         fig2, ax2 = plt.subplots()
 
-        for i in range(0, 6):
+        for i in range(0, 7):
             x = []
             y = []
             alg_name = ""

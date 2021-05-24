@@ -26,5 +26,4 @@ class UseAlgorithm(InitialSolutionGenerator):
         self.name = str(alg)
 
     def run(self, task_list: List[Task]) -> List[Task]:
-        tasks = self.alg.run(task_list.copy())
-        return tasks[0].tasks.copy()
+        return self.alg.run(task_list.copy())
