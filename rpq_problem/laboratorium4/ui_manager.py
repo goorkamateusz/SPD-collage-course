@@ -13,7 +13,7 @@ from laboratorium4.schrage_pmtn_sorted_list import SchragePMTNSortedListAlgorith
 from laboratorium4.time_profiler import TimeProfiler
 from laboratorium4.generate_plot import GeneratePlot
 
-from laboratorium5.calier_algorithm import CalierAlgorithm
+from laboratorium5.calier_algorithm import CarlierAlgorithm
 from laboratorium5.tabu_search import TabuSearch
 
 
@@ -49,7 +49,7 @@ class UIManager:
         #UIManager._add_alg(SchragePMTNSortedListAlgorithm())
         UIManager._add_alg(TabuSearch())
         UIManager._add_alg(TabuSearch(initial_solution_generator=SchrageNLogNAlgorithm()))
-        UIManager._add_alg(CalierAlgorithm())
+        UIManager._add_alg(CarlierAlgorithm())
 
     @staticmethod
     def algorithms() -> List[Algorithm]:
