@@ -1,7 +1,7 @@
 import itertools
 from typing import List, Iterator
 
-from labolatorium1.general_lib import *
+from laboratorium4.task import *
 
 Solution = List[Task]
 
