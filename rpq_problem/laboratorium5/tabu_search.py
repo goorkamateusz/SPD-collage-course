@@ -1,14 +1,13 @@
 import math
 from collections import deque
 from typing import List
+from laboratorium4.Cmax_calculator import CMaxCalculator
 
-from labolatorium1.gantt_plot import Gantt
-from labolatorium1.general_lib import *
-from labolatorium2.algorithm import Algorithm
-from laboratorium3 import stop_conditions
-from laboratorium3.stop_conditions import StopConditions, IterCondition
-from laboratorium3.neightbourhood_generator import NeightbourhoodGenerator, SwapAll
-from laboratorium3.initial_solution_generator import InitialSolutionGenerator, CopyTasks
+from laboratorium4.task import *
+from laboratorium4.algorithm import Algorithm
+from laboratorium5.stop_conditions import StopConditions, IterCondition
+from laboratorium5.neightbourhood_generator import NeightbourhoodGenerator, SwapAll
+from laboratorium5.initial_solution_generator import InitialSolutionGenerator, CopyTasks
 
 
 class TabuSearch(Algorithm):
@@ -26,7 +25,7 @@ class TabuSearch(Algorithm):
         self.tabu_list_max_length = tabu_list_max_length
         self.name = f"{TabuSearch.name} ({tabu_list_max_length}, {initial_solution_generator.name}, {neigthbourhood_generator.name}, {stop_condition})"
 
-    def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
+    def run(self, tasks: List[Task]) -> List[Task]:
         """ Tabu search - przeszukiwanie z zabronieniami
 
         Parameters
@@ -43,16 +42,9 @@ class TabuSearch(Algorithm):
         """
 
         # Generowanie rozwiązania początkowego
-        initial_solution = self.intial_solution_generator.run(machines, tasks)
+        initial_solution = self.intial_solution_generator.run(tasks)
 
-        for task in initial_solution:
-            for machine in machines:
-                machine.add_task(task)
-
-        initial_Cmax = Gantt(machines).get_duration()
-
-        for machine in machines:
-            machine.clear_tasks()
+        initial_Cmax = CMaxCalculator().get_Cmax(tasks)
 
         best_solution = initial_solution.copy()
         best_Cmax = initial_Cmax
@@ -70,19 +62,12 @@ class TabuSearch(Algorithm):
             current_neighborhood_best_Cmax = math.inf
 
             for current_solution in neighbors:
-                for task in current_solution:
-                    for machine in machines:
-                        machine.add_task(task)
-
-                current_Cmax = Gantt(machines).get_duration()
+                current_Cmax = CMaxCalculator().get_Cmax(current_solution)
 
                 if current_Cmax < current_neighborhood_best_Cmax and current_solution not in tabu_list:
                     current_neighborhood_best_Cmax = current_Cmax
                     current_neighborhood_best_solution = current_solution
                     tabu_list.append(current_solution)
-
-                for machine in machines:
-                    machine.clear_tasks()
 
             if current_neighborhood_best_Cmax < best_Cmax:
                 best_Cmax = current_neighborhood_best_Cmax
@@ -93,8 +78,4 @@ class TabuSearch(Algorithm):
 
         print(best_solution, best_Cmax)
 
-        for task in best_solution:
-            for machine in machines:
-                machine.add_task(task)
-
-        return machines
+        return best_solution

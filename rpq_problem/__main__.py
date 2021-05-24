@@ -24,4 +24,6 @@ if __name__ == "__main__":
             UIManager.print(result, algorithm, time_profiler)
             GeneratePlot.add_data(result, algorithm, time_profiler, len(tasks))
 
-    GeneratePlot()
+    if len(UIManager.filenames) > 1:
+        GeneratePlot()
+        

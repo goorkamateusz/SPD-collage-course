@@ -14,6 +14,7 @@ from laboratorium4.time_profiler import TimeProfiler
 from laboratorium4.generate_plot import GeneratePlot
 
 from laboratorium5.calier_algorithm import CalierAlgorithm
+from laboratorium5.tabu_search import TabuSearch
 
 
 class UIManager:
@@ -44,8 +45,9 @@ class UIManager:
         UIManager._add_alg(SchrageAlgorithm())
         #UIManager._add_alg(SchrageNLogNAlgorithm())
         #UIManager._add_alg(SchragePMTNAlgorithm())
-        #UIManager._add_alg(SchragePMTNNLogNAlgorithm())
+        UIManager._add_alg(SchragePMTNNLogNAlgorithm())
         #UIManager._add_alg(SchragePMTNSortedListAlgorithm())
+        UIManager._add_alg(TabuSearch())
         UIManager._add_alg(CalierAlgorithm())
 
     @staticmethod
