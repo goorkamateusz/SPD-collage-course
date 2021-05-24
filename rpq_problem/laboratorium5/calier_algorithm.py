@@ -1,5 +1,6 @@
 from laboratorium4.Cmax_calculator import CMaxCalculator
 from typing import List
+import sys
 
 from laboratorium4.algorithm import Algorithm
 from laboratorium4.task import Task
@@ -116,21 +117,6 @@ class CalierAlgorithm(Algorithm):
 
         return task_a
 
-
-        """
-        for task in tasks:
-            tmp_r = task.get_preparation_time()
-            task.change_preparation_time(tmp_r+10)
-            
-            if cmax == self.cmax_calc.get_Cmax(tasks) + 10:
-                tempTask = task
-                task.change_preparation_time(tmp_r)
-                return tempTask
-            else:
-                task.change_preparation_time(tmp_r)
-        """
-        raise IndexError
-
     #######################################################################
     #TODO!!! test
 
@@ -173,7 +159,8 @@ class CalierAlgorithm(Algorithm):
 
     def run(self, tasks: List[Task]) -> List[Task]:
         
-        return self.calier(tasks, 99999)
+        sys.setrecursionlimit(9999)
+        return self.calier(tasks)
 
         """
         self.permutations.append([tasks, 9999])
