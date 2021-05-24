@@ -1,3 +1,5 @@
+import copy
+
 class Task:
     """
     Zadanie.
@@ -35,7 +37,7 @@ class Task:
         return self
 
     def copy(self):
-        return Task(self._id, self._preparation_time, self._execution_time, self._preparation_time)
+        return copy.copy(self)
 
     def __eq__(self, other) -> bool:
         if isinstance(other, Task):
