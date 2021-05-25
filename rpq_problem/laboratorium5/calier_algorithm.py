@@ -13,16 +13,20 @@ class CarlierAlgorithm(Algorithm):
     id = 5
 
     cmax_calc = CMaxCalculator()
+    schrage = SchrageAlgorithm()
+    schragePMTN = SchragePMTNAlgorithm()
+
     permutations = []
+    recurency_nb = 0
 
     #######################################################################
     def carlier(self, tasks: List[Task], upper_bound: int = 99999999) -> List[Task]:
-        schrage = SchrageAlgorithm()
-        schragePMTN = SchragePMTNAlgorithm()
-
+        
+        self.recurency_nb += 1
+        print(self.recurency_nb)
         #################################
 
-        temp_tasks_order = schrage.run(tasks)
+        temp_tasks_order = self.schrage.run(tasks)
         var_u = self.cmax_calc.get_Cmax(temp_tasks_order)
 
         if var_u < upper_bound:
@@ -50,7 +54,7 @@ class CarlierAlgorithm(Algorithm):
         task_c_copy = task_c.copy()
         task_c.change_preparation_time(max(task_c.get_preparation_time(), r_K + p_K))
        
-        lower_bound = schragePMTN.run(tasks)
+        lower_bound = self.schragePMTN.run(tasks)
         lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
 
         if lower_bound < upper_bound:
@@ -64,7 +68,7 @@ class CarlierAlgorithm(Algorithm):
 
         task_c.change_delivery_time(max(task_c.get_delivery_time(), q_K + p_K))
 
-        lower_bound = schragePMTN.run(tasks)
+        lower_bound = self.schragePMTN.run(tasks)
         lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
        
         if lower_bound < upper_bound:
