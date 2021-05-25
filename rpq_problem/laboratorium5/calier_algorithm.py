@@ -72,6 +72,7 @@ class CarlierAlgorithm(Algorithm):
             #self.permutations.append([tasks, upper_band])
 
         # task_c = task_c_copy.copy()
+        task_c.change_preparation_time(task_c_copy.get_preparation_timea)
         task_c.change_delivery_time(task_c_copy.get_delivery_time())
 
         return tasks
@@ -122,10 +123,11 @@ class CarlierAlgorithm(Algorithm):
     #TODO!!! test
 
     def count_task_c(self, tasks: List[Task], task_a: Task, task_b: Task) -> Optional[Task]:
-        sublist = tasks[tasks.index(task_a) + 1:tasks.index(task_b)]
+        sublist = tasks[tasks.index(task_a):tasks.index(task_b) +1]
 
         for task in sublist:
             if task.get_delivery_time() < task_b.get_delivery_time():
+                print("C: " + str(task.get_id))
                 return task
 
         return None
