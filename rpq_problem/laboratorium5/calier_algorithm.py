@@ -46,10 +46,10 @@ class CarlierAlgorithm(Algorithm):
         p_K = sum(task.get_execution_time() for task in list_K)
 
         #################################
-
+        
         task_c_copy = task_c.copy()
         task_c.change_preparation_time(max(task_c.get_preparation_time(), r_K + p_K))
-        
+       
         lower_bound = schragePMTN.run(tasks)
         lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
 
@@ -58,7 +58,7 @@ class CarlierAlgorithm(Algorithm):
             #self.permutations.append([tasks, upper_band])
         
         #################################
-
+       
         # task_c = task_c_copy.copy()
         task_c.change_preparation_time(task_c_copy.get_preparation_time())
 
@@ -66,11 +66,11 @@ class CarlierAlgorithm(Algorithm):
 
         lower_bound = schragePMTN.run(tasks)
         lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
-
+       
         if lower_bound < upper_bound:
             tasks = self.carlier(tasks, upper_bound)
             #self.permutations.append([tasks, upper_band])
-
+        
         # task_c = task_c_copy.copy()
         task_c.change_delivery_time(task_c_copy.get_delivery_time())
 
