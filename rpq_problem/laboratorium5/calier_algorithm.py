@@ -54,7 +54,7 @@ class CarlierAlgorithm(Algorithm):
         lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
 
         if lower_bound < upper_bound:
-            self.carlier(tasks, upper_bound)
+            tasks = self.carlier(tasks, upper_bound)
             #self.permutations.append([tasks, upper_band])
         
         #################################
@@ -68,7 +68,7 @@ class CarlierAlgorithm(Algorithm):
         lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
 
         if lower_bound < upper_bound:
-            self.carlier(tasks, upper_bound)
+            tasks = self.carlier(tasks, upper_bound)
             #self.permutations.append([tasks, upper_band])
 
         # task_c = task_c_copy.copy()
@@ -101,14 +101,7 @@ class CarlierAlgorithm(Algorithm):
     #TODO!!! do
 
     def count_task_a(self, tasks: List[Task], task_b: Task) -> Task:
-        # cmax = self.cmax_calc.get_Cmax(tasks)
-        # task_b_index = tasks.index(task_b)
-        #
-        # for task_index, task in enumerate(tasks):
-        #     execution_time_sum = sum(s.get_execution_time() for s in tasks[task_index: task_b_index + 1])
-        #     if cmax == task.get_preparation_time() + execution_time_sum + task_b.get_delivery_time():
-        #         return task
-
+       
         task_a = tasks[0]
         sum = task_a.get_preparation_time() + task_a.get_execution_time()
 
@@ -126,7 +119,7 @@ class CarlierAlgorithm(Algorithm):
     #TODO!!! test
 
     def count_task_c(self, tasks: List[Task], task_a: Task, task_b: Task) -> Optional[Task]:
-        sublist = tasks[tasks.index(task_a)+1:tasks.index(task_b) +1]
+        sublist = tasks[tasks.index(task_a):tasks.index(task_b) +1]
         temp_task = None
 
         for task in sublist:
