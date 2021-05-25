@@ -9,7 +9,7 @@ Wymaga do działania:
 Do wywołania w folderze Mkh_splitter
 """
 
-file = open("schr.data.txt", "r")
+file = open("carl.data.txt", "r")
 lines = file.readlines()
 file.close()
 

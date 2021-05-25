@@ -39,7 +39,6 @@ class CarlierAlgorithm(Algorithm):
         if task_c is None:
             return tasks
 
-        print("\n\nTASK C:" + str(tasks.index(task_c)) + "\n\n")
         list_K = self.fill_list_k(tasks, task_c, task_b)
 
         r_K = min(task.get_preparation_time() for task in list_K)
@@ -55,7 +54,7 @@ class CarlierAlgorithm(Algorithm):
         lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
 
         if lower_bound < upper_bound:
-            tasks = self.carlier(tasks, upper_bound)
+            self.carlier(tasks, upper_bound)
             #self.permutations.append([tasks, upper_band])
         
         #################################
@@ -69,7 +68,7 @@ class CarlierAlgorithm(Algorithm):
         lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
 
         if lower_bound < upper_bound:
-            tasks = self.carlier(tasks, upper_bound)
+            self.carlier(tasks, upper_bound)
             #self.permutations.append([tasks, upper_band])
 
         # task_c = task_c_copy.copy()
@@ -127,7 +126,7 @@ class CarlierAlgorithm(Algorithm):
     #TODO!!! test
 
     def count_task_c(self, tasks: List[Task], task_a: Task, task_b: Task) -> Optional[Task]:
-        sublist = tasks[tasks.index(task_a):tasks.index(task_b) +1]
+        sublist = tasks[tasks.index(task_a)+1:tasks.index(task_b) +1]
         temp_task = None
 
         for task in sublist:
@@ -158,7 +157,7 @@ class CarlierAlgorithm(Algorithm):
     #TODO!!! test
 
     def run(self, tasks: List[Task]) -> List[Task]:
-        sys.setrecursionlimit(9999)
+        sys.setrecursionlimit(99999)
         return self.carlier(tasks)
 
         """
