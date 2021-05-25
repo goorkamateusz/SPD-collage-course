@@ -58,8 +58,9 @@ class CarlierAlgorithm(Algorithm):
         lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
 
         if lower_bound < upper_bound:
-            tasks = self.carlier(tasks, upper_bound)
-            #self.permutations.append([tasks, upper_band])
+            #tasks = self.carlier(tasks, upper_bound)
+            self.permutations.append([tasks, upper_bound])
+            return tasks
         
         #################################
        
@@ -72,9 +73,10 @@ class CarlierAlgorithm(Algorithm):
         lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
        
         if lower_bound < upper_bound:
-            tasks = self.carlier(tasks, upper_bound)
-            #self.permutations.append([tasks, upper_band])
-        
+            #tasks = self.carlier(tasks, upper_bound)
+            self.permutations.append([tasks, upper_bound])
+            return tasks
+
         # task_c = task_c_copy.copy()
         task_c.change_delivery_time(task_c_copy.get_delivery_time())
 
@@ -154,27 +156,19 @@ class CarlierAlgorithm(Algorithm):
     #TODO!!! test
 
     def run(self, tasks: List[Task]) -> List[Task]:
-        sys.setrecursionlimit(99999)
-        return self.carlier(tasks)
+        #sys.setrecursionlimit(99999)
+        #return self.carlier(tasks)
 
-        """
-        self.permutations.append([tasks, 9999])
-
-        temp_tasks = List[Task]
-        best_tasks = List[Task]
-        tmp_tsk = Task(1, 99999, 99999, 99999)
-        best_tasks.append(tmp_tsk)
+        temp_tasks = self.carlier(tasks)
+        best_tasks = temp_tasks.copy()
 
         i = 0
         while len(self.permutations) > 0:
             [a, b] = self.permutations.pop(0)
-            temp_tasks = self.calier(a, b)
+            temp_tasks = self.carlier(a, b)
             if self.cmax_calc.get_Cmax(temp_tasks) < self.cmax_calc.get_Cmax(best_tasks):
-                pass
                 best_tasks = temp_tasks.copy()
             i += 1
 
-        print("PERM: " + str(i))
-
+        print(i)
         return best_tasks
-        """
