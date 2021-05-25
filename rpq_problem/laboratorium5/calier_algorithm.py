@@ -81,17 +81,21 @@ class CarlierAlgorithm(Algorithm):
     #TODO!!! test
 
     def count_task_b(self, tasks: List[Task]) -> Task:
-        temp_task = tasks[-1]
+        offset = 10
+
+        temp_task = None
         cmax = self.cmax_calc.get_Cmax(tasks)
 
         for task in tasks:
             tmp_q = task.get_delivery_time()
-            task.change_delivery_time(tmp_q+10)
+            task.change_delivery_time(tmp_q+offset)
             
-            if cmax == self.cmax_calc.get_Cmax(tasks) + 10:
+            if cmax + offset == self.cmax_calc.get_Cmax(tasks):
                 temp_task = task
             task.change_delivery_time(tmp_q)
 
+        if temp_task == None:
+            raise ValueError
         return temp_task
 
     #######################################################################
