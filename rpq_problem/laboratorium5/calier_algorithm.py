@@ -7,6 +7,8 @@ from laboratorium4.task import Task
 from laboratorium4.schrage_algorithm import SchrageAlgorithm
 from laboratorium4.schrage_pmtn import SchragePMTNAlgorithm
 
+import copy
+
 
 class CarlierAlgorithm(Algorithm):
     name = 'Carlier Algorithm'
@@ -18,12 +20,13 @@ class CarlierAlgorithm(Algorithm):
 
     permutations = []
     recurency_nb = 0
+    out_string = ""
 
     #######################################################################
     def carlier(self, tasks: List[Task], upper_bound: int = 99999999) -> List[Task]:
         
         self.recurency_nb += 1
-        print(self.recurency_nb)
+        self.out_string += (", Iteracja: " + str(self.recurency_nb))
         #################################
 
         temp_tasks_order = self.schrage.run(tasks)
@@ -51,37 +54,38 @@ class CarlierAlgorithm(Algorithm):
 
         #################################
         
-        task_c_copy = task_c.copy()
-        #task_c_ind = tasks.index(task_c) #.change_preparation_time(max(task_c.get_preparation_time(), r_K + p_K))
-        #print("TASK C ind: " + str(task_c_ind))
-        #tasks[task_c_ind].change_preparation_time(max(task_c.get_preparation_time(), r_K + p_K))
-        task_c.change_preparation_time(max(task_c.get_preparation_time(), r_K + p_K))
-
-        lower_bound = self.schragePMTN.run(tasks)
-        lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
-
-        if lower_bound < upper_bound:
-            #tasks = self.carlier(tasks, upper_bound)
-            self.permutations.append([tasks.copy(), upper_bound])
-            return tasks
+        r_c_old = task_c.get_preparation_time()
         
+        if r_K + p_K > r_c_old:
+            task_c.change_preparation_time(r_K + p_K)
+
+            lower_bound = self.schragePMTN.run(tasks)
+            lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
+
+            if lower_bound < upper_bound:
+                #tasks = self.carlier(tasks, upper_bound)
+                self.permutations.append([copy.deepcopy(tasks), upper_bound])
+                #return tasks
+        
+            task_c.change_preparation_time(r_c_old)
+
         #################################
-       
-        # task_c = task_c_copy.copy()
-        task_c.change_preparation_time(task_c_copy.get_preparation_time())
 
-        task_c.change_delivery_time(max(task_c.get_delivery_time(), q_K + p_K))
+        q_c_old = task_c.get_delivery_time()
 
-        lower_bound = self.schragePMTN.run(tasks)
-        lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
-       
-        if lower_bound < upper_bound:
-            #tasks = self.carlier(tasks, upper_bound)
-            self.permutations.append([tasks.copy(), upper_bound])
-            return tasks
+        if q_K + p_K > q_c_old:
+            task_c.change_delivery_time(q_K + p_K)
 
-        # task_c = task_c_copy.copy()
-        task_c.change_delivery_time(task_c_copy.get_delivery_time())
+            lower_bound = self.schragePMTN.run(tasks)
+            lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
+        
+            if lower_bound < upper_bound:
+                #tasks = self.carlier(tasks, upper_bound)
+                self.permutations.append([copy.deepcopy(tasks), upper_bound])
+                #return tasks
+
+            # task_c = task_c_copy.copy()
+            task_c.change_delivery_time(q_c_old)
 
         return tasks
 
@@ -165,11 +169,24 @@ class CarlierAlgorithm(Algorithm):
         temp_tasks = self.carlier(tasks)
         best_tasks = temp_tasks.copy()
 
+        temp_c_max = 9999999
+        best_c_max = 9999999
+
+
         while len(self.permutations) > 0:
-            [a, b] = self.permutations.pop(0)
+
+            [a, b] = self.permutations.pop()
+
+            self.out_string = "Zostało: " + str(len(self.permutations))
+
             temp_tasks = self.carlier(a, b)
-            print("Cmax: " + str(self.cmax_calc.get_Cmax(temp_tasks)))
-            if self.cmax_calc.get_Cmax(temp_tasks) < self.cmax_calc.get_Cmax(best_tasks):
+            temp_c_max = self.cmax_calc.get_Cmax(temp_tasks)
+            
+            self.out_string += ", Cmax: " + str(best_c_max)
+            print(self.out_string)
+
+            if temp_c_max < best_c_max:
                 best_tasks = temp_tasks.copy()
+                best_c_max = self.cmax_calc.get_Cmax(best_tasks)
 
         return best_tasks
