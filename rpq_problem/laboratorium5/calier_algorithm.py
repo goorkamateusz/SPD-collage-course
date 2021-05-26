@@ -63,9 +63,7 @@ class CarlierAlgorithm(Algorithm):
             lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
 
             if lower_bound < upper_bound:
-                #tasks = self.carlier(tasks, upper_bound)
                 self.permutations.append([copy.deepcopy(tasks), upper_bound])
-                #return tasks
         
             task_c.change_preparation_time(r_c_old)
 
@@ -80,11 +78,8 @@ class CarlierAlgorithm(Algorithm):
             lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
         
             if lower_bound < upper_bound:
-                #tasks = self.carlier(tasks, upper_bound)
                 self.permutations.append([copy.deepcopy(tasks), upper_bound])
-                #return tasks
 
-            # task_c = task_c_copy.copy()
             task_c.change_delivery_time(q_c_old)
 
         return tasks
