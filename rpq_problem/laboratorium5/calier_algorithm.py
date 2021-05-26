@@ -178,7 +178,8 @@ class CarlierAlgorithm(Algorithm):
             temp_c_max = self.cmax_calc.get_Cmax(temp_tasks)
             
             self.out_string += ", Cmax: " + str(best_c_max)
-            print(self.out_string)
+            if self.recurency_nb % 100 == 0:
+                print(self.out_string)
 
             if temp_c_max < best_c_max:
                 best_tasks = temp_tasks.copy()
