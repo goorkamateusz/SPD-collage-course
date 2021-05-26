@@ -3,6 +3,8 @@ from typing import List, Optional
 import sys
 
 from laboratorium4.algorithm import Algorithm
+from laboratorium4.schrage_n_log_n import SchrageNLogNAlgorithm
+from laboratorium4.schrage_pmtn_n_log_n import SchragePMTNNLogNAlgorithm
 from laboratorium4.task import Task
 from laboratorium4.schrage_algorithm import SchrageAlgorithm
 from laboratorium4.schrage_pmtn import SchragePMTNAlgorithm
@@ -15,12 +17,24 @@ class CarlierAlgorithm(Algorithm):
     id = 5
 
     cmax_calc = CMaxCalculator()
-    schrage = SchrageAlgorithm()
-    schragePMTN = SchragePMTNAlgorithm()
 
-    permutations = []
-    recurency_nb = 0
-    out_string = ""
+    def __init__(self, schrage: Algorithm, schragePMTN: Algorithm):
+        self.schrage = schrage
+        self.schragePMTN = schragePMTN
+
+
+    def __init__(self, nlogn: bool = False):
+        if nlogn:
+            self.schrage = SchrageNLogNAlgorithm()
+            self.schragePMTN = SchragePMTNNLogNAlgorithm()
+            self.name += " nLogn"
+        else:
+            self.schrage = SchrageAlgorithm()
+            self.schragePMTN = SchragePMTNAlgorithm()
+
+        self.permutations = []
+        self.recurency_nb = 0
+        self.out_string = ""
 
     #######################################################################
     def carlier(self, tasks: List[Task], upper_bound: int = 99999999) -> List[Task]:
