@@ -49,7 +49,8 @@ class UIManager:
         #UIManager._add_alg(SchragePMTNSortedListAlgorithm())
         UIManager._add_alg(TabuSearch())
         UIManager._add_alg(TabuSearch(initial_solution_generator=SchrageNLogNAlgorithm()))
-        UIManager._add_alg(CarlierAlgorithm())
+        UIManager._add_alg(CarlierAlgorithm(False))
+        UIManager._add_alg(CarlierAlgorithm(True))
 
     @staticmethod
     def algorithms() -> List[Algorithm]:
