@@ -21,6 +21,7 @@ class CarlierAlgorithm(Algorithm):
             self.schrage = SchrageNLogNAlgorithm()
             self.schragePMTN = SchragePMTNNLogNAlgorithm()
             self.name += " nLogn"
+            self.id = 6
         else:
             self.schrage = SchrageAlgorithm()
             self.schragePMTN = SchragePMTNAlgorithm()

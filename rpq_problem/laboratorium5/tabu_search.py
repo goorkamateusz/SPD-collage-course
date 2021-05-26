@@ -12,7 +12,7 @@ from laboratorium5.initial_solution_generator import InitialSolutionGenerator, C
 
 class TabuSearch(Algorithm):
     name = "Algorytm tabu search"
-    id = 6
+    id = 7
 
     def __init__(self,
                 tabu_list_max_length: int = 10,
