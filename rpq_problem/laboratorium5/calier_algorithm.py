@@ -14,7 +14,6 @@ import copy
 class CarlierAlgorithm(Algorithm):
     name = 'Carlier Algorithm'
     id = 5
-
     cmax_calc = CMaxCalculator()
 
     def __init__(self, nlogn: bool = False):
@@ -30,7 +29,6 @@ class CarlierAlgorithm(Algorithm):
         self.recurency_nb = 0
         self.out_string = ""
 
-    #######################################################################
     def carlier(self, tasks: List[Task], upper_bound: int = 99999999) -> List[Task]:
         self.recurency_nb += 1
         self.out_string += (", Iteracja: " + str(self.recurency_nb))
@@ -48,8 +46,7 @@ class CarlierAlgorithm(Algorithm):
         task_c = self.count_task_c(tasks, task_a, task_b)
 
         #################################
-        # Nie znaleziono zadania c
-        if task_c is None:
+        if task_c is None:      # Nie znaleziono zadania c
             return tasks
 
         list_K = self.fill_list_k(tasks, task_c, task_b)
@@ -88,17 +85,15 @@ class CarlierAlgorithm(Algorithm):
 
         return tasks
 
-    #######################################################################
     def count_task_b(self, tasks: List[Task]) -> Task:
         offset = 1
-
         temp_task = None
         cmax = self.cmax_calc.get_Cmax(tasks)
 
         for task in tasks:
             tmp_q = task.get_delivery_time()
             task.change_delivery_time(tmp_q+offset)
-            
+
             if cmax + offset == self.cmax_calc.get_Cmax(tasks):
                 temp_task = task
             task.change_delivery_time(tmp_q)
@@ -108,9 +103,7 @@ class CarlierAlgorithm(Algorithm):
 
         return temp_task
 
-    #######################################################################
     def count_task_a(self, tasks: List[Task], task_b: Task) -> Task:
-
         task_a = tasks[0]
         sum = task_a.get_preparation_time() + task_a.get_execution_time()
 
@@ -124,34 +117,22 @@ class CarlierAlgorithm(Algorithm):
 
         return task_a
 
-    #######################################################################
     def count_task_c(self, tasks: List[Task], task_a: Task, task_b: Task) -> Optional[Task]:
-        sublist = tasks[tasks.index(task_a):tasks.index(task_b) +1]
-        temp_task = None
-
-        for task in sublist:
+        for task in reversed(tasks[tasks.index(task_a) : tasks.index(task_b) + 1]):
             if task.get_delivery_time() < task_b.get_delivery_time():
-                temp_task = task
+                return task
+        return None
 
-        return temp_task
-
-    #######################################################################
     def count_h_K(self, tasks: List[Task]) -> int:
         r_K = min(task.get_preparation_time() for task in tasks)
         q_K = min(task.get_delivery_time() for task in tasks)
         p_K = sum(task.get_execution_time() for task in tasks)
-
         return r_K + p_K + q_K
 
-    #######################################################################
     def fill_list_k(self, tasks: List[Task], task_c: Task, task_b: Task) -> List[Task]:
-        return tasks[tasks.index(task_c) + 1:tasks.index(task_b) + 1]
+        return tasks[tasks.index(task_c) + 1 : tasks.index(task_b) + 1]
 
-    #######################################################################
     def run(self, tasks: List[Task]) -> List[Task]:
-        #sys.setrecursionlimit(99999)
-        #return self.carlier(tasks)
-
         temp_tasks = self.carlier(tasks)
         best_tasks = temp_tasks.copy()
 
