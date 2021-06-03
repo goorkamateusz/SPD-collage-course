@@ -17,13 +17,13 @@ class SchrageNLogNAlgorithm(Algorithm):
 
         while tasks_ready_for_scheduling or tasks_not_ready_for_scheduling:
             while tasks_not_ready_for_scheduling and tasks_not_ready_for_scheduling.top().get_preparation_time() <= t:
-                j_star = tasks_not_ready_for_scheduling.extract()
-                tasks_ready_for_scheduling.insert(j_star)
+                j_star = tasks_not_ready_for_scheduling.pop()
+                tasks_ready_for_scheduling.append(j_star)
 
             if not tasks_ready_for_scheduling:
                 t = tasks_not_ready_for_scheduling.top().get_preparation_time()
             else:
-                j_star = tasks_ready_for_scheduling.extract()
+                j_star = tasks_ready_for_scheduling.pop()
                 partial_tasks_order.append(j_star)
                 t += j_star.get_execution_time()
 

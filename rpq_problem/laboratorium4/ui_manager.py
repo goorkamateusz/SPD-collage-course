@@ -4,6 +4,7 @@ from typing import List
 from laboratorium4.Cmax_calculator import CMaxCalculator
 
 from laboratorium4.algorithm import Algorithm
+from laboratorium4.priority_queue import PriorityQueue
 from laboratorium4.rpq_task_reader import RpqTaskReader
 from laboratorium4.schrage_algorithm import SchrageAlgorithm
 from laboratorium4.schrage_n_log_n import SchrageNLogNAlgorithm
@@ -13,7 +14,7 @@ from laboratorium4.schrage_pmtn_sorted_list import SchragePMTNSortedListAlgorith
 from laboratorium4.time_profiler import TimeProfiler
 from laboratorium4.generate_plot import GeneratePlot
 
-from laboratorium5.calier_algorithm import CarlierAlgorithm
+from laboratorium5.calier_algorithm import CarlierAlgorithm, CarlierLog
 from laboratorium5.tabu_search import TabuSearch
 
 
@@ -51,6 +52,7 @@ class UIManager:
         UIManager._add_alg(TabuSearch(initial_solution_generator=SchrageNLogNAlgorithm()))
         UIManager._add_alg(CarlierAlgorithm(False))
         UIManager._add_alg(CarlierAlgorithm(True))
+        UIManager._add_alg(CarlierAlgorithm(True, PriorityQueue(key=CarlierLog.get_upper_band)))
 
     @staticmethod
     def algorithms() -> List[Algorithm]:

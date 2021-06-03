@@ -11,12 +11,21 @@ from laboratorium4.schrage_pmtn import SchragePMTNAlgorithm
 import copy
 
 
+class CarlierLog:
+    def __init__(self, solution: List, upper_band: int):
+        self.solution = solution
+        self.upper_band = upper_band
+
+    def get_upper_band(self) -> int:
+        return self.upper_band
+
+
 class CarlierAlgorithm(Algorithm):
     name = 'Carlier Algorithm'
     id = 5
     cmax_calc = CMaxCalculator()
 
-    def __init__(self, nlogn: bool = False):
+    def __init__(self, nlogn: bool = False, permutation_struct = []):
         if nlogn:
             self.schrage = SchrageNLogNAlgorithm()
             self.schragePMTN = SchragePMTNNLogNAlgorithm()
@@ -26,7 +35,10 @@ class CarlierAlgorithm(Algorithm):
             self.schrage = SchrageAlgorithm()
             self.schragePMTN = SchragePMTNAlgorithm()
 
-        self.permutations = []
+        if not isinstance(permutation_struct, list):
+            self.name += " " + type(permutation_struct).__name__
+
+        self.permutations = permutation_struct
         self.recurency_nb = 0
         self.out_string = ""
 
@@ -66,7 +78,7 @@ class CarlierAlgorithm(Algorithm):
             lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
 
             if lower_bound < upper_bound:
-                self.permutations.append([copy.deepcopy(tasks), upper_bound])
+                self.permutations.append(CarlierLog(copy.deepcopy(tasks), upper_bound))
 
             task_c.change_preparation_time(r_c_old)
 
@@ -80,7 +92,7 @@ class CarlierAlgorithm(Algorithm):
             lower_bound = max(self.count_h_K(list_K), self.count_h_K([task_c] + list_K), lower_bound)
 
             if lower_bound < upper_bound:
-                self.permutations.append([copy.deepcopy(tasks), upper_bound])
+                self.permutations.append(CarlierLog(copy.deepcopy(tasks), upper_bound))
 
             task_c.change_delivery_time(q_c_old)
 
@@ -141,11 +153,11 @@ class CarlierAlgorithm(Algorithm):
         best_c_max = 9999999
 
         while len(self.permutations) > 0:
-            [a, b] = self.permutations.pop()
+            solution: CarlierLog = self.permutations.pop()
 
             self.out_string = "Zostało: " + str(len(self.permutations))
 
-            temp_tasks = self.carlier(a, b)
+            temp_tasks = self.carlier(solution.solution, solution.upper_band)
             temp_c_max = self.cmax_calc.get_Cmax(temp_tasks)
 
             self.out_string += ", Cmax: " + str(best_c_max)
