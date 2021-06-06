@@ -52,7 +52,7 @@ class UIManager:
         UIManager._add_alg(TabuSearch(initial_solution_generator=SchrageNLogNAlgorithm()))
         UIManager._add_alg(CarlierAlgorithm(False))
         UIManager._add_alg(CarlierAlgorithm(True))
-        UIManager._add_alg(CarlierAlgorithm(True, PriorityQueue(key=CarlierLog.get_upper_band)))
+        UIManager._add_alg(CarlierAlgorithm(True, PriorityQueue(key=CarlierLog.get_upper_bound)))
 
     @staticmethod
     def algorithms() -> List[Algorithm]:

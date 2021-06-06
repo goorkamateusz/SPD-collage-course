@@ -12,12 +12,12 @@ import copy
 
 
 class CarlierLog:
-    def __init__(self, solution: List, upper_band: int):
+    def __init__(self, solution: List, upper_bound: int):
         self.solution = solution
-        self.upper_band = upper_band
+        self.upper_bound = upper_bound
 
     def get_upper_bound(self) -> int:
-        return self.upper_band
+        return self.upper_bound
 
 
 class CarlierAlgorithm(Algorithm):
@@ -157,7 +157,7 @@ class CarlierAlgorithm(Algorithm):
 
             self.out_string = "Zostało: " + str(len(self.permutations))
 
-            temp_tasks = self.carlier(solution.solution, solution.upper_band)
+            temp_tasks = self.carlier(solution.solution, solution.upper_bound)
             temp_c_max = self.cmax_calc.get_Cmax(temp_tasks)
 
             self.out_string += ", Cmax: " + str(best_c_max)
