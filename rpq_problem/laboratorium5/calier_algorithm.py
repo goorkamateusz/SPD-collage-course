@@ -16,7 +16,7 @@ class CarlierLog:
         self.solution = solution
         self.upper_band = upper_band
 
-    def get_upper_band(self) -> int:
+    def get_upper_bound(self) -> int:
         return self.upper_band
 
 
