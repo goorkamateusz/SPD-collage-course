@@ -20,20 +20,20 @@ class SchragePMTNNLogNAlgorithm(Algorithm):
 
         while tasks_ready or tasks_not_ready:
             while tasks_not_ready and tasks_not_ready.top().get_preparation_time() <= t:
-                j_star = tasks_not_ready.extract()
-                tasks_ready.insert(j_star)
+                j_star = tasks_not_ready.pop()
+                tasks_ready.append(j_star)
 
                 if j_star.get_delivery_time() > l.get_delivery_time():
                     l = l.copy().change_execution_time(t - j_star.get_preparation_time())
                     t = j_star.get_preparation_time()
 
                     if l.get_execution_time() > 0:
-                        tasks_ready.insert(l)
+                        tasks_ready.append(l)
 
             if not tasks_ready:
                 t = tasks_not_ready.top().get_preparation_time()
             else:
-                j_star = tasks_ready.extract()
+                j_star = tasks_ready.pop()
                 l = j_star
                 t += j_star.get_execution_time()
                 c_max = max(c_max, t + j_star.get_delivery_time())

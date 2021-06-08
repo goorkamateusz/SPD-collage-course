@@ -6,20 +6,20 @@ def test_default_priority_queue():
 
     assert queue.empty()
 
-    queue.insert(5)
-    queue.insert(-1)
-    queue.insert(10)
-    queue.insert(2)
+    queue.append(5)
+    queue.append(-1)
+    queue.append(10)
+    queue.append(2)
 
     assert queue.top() == 10
-    assert queue.extract() == 10
+    assert queue.pop() == 10
 
     assert queue.top() == 5
     assert not queue.empty()
 
-    queue.extract()
-    queue.extract()
-    queue.extract()
+    queue.pop()
+    queue.pop()
+    queue.pop()
 
     assert queue.empty()
 
@@ -27,12 +27,12 @@ def test_default_priority_queue():
 def test_min_priority_queue():
     queue = PriorityQueue([10, 15, 5, 20, 25], reverse=True)
 
-    assert queue.extract() == 5
-    assert queue.extract() == 10
-    assert queue.extract() == 15
+    assert queue.pop() == 5
+    assert queue.pop() == 10
+    assert queue.pop() == 15
 
-    queue.insert(-10)
-    queue.insert(10)
+    queue.append(-10)
+    queue.append(10)
 
     assert queue.top() == -10
 
@@ -40,7 +40,7 @@ def test_min_priority_queue():
 def test_custom_key_priority_queue():
     queue = PriorityQueue(('abcd', '123', 'ab', 'qwerty'), key=len)
 
-    assert queue.extract() == 'qwerty'
-    assert queue.extract() == 'abcd'
-    assert queue.extract() == '123'
-    assert queue.extract() == 'ab'
+    assert queue.pop() == 'qwerty'
+    assert queue.pop() == 'abcd'
+    assert queue.pop() == '123'
+    assert queue.pop() == 'ab'

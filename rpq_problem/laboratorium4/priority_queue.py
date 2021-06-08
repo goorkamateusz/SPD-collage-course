@@ -19,7 +19,7 @@ class PriorityQueue(Generic[T]):
         self._is_greater = lambda first, second: (key(first) > key(second) if not reverse else key(first) < key(second))
         self._insert_many(data)
 
-    def insert(self, element: T) -> None:
+    def append(self, element: T) -> None:
         self._data.append(element)
 
         index = len(self._data) - 1
@@ -33,7 +33,7 @@ class PriorityQueue(Generic[T]):
             raise RuntimeError('Kolejka jest pusta')
         return self._data[0]
 
-    def extract(self) -> T:
+    def pop(self) -> T:
         if self.empty():
             raise RuntimeError('Kolejka jest pusta')
 
@@ -60,7 +60,7 @@ class PriorityQueue(Generic[T]):
 
     def _insert_many(self, data: Iterable[T]) -> None:
         for element in data:
-            self.insert(element)
+            self.append(element)
 
     def _heapify(self, index: int) -> None:
         left_index = self._left_child_index(index)
