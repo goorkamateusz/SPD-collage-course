@@ -17,7 +17,7 @@ class GeneratePlot:
         c_max = gantt.get_duration()
 
         data = AlgorithmData(algorithm, task_number, c_max, algorithm.bench_time_us)
-        print(data)
+        print(task_number, algorithm, c_max, algorithm.bench_time_us)
         self.algorithm_data.append(data)
 
     def show_plot(self):
