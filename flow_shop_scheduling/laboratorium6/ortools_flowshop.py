@@ -13,7 +13,7 @@ class FlowshopSolver(Algorithm):
     def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
         Cmax, pi_order, status = self.solve_flowshop_with_solver(machines, tasks)
         tasks_order = [tasks[task_index] for task_index in pi_order]
-        print(Cmax, status, tasks_order)
+        print(status, tasks_order)
         for task in tasks_order:
             for machine in machines:
                 machine.add_task(task)
@@ -21,12 +21,8 @@ class FlowshopSolver(Algorithm):
 
     def solve_flowshop_with_solver(self, machines: List[Machine], tasks: List[Task]) -> Tuple[float, List[int], str]:
         model = cp_model.CpModel()
-        variable_min_value = 0
-        variable_max_value = 0
-        for machine in machines:
-            for task in tasks:
-                variable_max_value += machine.get_task_duration(task)
 
+        # Dolne ograniczenia dla początków zadań
         min_values = []
         first_row = []
         for i in range(0, len(tasks)):
@@ -39,6 +35,7 @@ class FlowshopSolver(Algorithm):
                 machine_row.append(machines[machine_index].get_task_duration(task) + min_values[machine_index][task.get_id()-1])
             min_values.append(machine_row)
 
+        # Górne ograniczenia dla końców zadań
         max_values = []
         machine_sum = 0
         for machine_index, machine in enumerate(machines):
@@ -46,7 +43,8 @@ class FlowshopSolver(Algorithm):
                 machine_sum += machine.get_task_duration(task)
             max_values.append(machine_sum)
 
-        cmax_optimization_objective = model.NewIntVar(variable_min_value, variable_max_value, 'cmax_makespan')
+        # max_values[-1] zawiera sumę wszystkich zadań na wszystkich maszynach
+        cmax_optimization_objective = model.NewIntVar(0, max_values[-1], 'cmax_makespan')
 
         model_start_vars = []
         model_ends_vars = []
@@ -57,9 +55,11 @@ class FlowshopSolver(Algorithm):
             start_vars = []
             for task in tasks:
                 suffix = f"t:{task.get_id()}_{machine.get_id()}"
-                start_var = model.NewIntVar(min_values[machine.get_id()-1][task.get_id()-1], variable_max_value, 'start_' + suffix)
+                # Ustawienie dolnego ograniczenia dla początku danego zadania na danej maszynie
+                start_var = model.NewIntVar(min_values[machine.get_id()-1][task.get_id()-1], max_values[machine.get_id()-1], 'start_' + suffix)
                 start_vars.append(start_var)
-                end_var = model.NewIntVar(variable_min_value, max_values[machine.get_id()-1], 'end_' + suffix)
+                # Ustawienie górnego ograniczenia dla zakończenia danego zadania na danej maszynie
+                end_var = model.NewIntVar(min_values[machine.get_id()-1][task.get_id()-1], max_values[machine.get_id()-1], 'end_' + suffix)
                 end_vars.append(end_var)
                 interval_var = model.NewIntervalVar(start_var, machine.get_task_duration(task), end_var, 'interval_' + suffix)
                 model_interval_vars.append(interval_var)
@@ -67,21 +67,26 @@ class FlowshopSolver(Algorithm):
             model_start_vars.append(start_vars)
             model.AddNoOverlap(model_interval_vars)
 
+        # model_ends_vars[-1] zawiera momenty zakończenia zadań na ostatniej maszynie
         for end_var in model_ends_vars[-1]:
             model.Add(cmax_optimization_objective >= end_var)
 
+        # Zadanie na kolejnej maszynie można zacząć dopiero gdy skończy się na poprzedniej
         for i in range(len(machines)-1):
             for j in range(len(tasks)):
                 model.Add(model_start_vars[i+1][j] >= model_ends_vars[i][j])
 
-        for i in range(len(machines)-1):
-            for first_index, second_index in combinations(range(len(tasks)), 2):
-                suffix = f"t:{machine.get_id()}_{first_index}_{second_index}"
-                is_first_greater_than_second = model.NewBoolVar('is_positive' + suffix)
-                model.Add((model_start_vars[i][second_index] - model_start_vars[i][first_index]) >= -max_values[i]*(1-is_first_greater_than_second))
-                model.Add((model_start_vars[i+1][second_index] - model_start_vars[i+1][first_index]) >= -max_values[i+1]*(1-is_first_greater_than_second))
-                model.Add((model_start_vars[i][second_index] - model_start_vars[i][first_index]) <= max_values[i]*is_first_greater_than_second)
-                model.Add((model_start_vars[i+1][second_index] - model_start_vars[i+1][first_index]) <= max_values[i+1]*is_first_greater_than_second)
+        # Dla każdej pary zadań na danej maszynie chcemy żeby kolejność zadań na następnej maszynie była
+        # taka sama jak na obecnej
+        for first_task_index, second_task_index in combinations(range(len(tasks)), 2):
+            suffix = f"t:_{first_task_index}_{second_task_index}"
+            # Zmienna boolowska oznaczająca, czy zadanie drugie występuje po zadaniu pierwszym
+            # Jeżeli jest true to ograniczamy różnicę czasów rozpoczęcia przez 0 i maksymalną wartość
+            # Jeżeli jest false to ograniczamy różnicę czasów rozpoczęcia przez -maksymalną wartość i 0
+            is_second_greater_than_first = model.NewBoolVar('is_positive' + suffix)
+            for i in range(len(machines)):
+                model.Add((model_start_vars[i][second_task_index] - model_start_vars[i][first_task_index]) >= -max_values[i]*(1-is_second_greater_than_first))
+                model.Add((model_start_vars[i][second_task_index] - model_start_vars[i][first_task_index]) <= max_values[i]*is_second_greater_than_first)
 
         model.Minimize(cmax_optimization_objective)
 
