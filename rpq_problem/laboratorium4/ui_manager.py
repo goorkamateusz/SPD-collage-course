@@ -16,6 +16,7 @@ from laboratorium4.generate_plot import GeneratePlot
 
 from laboratorium5.calier_algorithm import CarlierAlgorithm, CarlierLog
 from laboratorium5.tabu_search import TabuSearch
+from laboratorium6.ortools_rpq import RpqSolver
 
 
 class UIManager:
@@ -53,6 +54,7 @@ class UIManager:
         UIManager._add_alg(CarlierAlgorithm(False))
         UIManager._add_alg(CarlierAlgorithm(True))
         UIManager._add_alg(CarlierAlgorithm(True, PriorityQueue(key=CarlierLog.get_upper_bound)))
+        UIManager._add_alg(RpqSolver())
 
     @staticmethod
     def algorithms() -> List[Algorithm]:
