@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 from laboratorium4.Cmax_calculator import CMaxCalculator
 
+
 class GeneratePlot:
 
     algorithm_data = []
@@ -20,13 +21,11 @@ class GeneratePlot:
 
         GeneratePlot.algorithm_data.append(data)
 
-
     def __init__(self):
-        
         # C_max:
         fig1, ax1 = plt.subplots()
 
-        for i in range(0, 8):
+        for i in range(0, 20):
             x = []
             y = []
             alg_name = ""
@@ -49,7 +48,7 @@ class GeneratePlot:
         # Czas liczenia:
         fig2, ax2 = plt.subplots()
 
-        for i in range(0, 8):
+        for i in range(0, 20):
             x = []
             y = []
             alg_name = ""
@@ -70,4 +69,3 @@ class GeneratePlot:
         ax2.legend()
 
         plt.show()
-        

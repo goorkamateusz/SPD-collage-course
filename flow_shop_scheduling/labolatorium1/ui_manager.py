@@ -1,5 +1,7 @@
 import sys
 import getopt
+from os import walk
+from typing import List
 
 from labolatorium1.silly_algorithm import SillyAlgorithm
 from labolatorium1.johnson_rule import JohnsonRule
@@ -12,10 +14,11 @@ from laboratorium3.initial_solution_generator import CopyTasks, InitialSolutionG
 from laboratorium3.neightbourhood_generator import Insert, Inverse, NeightbourhoodGenerator, SwapAll
 from laboratorium3.stop_conditions import ComplexStopCondition, IterCondition, StopConditions, TimeCondition, WithoutProgresCondition
 from laboratorium3.tabu_search import TabuSearch
+from laboratorium6.ortools_flowshop import FlowshopSolver
 
 
 class UIManager:
-    file_name = None
+    file_names = []
     algorithm = []
     _modifications = {
         0: WithoutModification(),
@@ -38,6 +41,7 @@ class UIManager:
 
     _options = [
         Option("f:", "file=", "nazwa pliku"),
+        Option("d:", "dir=", "ścieżka do katalogu"),
         Option("a", "all", ""),
         Option("s", "silly-alg", ""),
         Option("p", "all-permutation", ""),
@@ -50,6 +54,7 @@ class UIManager:
 \t\t\tinit: {c, s, j, n, N1, N2, N3, N4},
 \t\t\tneighbour: {sw, in, iv}
 \t\t\tstop: {i<max_iter>, t<max_time>, p<max_iter_without_progres>}"""),
+        Option("o", "ortools-flowshop", ""),
         Option("h", "help", ""),
     ]
 
@@ -78,7 +83,11 @@ class UIManager:
             args, _ = getopt.getopt(arg_list, options, long_options)
             for curr_arg, curr_val in args:
                 if curr_arg in ("-f", "--file"):
-                    UIManager.file_name = curr_val
+                    UIManager.file_names.append(curr_val)
+
+                if curr_arg in ("-d", "--dir"):
+                    for filename in UIManager.all_in_dir(curr_val):
+                        UIManager.file_names.append(filename)
 
                 if curr_arg in ("-a", "--all"):
                     UIManager._add_alg(SillyAlgorithm())
@@ -118,6 +127,9 @@ class UIManager:
                 if curr_arg in ("--tabu-list", None):
                     TabuSearch.tabu_list_max_length = int(curr_val)
 
+                if curr_arg in ('-o', '--ortools-flowshop'):
+                    UIManager._add_alg(FlowshopSolver())
+
                 if curr_arg in ("-h", "--help"):
                     UIManager.help()
                     exit()
@@ -126,7 +138,7 @@ class UIManager:
             print(str(err))
             exit()
 
-        if UIManager.file_name is None:
+        if not UIManager.file_names:
             print("Nie podano nazwy pliku wejsciowego")
             exit()
 
@@ -200,3 +212,8 @@ class UIManager:
     def help() -> None:
         for op in UIManager._options:
             print(op)
+
+    @staticmethod
+    def all_in_dir(path: str) -> List[str]:
+        _, _, filenames = next(walk(path))
+        return [f"{path}/{filename}" for filename in filenames]
