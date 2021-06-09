@@ -37,6 +37,38 @@ class JSProblem:
 
     ###################################################################################
 
+    def print_result(self, jobshop_matrix, all_tasks, machines):
+
+        # Printowanie
+        assigned_task_type = collections.namedtuple('assigned_task_type','start job index')
+        assigned_jobs = collections.defaultdict(list)
+        for job_id, job in enumerate(jobshop_matrix):
+            for task_id, task in enumerate(job):
+                machine = task[0]
+                assigned_jobs[machine].append(
+                    assigned_task_type(start=self.js_solver.Value(all_tasks[job_id, task_id].start),
+                        job=job_id,
+                        index=task_id,
+                        ))
+
+
+        output = ''
+        for machine in range(1, machines+1):
+            assigned_jobs[machine].sort() # kazde zadanie sortujemy zeby dostac je w kolejnosci rozpoczynania sie
+            line_to_print = 'Machine ' + str(machine) + ': '
+
+            for assigned_task in assigned_jobs[machine]:
+                name = assigned_task.job*machines+assigned_task.index+1
+                # Add spaces to output to align columns.
+                line_to_print += '%i ' % name
+
+            output += line_to_print + '\n'
+
+        print('Cmax: %i' % self.js_solver.ObjectiveValue())
+        print(output)
+
+    ###################################################################################
+
     def run(self, filename):
         
         jobshop_matrix, tasks, machines = self.load_from_file(filename)
@@ -76,30 +108,4 @@ class JSProblem:
 
         self.solve()
 
-        # Printowanie
-        assigned_task_type = collections.namedtuple('assigned_task_type','start job index')
-        assigned_jobs = collections.defaultdict(list)
-        for job_id, job in enumerate(jobshop_matrix):
-            for task_id, task in enumerate(job):
-                machine = task[0]
-                assigned_jobs[machine].append(
-                    assigned_task_type(start=self.js_solver.Value(all_tasks[job_id, task_id].start),
-                        job=job_id,
-                        index=task_id,
-                        ))
-
-
-        output = ''
-        for machine in range(1, machines+1):
-            assigned_jobs[machine].sort() # kazde zadanie sortujemy zeby dostac je w kolejnosci rozpoczynania sie
-            line_to_print = 'Machine ' + str(machine) + ': '
-
-            for assigned_task in assigned_jobs[machine]:
-                name = assigned_task.job*machines+assigned_task.index+1
-                # Add spaces to output to align columns.
-                line_to_print += '%i ' % name
-
-            output += line_to_print + '\n'
-
-        print('Cmax: %i' % self.js_solver.ObjectiveValue())
-        print(output)
+        self.print_result(jobshop_matrix, all_tasks, machines)
