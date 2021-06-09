@@ -27,7 +27,7 @@ class JSProblem:
         self.tasks_nb, self.machines_nb, self.operations_nb = [int(x) for x in next(file).split()]
         
         jobshop_data = []
-        for task in range(0, self.tasks_nb):
+        for i in range(0, self.tasks_nb):
 
             row = next(file).split()
             operation_in_task = int(row[0])
