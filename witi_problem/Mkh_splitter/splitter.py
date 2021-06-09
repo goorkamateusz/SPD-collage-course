@@ -9,7 +9,7 @@ Wymaga do działania:
 Do wywołania w folderze Mkh_splitter
 """
 
-file = open("insa.data.txt", "r")
+file = open("witi.data.txt", "r")
 lines = file.readlines()
 file.close()
 
