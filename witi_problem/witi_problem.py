@@ -78,12 +78,12 @@ class WiTiProblem:
         for task_nbr in range(0, self.tasks_nb):
             time_sum = time_sum + self.tasks[task_nbr].time
 
-        sum_lateness = 0
+        late_sum = 0
         for task_nbr in range(self.tasks_nb):
-            sum_lateness += self.tasks[task_nbr].penalty * self.tasks[task_nbr].deadline
+            late_sum += self.tasks[task_nbr].penalty * self.tasks[task_nbr].deadline
 
         objective_min = 0
-        objective_max = sum_lateness + 1
+        objective_max = late_sum + 1
 
         variable_max_value = 1 + time_sum
         variable_min_value = 0
