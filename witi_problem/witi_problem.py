@@ -1,5 +1,8 @@
-from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import CpModel, CpSolver
+
+"""
+Klasa Task przechowywująca podstawowe informacje o danym zadaniu.
+"""
 
 class Task:
 
@@ -17,6 +20,10 @@ class Task:
 
 ###################################################################################
 
+"""
+Klasa WiTiProblem zajmuje się rozwiązaniem problemu Ważonych kar  zapomocą solvera ortools.
+"""
+
 class WiTiProblem:
 
     wt_model = CpModel()
@@ -25,12 +32,16 @@ class WiTiProblem:
     tasks = []
     tasks_nb = 0
 
+    """
+    Metoda load_from_file służy do załadowania danych z pliku.
+    """
+
     def load_from_file(self, file_name: str):
         
         file = open(file_name, "r")
-        self.tasks_number = int(next(file))
+        self.tasks_nb = int(next(file))
 
-        for id in range(0, self.tasks_number):
+        for id in range(0, self.tasks_nb):
             
             row = next(file).split()
             time = (int(row[0]))
@@ -42,6 +53,10 @@ class WiTiProblem:
 
     ###################################################################################
 
+    """
+    Metoda solve uruchamia solver.
+    """
+
     def solve(self):
 
         print("\nSolver włączony")
@@ -51,22 +66,26 @@ class WiTiProblem:
 
     ###################################################################################
 
+    """
+    Metoda run jest podstawową metodą definiowania problemu.
+    """
+
     def run(self, file_name):
 
         self.load_from_file(file_name)
 
-        sum_p = 0
-        for task_number in range(self.tasks_number):
-            sum_p = sum_p + self.tasks[task_number].time
+        time_sum = 0
+        for task_number in range(0, self.tasks_nb):
+            time_sum = time_sum + self.tasks[task_number].time
 
         sum_lateness = 0
-        for task_number in range(self.tasks_number):
-            sum_lateness = self.tasks[task_number].penalty * self.tasks[task_number].deadline
+        for task_number in range(self.tasks_nb):
+            sum_lateness += self.tasks[task_number].penalty * self.tasks[task_number].deadline
 
         objective_min = 0
         objective_max = sum_lateness + 1
 
-        variable_max_value = 1 + sum_p
+        variable_max_value = 1 + time_sum
         variable_min_value = 0
 
         model_start_vars = []
@@ -77,7 +96,7 @@ class WiTiProblem:
 
         objective = self.wt_model.NewIntVar(objective_min, objective_max, "WiTi")
 
-        for task_number in range(self.tasks_number):
+        for task_number in range(self.tasks_nb):
             
             nbr = str(task_number)
             start_var = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "start" + nbr)
@@ -92,7 +111,7 @@ class WiTiProblem:
 
         self.wt_model.AddNoOverlap(model_interval_vars)
 
-        for task_number in range(self.tasks_number):
+        for task_number in range(self.tasks_nb):
             self.wt_model.Add(model_late_vars[task_number] >= 0)
             self.wt_model.Add(model_late_vars[task_number] >= (model_ends_vars[task_number] - self.tasks[task_number].deadline) * self.tasks[task_number].penalty)
 
@@ -104,7 +123,7 @@ class WiTiProblem:
         self.solve()
 
         pi_order = []
-        for task_number in range(self.tasks_number):
+        for task_number in range(self.tasks_nb):
             pi_order.append((task_number, self.wt_solver.Value(model_start_vars[task_number])))
         
         pi_order.sort(key=lambda x: x[1])

@@ -2,6 +2,10 @@ from typing import List, Tuple
 import collections as cl
 from ortools.sat.python.cp_model import CpModel, CpSolver
 
+"""
+Klasa JSProblem zajmuje się rozwiązywaniem problemu gniazdowego za pomocą solvera z ortools.
+"""
+
 class JSProblem:
 
     js_model = CpModel()
@@ -10,6 +14,11 @@ class JSProblem:
     tasks_nb = 0
     machines_nb = 0
     operations_nb = 0
+
+    """
+    Metoda load_from_file służy do załadowania danych z pliku.
+
+    """
 
     def load_from_file(self, file_name: str):
 
@@ -36,6 +45,10 @@ class JSProblem:
 
     ###################################################################################
 
+    """
+    Metoda solve uruchamia solver.
+    """
+
     def solve(self):
 
         print("\nSolver włączony")
@@ -44,6 +57,10 @@ class JSProblem:
         print("Solver zakończony\n")
 
     ###################################################################################
+
+    """
+    Metoda print_result zajmuje się wypisaniem wyników działania solvera.
+    """
 
     def print_result(self, jobshop_matrix, all_tasks):
 
@@ -69,6 +86,10 @@ class JSProblem:
             print(line_to_print)
 
     ###################################################################################
+
+    """
+    Metoda run jest podstawową metodą definiowania problemu.
+    """
 
     def run(self, filename):
         
