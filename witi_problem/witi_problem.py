@@ -15,33 +15,22 @@ class WiTi_Task:
 
 class WiTiProblem:
 
-    tasks: list
-    tasks_number: int
+    tasks = []
+    tasks_nb = 0
 
-    def load_from_file(file_path: str):
+    def load_from_file(self, file_name: str):
         
-        instance = WiTiProblem()
-        with open(file_path, "r") as file:
-            #row = next(file).split()
-            instance.tasks_number = int(next(file))
-            instance.tasks = []
+        file = open(file_name, "r")
+        self.tasks_number = int(next(file))
 
-            for i in range(0, instance.tasks_number):
-                row = next(file).split()
-                p = (int(row[0]))
-                w = (int(row[1]))
-                t = (int(row[2]))
-                task = WiTi_Task(i, p, w, t)
-                instance.tasks.append(task)
-
-        return instance
-
-    ###################################################################################
-
-    def print_instance(self):
-        print(self.tasks)
-        print('Tasks:', self.tasks_number)
-
+        for i in range(0, self.tasks_number):
+            row = next(file).split()
+            p = (int(row[0]))
+            w = (int(row[1]))
+            t = (int(row[2]))
+            task = WiTi_Task(i, p, w, t)
+            self.tasks.append(task)
+            
     ###################################################################################
 
     def get_p(self, task_number):
@@ -59,7 +48,10 @@ class WiTiProblem:
 
     ###################################################################################
 
-    def solve_witi_with_solver(self):
+    def run(self, file_name):
+
+        self.load_from_file(file_name)
+
         from ortools.sat.python import cp_model
         model = cp_model.CpModel()
 
@@ -120,4 +112,4 @@ class WiTiProblem:
         pi_order = [x[0] for x in
                     pi_order]
 
-        print(f"Suma: {solver.ObjectiveValue()}\nKolejność zadań: {pi_order}\n")
+        print("Suma: " + str(int(solver.ObjectiveValue())) + "\nKolejność zadań: " + str(pi_order))
