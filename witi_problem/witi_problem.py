@@ -124,7 +124,7 @@ class WiTiProblem:
 
         output_tasks_order = []
         for task_nbr in range(self.tasks_nb):
-            output_tasks_order.append((task_nbr, self.wt_solver.Value(model_start_vars[task_nbr])))
+            output_tasks_order.append((task_nbr, self.wt_solver.Value(starts[task_nbr])))
         
         output_tasks_order.sort(key=lambda x: x[1])
         output_tasks_order = [x[0] for x in output_tasks_order]
