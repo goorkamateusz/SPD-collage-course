@@ -11,13 +11,6 @@ class Task:
     penalty = 0
     deadline = 0
 
-    def __init__(self, id, time, penalty, deadline):
-        
-        self.id = id
-        self.time = time
-        self.penalty = penalty
-        self.deadline = deadline
-
 ###################################################################################
 
 """
@@ -43,12 +36,14 @@ class WiTiProblem:
 
         for id in range(0, self.tasks_nb):
             
+            task = Task()
             row = next(file).split()
-            time = (int(row[0]))
-            penalty = (int(row[1]))
-            deadline = (int(row[2]))
             
-            task = Task(id, time, penalty, deadline)
+            task.time = (int(row[0]))
+            task.penalty = (int(row[1]))
+            task.deadline = (int(row[2]))
+            task.id = id
+
             self.tasks.append(task)
 
     ###################################################################################
