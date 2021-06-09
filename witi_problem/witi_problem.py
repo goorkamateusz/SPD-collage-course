@@ -1,15 +1,21 @@
-from dataclasses import dataclass
+from ortools.sat.python.cp_model import CpModel, CpSolver
 
-@dataclass
-class WiTi_Task:
-    def __init__(self, task_number, p, w, t):
-        self.id: int = task_number
-        self.p: int = p
-        self.t: int = t
-        self.w: int = w
+class Task:
 
-    def __repr__(self):
-        return "[i:{0},p:{1},w:{2},t:{3}]".format(self.id, self.p, self.w, self.t)
+    id = 0
+    time = 0
+    penalty = 0
+    deadline = 0
+
+    def __init__(self, id, time, penalty, deadline):
+        
+        self.id = id
+        self.time = time
+        self.penalty = penalty
+        self.deadline = deadline
+
+    #def __repr__(self):
+     #   return "[i:{0},p:{1},w:{2},t:{3}]".format(self.id, self.p, self.w, self.t)
 
 ###################################################################################
 
@@ -23,28 +29,29 @@ class WiTiProblem:
         file = open(file_name, "r")
         self.tasks_number = int(next(file))
 
-        for i in range(0, self.tasks_number):
-            row = next(file).split()
-            p = (int(row[0]))
-            w = (int(row[1]))
-            t = (int(row[2]))
-            task = WiTi_Task(i, p, w, t)
-            self.tasks.append(task)
+        for id in range(0, self.tasks_number):
             
+            row = next(file).split()
+            time = (int(row[0]))
+            penalty = (int(row[1]))
+            deadline = (int(row[2]))
+            task = Task(id, time, penalty, deadline)
+            self.tasks.append(task)
+
     ###################################################################################
 
     def get_p(self, task_number):
-        return self.tasks[task_number].p
+        return self.tasks[task_number].time
 
     ###################################################################################
 
     def get_w(self, task_number):
-        return self.tasks[task_number].w
+        return self.tasks[task_number].penalty
 
     ###################################################################################
 
     def get_t(self, task_number):
-        return self.tasks[task_number].t
+        return self.tasks[task_number].deadline
 
     ###################################################################################
 
@@ -52,8 +59,7 @@ class WiTiProblem:
 
         self.load_from_file(file_name)
 
-        from ortools.sat.python import cp_model
-        model = cp_model.CpModel()
+        model = CpModel()
 
         sum_p = 0
         for task_number in range(self.tasks_number):
@@ -100,10 +106,9 @@ class WiTiProblem:
 
         model.Minimize(objective)
 
-        solver = cp_model.CpSolver()
+        solver = CpSolver()
         solver.parameters.max_time_in_seconds = 8
-
-        status = solver.Solve(model)
+        solver.Solve(model)
 
         pi_order = []
         for task_number in range(self.tasks_number):
