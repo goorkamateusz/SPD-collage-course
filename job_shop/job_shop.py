@@ -1,18 +1,18 @@
 from typing import List, Tuple
 import collections
-from ortools.sat.python import cp_model
+from ortools.sat.python.cp_model import CpModel, CpSolver
 
 class JSProblem:
+
+    js_model = CpModel()
+    js_solver = CpSolver()
 
     def load_from_file(self, file_name: str):
 
         file = open(file_name, "r")
         
-        data_set = str(next(file).split())
-        _, data_set_number = data_set.split('.')
-        data_set_number, _ = data_set_number.split(':')
-        data_set_number = int(data_set_number)
         tasks, machines, operations = [int(x) for x in next(file).split()]
+        
         jobshop_matrix = []
         for task in range(0,tasks):
             row = next(file).split()
@@ -28,11 +28,19 @@ class JSProblem:
 
         return jobshop_matrix, tasks, machines
 
+    ###################################################################################
+
+    def solve(self):
+
+        self.js_solver.parameters.max_time_in_seconds = 20
+        self.js_solver.Solve(self.js_model)
+
+    ###################################################################################
 
     def run(self, filename):
+        
         jobshop_matrix, tasks, machines = self.load_from_file(filename)
 
-        model = cp_model.CpModel()
         task_type = collections.namedtuple('task_type', 'start end interval')
 
         all_tasks = {}
@@ -44,31 +52,29 @@ class JSProblem:
                 machine = task[0]
                 duration = task[1]
 
-                start_var = model.NewIntVar(0, worst_possibly_cmax, 'start' ) # tworzenie zmiennych z ograniczeniami (0 - max czas trwania), zmienne calkowitoliczbowe
-                end_var = model.NewIntVar(0, worst_possibly_cmax, 'end')
+                start_var = self.js_model.NewIntVar(0, worst_possibly_cmax, 'start' ) # tworzenie zmiennych z ograniczeniami (0 - max czas trwania), zmienne calkowitoliczbowe
+                end_var = self.js_model.NewIntVar(0, worst_possibly_cmax, 'end')
 
-                interval_var = model.NewIntervalVar(start_var, duration, end_var, 'interval') # interwal - start, czas trwania, koniec
+                interval_var = self.js_model.NewIntervalVar(start_var, duration, end_var, 'interval') # interwal - start, czas trwania, koniec
 
                 all_tasks[job_id, task_id] = task_type(start=start_var, end=end_var, interval=interval_var)
                 machine_to_intervals[machine].append(interval_var)
 
         for machine in range(1, machines+1):
-            model.AddNoOverlap(machine_to_intervals[machine])  # ograniczenie na nachodzenie sie zadan tylko na danej maszynie
+            self.js_model.AddNoOverlap(machine_to_intervals[machine])  # ograniczenie na nachodzenie sie zadan tylko na danej maszynie
 
         for job_id, job in enumerate(jobshop_matrix):
             for task_id in range(len(job) - 1):
-                model.Add(all_tasks[job_id, task_id + 1].start >= all_tasks[job_id, task_id].end)
+                self.js_model.Add(all_tasks[job_id, task_id + 1].start >= all_tasks[job_id, task_id].end)
                 # operacje musza sie rozpoczynac po zakonczeniu poprzednich
 
 
-        cmax_var = model.NewIntVar(0, worst_possibly_cmax, 'cmax')
-        model.AddMaxEquality(cmax_var,
+        cmax_var = self.js_model.NewIntVar(0, worst_possibly_cmax, 'cmax')
+        self.js_model.AddMaxEquality(cmax_var,
                             [all_tasks[job_id, len(job) - 1].end for job_id, job in enumerate(jobshop_matrix)])
-        model.Minimize(cmax_var) # szukamy najszbyszego zakonczenia zadan
+        self.js_model.Minimize(cmax_var) # szukamy najszbyszego zakonczenia zadan
 
-        solver = cp_model.CpSolver()
-        solver.parameters.max_time_in_seconds = 10.0
-        solver.Solve(model)
+        self.solve()
 
         # Printowanie
         assigned_task_type = collections.namedtuple('assigned_task_type','start job index')
@@ -77,7 +83,7 @@ class JSProblem:
             for task_id, task in enumerate(job):
                 machine = task[0]
                 assigned_jobs[machine].append(
-                    assigned_task_type(start=solver.Value(all_tasks[job_id, task_id].start),
+                    assigned_task_type(start=self.js_solver.Value(all_tasks[job_id, task_id].start),
                         job=job_id,
                         index=task_id,
                         ))
@@ -95,5 +101,5 @@ class JSProblem:
 
             output += line_to_print + '\n'
 
-        print('Cmax: %i' % solver.ObjectiveValue())
+        print('Cmax: %i' % self.js_solver.ObjectiveValue())
         print(output)
