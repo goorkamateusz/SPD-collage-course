@@ -106,12 +106,12 @@ class JSProblem:
                 machine = task[0]
                 duration = task[1]
 
-                start_var = self.js_model.NewIntVar(0, worst_cmax, 'start' )
-                end_var = self.js_model.NewIntVar(0, worst_cmax, 'end')
+                start = self.js_model.NewIntVar(0, worst_cmax, 'start' )
+                finish = self.js_model.NewIntVar(0, worst_cmax, 'finish')
 
-                interval_var = self.js_model.NewIntervalVar(start_var, duration, end_var, 'interval')
+                interval_var = self.js_model.NewIntervalVar(start, duration, finish, 'interval')
 
-                all_tasks[job_id, task_id] = task_type(start=start_var, end=end_var, interval=interval_var)
+                all_tasks[job_id, task_id] = task_type(start=start, end=finish, interval=interval_var)
                 machine_to_intervals[machine].append(interval_var)
 
         for machine in range(1, self.machines_nb +1):
