@@ -15,12 +15,12 @@ class JSAlgorithm:
 
 def load_from_file(file_name: str):
 
-    file = open("example_data/data.000", "r")
+    file = open("Mkh_splitter/insa.data.txt", "r")
     
     data_set = str(next(file).split())
-    #_, data_set_number = data_set.split('.')
-    #data_set_number, _ = data_set_number.split(':')
-    #data_set_number = int(data_set_number)
+    _, data_set_number = data_set.split('.')
+    data_set_number, _ = data_set_number.split(':')
+    data_set_number = int(data_set_number)
     tasks, machines, operations = [int(x) for x in next(file).split()]
     jobshop_matrix = []
     for task in range(0,tasks):
