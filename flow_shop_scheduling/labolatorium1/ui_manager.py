@@ -90,13 +90,14 @@ class UIManager:
                         UIManager.file_names.append(filename)
 
                 if curr_arg in ("-a", "--all"):
-                    UIManager._add_alg(SillyAlgorithm())
+                    # UIManager._add_alg(SillyAlgorithm())
                     UIManager._add_alg(JohnsonRule())
-                    UIManager._add_alg(AllPossibilities())
+                    # UIManager._add_alg(AllPossibilities())
                     UIManager._add_alg(NehAlgorithm())
                     UIManager._add_alg(TabuSearch())
-                    for modification in UIManager._modifications.values():
-                        UIManager._add_alg(NehAlgorithmModification(modification))
+                    UIManager._add_alg(FlowshopSolver())
+                    # for modification in UIManager._modifications.values():
+                    #     UIManager._add_alg(NehAlgorithmModification(modification))
 
                 if curr_arg in ("-s", "--silly-alg"):
                     UIManager._add_alg(SillyAlgorithm())
@@ -119,7 +120,6 @@ class UIManager:
 
                 if curr_arg in ('-t', "--tabu-search"):
                     UIManager._add_alg(TabuSearch())
-                    continue
 
                 if curr_arg in ('-T'):
                     UIManager._add_tabu_serach_with_modification(curr_val)
