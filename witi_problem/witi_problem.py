@@ -56,6 +56,15 @@ class WiTiProblem:
 
     ###################################################################################
 
+    def solve(self):
+
+        print("\nSolver włączony")
+        self.wt_solver.parameters.max_time_in_seconds = 8
+        self.wt_solver.Solve(self.wt_model)
+        print("Solver zakończony\n")
+
+    ###################################################################################
+
     def run(self, file_name):
 
         self.load_from_file(file_name)
@@ -105,16 +114,14 @@ class WiTiProblem:
 
         self.wt_model.Minimize(objective)
 
-        solver = CpSolver()
-        solver.parameters.max_time_in_seconds = 8
-        solver.Solve(self.wt_model)
+        self.solve()
 
         pi_order = []
         for task_number in range(self.tasks_number):
-            pi_order.append((task_number, solver.Value(model_start_vars[task_number])))
+            pi_order.append((task_number, self.wt_solver.Value(model_start_vars[task_number])))
         
         pi_order.sort(key=lambda x: x[1])
         pi_order = [x[0] for x in pi_order]
 
-        print("Suma: " + str(int(solver.ObjectiveValue())))
+        print("Suma: " + str(int(self.wt_solver.ObjectiveValue())))
         print("Kolejność zadań: " + str(pi_order))
