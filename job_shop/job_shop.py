@@ -99,15 +99,15 @@ class JSProblem:
 
         all_tasks = {}
         machine_to_intervals = cl.defaultdict(list)
-        worst_possibly_cmax = sum(task[1] for job in jobshop_data for task in job)
+        worst_cmax = sum(task[1] for job in jobshop_data for task in job)
 
         for job_id, job in enumerate(jobshop_data):
             for task_id, task in enumerate(job):
                 machine = task[0]
                 duration = task[1]
 
-                start_var = self.js_model.NewIntVar(0, worst_possibly_cmax, 'start' )
-                end_var = self.js_model.NewIntVar(0, worst_possibly_cmax, 'end')
+                start_var = self.js_model.NewIntVar(0, worst_cmax, 'start' )
+                end_var = self.js_model.NewIntVar(0, worst_cmax, 'end')
 
                 interval_var = self.js_model.NewIntervalVar(start_var, duration, end_var, 'interval')
 
@@ -122,11 +122,9 @@ class JSProblem:
                 self.js_model.Add(all_tasks[job_id, task_id + 1].start >= all_tasks[job_id, task_id].end)
     
 
-        cmax_var = self.js_model.NewIntVar(0, worst_possibly_cmax, 'cmax')
-        self.js_model.AddMaxEquality(cmax_var,
-                            [all_tasks[job_id, len(job) - 1].end for job_id, job in enumerate(jobshop_data)])
-        self.js_model.Minimize(cmax_var)
+        cmax = self.js_model.NewIntVar(0, worst_cmax, 'cmax')
+        self.js_model.AddMaxEquality(cmax, [all_tasks[job_id, len(job) - 1].end for job_id, job in enumerate(jobshop_data)])
+        self.js_model.Minimize(cmax)
 
         self.solve()
-
         self.print_result(jobshop_data, all_tasks)
