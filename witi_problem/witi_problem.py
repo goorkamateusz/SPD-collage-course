@@ -100,7 +100,7 @@ class WiTiProblem:
             
             nbr = str(task_nbr)
             start = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "start" + nbr)
-            finish = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "end" + nbr)
+            finish = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "finish" + nbr)
             interval = self.wt_model.NewIntervalVar(start, self.tasks[task_nbr].time, finish, "interval" + nbr)
             late = self.wt_model.NewIntVar(objective_min, objective_max, "late" + nbr)
 
