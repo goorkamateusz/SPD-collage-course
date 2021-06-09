@@ -52,8 +52,8 @@ class UIManager:
         UIManager._add_alg(TabuSearch())
         UIManager._add_alg(TabuSearch(initial_solution_generator=SchrageNLogNAlgorithm()))
         UIManager._add_alg(CarlierAlgorithm(False))
-        UIManager._add_alg(CarlierAlgorithm(True))
-        UIManager._add_alg(CarlierAlgorithm(True, PriorityQueue(key=CarlierLog.get_upper_bound)))
+        UIManager._add_alg(CarlierAlgorithm(False, PriorityQueue(key=CarlierLog.get_upper_bound)))
+        # UIManager._add_alg(CarlierAlgorithm(True))
         UIManager._add_alg(RpqSolver())
 
     @staticmethod
