@@ -50,7 +50,7 @@ class CarlierAlgorithm(Algorithm):
         temp_tasks_order = self.schrage.run(tasks)
         var_u = self.cmax_calc.get_Cmax(temp_tasks_order)
 
-        if var_u < upper_bound:
+        if var_u <= upper_bound:
             upper_bound = var_u
             tasks = temp_tasks_order
 
