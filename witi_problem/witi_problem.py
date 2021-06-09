@@ -75,12 +75,12 @@ class WiTiProblem:
         self.load_from_file(file_name)
 
         time_sum = 0
-        for task_number in range(0, self.tasks_nb):
-            time_sum = time_sum + self.tasks[task_number].time
+        for task_nbr in range(0, self.tasks_nb):
+            time_sum = time_sum + self.tasks[task_nbr].time
 
         sum_lateness = 0
-        for task_number in range(self.tasks_nb):
-            sum_lateness += self.tasks[task_number].penalty * self.tasks[task_number].deadline
+        for task_nbr in range(self.tasks_nb):
+            sum_lateness += self.tasks[task_nbr].penalty * self.tasks[task_nbr].deadline
 
         objective_min = 0
         objective_max = sum_lateness + 1
@@ -88,46 +88,46 @@ class WiTiProblem:
         variable_max_value = 1 + time_sum
         variable_min_value = 0
 
-        model_start_vars = []
-        model_ends_vars = []
-        model_interval_vars = []
-        model_late_vars = []
+        starts = []
+        finishes = []
+        intervals = []
+        lates = []
 
 
         objective = self.wt_model.NewIntVar(objective_min, objective_max, "WiTi")
 
-        for task_number in range(self.tasks_nb):
+        for task_nbr in range(self.tasks_nb):
             
-            nbr = str(task_number)
-            start_var = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "start" + nbr)
-            end_var = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "end" + nbr)
-            interval_var = self.wt_model.NewIntervalVar(start_var, self.tasks[task_number].time, end_var, "interval" + nbr)
-            late_var = self.wt_model.NewIntVar(objective_min, objective_max, "late" + nbr)
+            nbr = str(task_nbr)
+            start = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "start" + nbr)
+            finish = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "end" + nbr)
+            interval = self.wt_model.NewIntervalVar(start, self.tasks[task_nbr].time, finish, "interval" + nbr)
+            late = self.wt_model.NewIntVar(objective_min, objective_max, "late" + nbr)
 
-            model_start_vars.append(start_var)
-            model_ends_vars.append(end_var)
-            model_interval_vars.append(interval_var)
-            model_late_vars.append(late_var)
+            starts.append(start)
+            finishes.append(finish)
+            intervals.append(interval)
+            lates.append(late)
 
-        self.wt_model.AddNoOverlap(model_interval_vars)
+        self.wt_model.AddNoOverlap(intervals)
 
-        for task_number in range(self.tasks_nb):
-            self.wt_model.Add(model_late_vars[task_number] >= 0)
-            self.wt_model.Add(model_late_vars[task_number] >= (model_ends_vars[task_number] - self.tasks[task_number].deadline) * self.tasks[task_number].penalty)
+        for task_nbr in range(self.tasks_nb):
+            self.wt_model.Add(lates[task_nbr] >= 0)
+            self.wt_model.Add(lates[task_nbr] >= (finishes[task_nbr] - self.tasks[task_nbr].deadline) * self.tasks[task_nbr].penalty)
 
-        max_t = sum(model_late_vars)
+        max_t = sum(lates)
         self.wt_model.Add(objective >= max_t)
 
         self.wt_model.Minimize(objective)
 
         self.solve()
 
-        pi_order = []
-        for task_number in range(self.tasks_nb):
-            pi_order.append((task_number, self.wt_solver.Value(model_start_vars[task_number])))
+        output_tasks_order = []
+        for task_nbr in range(self.tasks_nb):
+            output_tasks_order.append((task_nbr, self.wt_solver.Value(model_start_vars[task_nbr])))
         
-        pi_order.sort(key=lambda x: x[1])
-        pi_order = [x[0] for x in pi_order]
+        output_tasks_order.sort(key=lambda x: x[1])
+        output_tasks_order = [x[0] for x in output_tasks_order]
 
         print("Suma: " + str(int(self.wt_solver.ObjectiveValue())))
-        print("Kolejność zadań: " + str(pi_order))
+        print("Kolejność zadań: " + str(output_tasks_order))
