@@ -36,23 +36,9 @@ class WiTiProblem:
             time = (int(row[0]))
             penalty = (int(row[1]))
             deadline = (int(row[2]))
+            
             task = Task(id, time, penalty, deadline)
             self.tasks.append(task)
-
-    ###################################################################################
-
-    def get_p(self, task_number):
-        return self.tasks[task_number].time
-
-    ###################################################################################
-
-    def get_w(self, task_number):
-        return self.tasks[task_number].penalty
-
-    ###################################################################################
-
-    def get_t(self, task_number):
-        return self.tasks[task_number].deadline
 
     ###################################################################################
 
@@ -71,11 +57,11 @@ class WiTiProblem:
 
         sum_p = 0
         for task_number in range(self.tasks_number):
-            sum_p = sum_p + self.get_p(task_number)
+            sum_p = sum_p + self.tasks[task_number].time
 
         sum_lateness = 0
         for task_number in range(self.tasks_number):
-            sum_lateness = self.get_w(task_number) * self.get_t(task_number)
+            sum_lateness = self.tasks[task_number].penalty * self.tasks[task_number].deadline
 
         objective_min = 0
         objective_max = sum_lateness + 1
@@ -89,14 +75,15 @@ class WiTiProblem:
         model_late_vars = []
 
 
-        objective = self.wt_model.NewIntVar(objective_min, objective_max, 'Witi objective')
+        objective = self.wt_model.NewIntVar(objective_min, objective_max, "WiTi")
 
         for task_number in range(self.tasks_number):
-            suffix = f"t:{task_number}"
-            start_var = self.wt_model.NewIntVar(variable_min_value, variable_max_value, 'start_' + suffix)
-            end_var = self.wt_model.NewIntVar(variable_min_value, variable_max_value, 'end_' + suffix)
-            interval_var = self.wt_model.NewIntervalVar(start_var, self.get_p(task_number), end_var, 'interval_' + suffix)
-            late_var = self.wt_model.NewIntVar(objective_min, objective_max, 'late_' + suffix)
+            
+            nbr = str(task_number)
+            start_var = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "start" + nbr)
+            end_var = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "end" + nbr)
+            interval_var = self.wt_model.NewIntervalVar(start_var, self.tasks[task_number].time, end_var, "interval" + nbr)
+            late_var = self.wt_model.NewIntVar(objective_min, objective_max, "late" + nbr)
 
             model_start_vars.append(start_var)
             model_ends_vars.append(end_var)
@@ -107,7 +94,7 @@ class WiTiProblem:
 
         for task_number in range(self.tasks_number):
             self.wt_model.Add(model_late_vars[task_number] >= 0)
-            self.wt_model.Add(model_late_vars[task_number] >= (model_ends_vars[task_number] - self.get_t(task_number)) * self.get_w(task_number))
+            self.wt_model.Add(model_late_vars[task_number] >= (model_ends_vars[task_number] - self.tasks[task_number].deadline) * self.tasks[task_number].penalty)
 
         max_t = sum(model_late_vars)
         self.wt_model.Add(objective >= max_t)
