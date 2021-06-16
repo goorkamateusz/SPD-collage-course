@@ -22,6 +22,6 @@ if __name__ == "__main__":
             algorithm.read_end_time()
             generate_plot.add_data(machines_with_task, algorithm, len(tasks))
 
-            # UIManager.display_and_print(machines_with_task, algorithm)
-    generate_plot.show_plot()
+            UIManager.display_and_print(machines_with_task, algorithm)
+    # generate_plot.show_plot()
     UIManager.show_plots()

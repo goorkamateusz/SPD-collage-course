@@ -76,10 +76,10 @@ class TabuSearch(Algorithm):
 
                 current_Cmax = Gantt(machines).get_duration()
 
-                if current_Cmax < current_neighborhood_best_Cmax and current_solution not in tabu_list:
+                if current_Cmax < current_neighborhood_best_Cmax and self.not_in_tabulist(tabu_list):
                     current_neighborhood_best_Cmax = current_Cmax
                     current_neighborhood_best_solution = current_solution
-                    tabu_list.append(current_solution)
+                    tabu_list.append((self.neigthbourhood_generator.first, self.neigthbourhood_generator.second))
 
                 for machine in machines:
                     machine.clear_tasks()
@@ -98,3 +98,10 @@ class TabuSearch(Algorithm):
                 machine.add_task(task)
 
         return machines
+
+    def not_in_tabulist(self, tabu_list) -> bool:
+        if (self.neigthbourhood_generator.first, self.neigthbourhood_generator.second) in tabu_list:
+            return False
+        if (self.neigthbourhood_generator.second, self.neigthbourhood_generator.first) in tabu_list:
+            return False
+        return True

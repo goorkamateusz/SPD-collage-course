@@ -9,6 +9,10 @@ Solution = List[Task]
 class NeightbourhoodGenerator:
     name = ""
 
+    def __init__(self):
+        self.first = None
+        self.second = None
+
     def run(self, current_solution: Solution) -> Iterator[Solution]:
         raise NotImplementedError()
 
@@ -20,6 +24,8 @@ class SwapAll(NeightbourhoodGenerator):
         for first_index, second_index in itertools.combinations(range(len(solution)), 2):
             solution_copy = solution.copy()
             solution_copy[first_index], solution_copy[second_index] = solution_copy[second_index], solution_copy[first_index]
+            self.first = first_index
+            self.second = second_index
             yield solution_copy
 
 
@@ -41,6 +47,8 @@ class Insert(NeightbourhoodGenerator):
 
             solution_copy[second_index] = temp
 
+            self.first = first_index
+            self.second = second_index
             yield solution_copy
 
 
@@ -69,4 +77,6 @@ class Inverse(NeightbourhoodGenerator):
 
             self.swapRecursive(first_index, second_index, solution_copy)
 
+            self.first = first_index
+            self.second = second_index
             yield solution_copy
