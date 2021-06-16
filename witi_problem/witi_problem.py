@@ -11,13 +11,6 @@ class Task:
     penalty = 0
     deadline = 0
 
-    def __init__(self, id, time, penalty, deadline):
-        
-        self.id = id
-        self.time = time
-        self.penalty = penalty
-        self.deadline = deadline
-
 ###################################################################################
 
 """
@@ -43,12 +36,14 @@ class WiTiProblem:
 
         for id in range(0, self.tasks_nb):
             
+            task = Task()
             row = next(file).split()
-            time = (int(row[0]))
-            penalty = (int(row[1]))
-            deadline = (int(row[2]))
             
-            task = Task(id, time, penalty, deadline)
+            task.time = (int(row[0]))
+            task.penalty = (int(row[1]))
+            task.deadline = (int(row[2]))
+            task.id = id
+
             self.tasks.append(task)
 
     ###################################################################################
@@ -78,12 +73,12 @@ class WiTiProblem:
         for task_nbr in range(0, self.tasks_nb):
             time_sum = time_sum + self.tasks[task_nbr].time
 
-        sum_lateness = 0
+        late_sum = 0
         for task_nbr in range(self.tasks_nb):
-            sum_lateness += self.tasks[task_nbr].penalty * self.tasks[task_nbr].deadline
+            late_sum += self.tasks[task_nbr].penalty * self.tasks[task_nbr].deadline
 
         objective_min = 0
-        objective_max = sum_lateness + 1
+        objective_max = late_sum + 1
 
         variable_max_value = 1 + time_sum
         variable_min_value = 0
@@ -100,7 +95,7 @@ class WiTiProblem:
             
             nbr = str(task_nbr)
             start = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "start" + nbr)
-            finish = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "end" + nbr)
+            finish = self.wt_model.NewIntVar(variable_min_value, variable_max_value, "finish" + nbr)
             interval = self.wt_model.NewIntervalVar(start, self.tasks[task_nbr].time, finish, "interval" + nbr)
             late = self.wt_model.NewIntVar(objective_min, objective_max, "late" + nbr)
 
