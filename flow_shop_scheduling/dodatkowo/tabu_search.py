@@ -5,26 +5,25 @@ from typing import List
 from labolatorium1.gantt_plot import Gantt
 from labolatorium1.general_lib import *
 from labolatorium2.algorithm import Algorithm
-from laboratorium3 import stop_conditions
+from laboratorium3 import neightbourhood_generator, stop_conditions
 from laboratorium3.stop_conditions import StopConditions, IterCondition
-from laboratorium3.neightbourhood_generator import NeightbourhoodGenerator, SwapAll
 from laboratorium3.initial_solution_generator import InitialSolutionGenerator, CopyTasks
 
 
-class TabuSearch(Algorithm):
-    name = "Algorytm tabu search"
+class TabuSearchV2(Algorithm):
+    name = "Algorytm tabu search V2"
 
     def __init__(self,
                 tabu_list_max_length: int = 10,
                 initial_solution_generator: InitialSolutionGenerator = CopyTasks(),
-                neigthbourhood_generator: NeightbourhoodGenerator = SwapAll(),
+                neigthbourhood_generator: neightbourhood_generator = neightbourhood_generator.SwapAll(),
                 stop_condition: StopConditions = IterCondition(10)) -> None:
         super().__init__()
         self.intial_solution_generator = initial_solution_generator
         self.neigthbourhood_generator = neigthbourhood_generator
         self.stop_condition = stop_condition
         self.tabu_list_max_length = tabu_list_max_length
-        self.name = f"{TabuSearch.name} ({tabu_list_max_length}, {initial_solution_generator.name}, {neigthbourhood_generator.name}, {stop_condition})"
+        self.name = f"{TabuSearchV2.name} ({tabu_list_max_length}, {initial_solution_generator.name}, {neigthbourhood_generator.name}, {stop_condition})"
 
     def run(self, machines: List[Machine], tasks: List[Task]) -> List[Machine]:
         """ Tabu search - przeszukiwanie z zabronieniami
@@ -76,10 +75,10 @@ class TabuSearch(Algorithm):
 
                 current_Cmax = Gantt(machines).get_duration()
 
-                if current_Cmax < current_neighborhood_best_Cmax and current_solution not in tabu_list:
+                if current_Cmax < current_neighborhood_best_Cmax and self.not_in_tabulist(tabu_list):
                     current_neighborhood_best_Cmax = current_Cmax
                     current_neighborhood_best_solution = current_solution
-                    tabu_list.append(current_solution)
+                    tabu_list.append((self.neigthbourhood_generator.first, self.neigthbourhood_generator.second))
 
                 for machine in machines:
                     machine.clear_tasks()
@@ -98,3 +97,10 @@ class TabuSearch(Algorithm):
                 machine.add_task(task)
 
         return machines
+
+    def not_in_tabulist(self, tabu_list) -> bool:
+        if (self.neigthbourhood_generator.first, self.neigthbourhood_generator.second) in tabu_list:
+            return False
+        if (self.neigthbourhood_generator.second, self.neigthbourhood_generator.first) in tabu_list:
+            return False
+        return True

@@ -2,6 +2,7 @@ import sys
 import getopt
 from os import walk
 from typing import List
+from dodatkowo.tabu_search import TabuSearchV2
 
 from labolatorium1.silly_algorithm import SillyAlgorithm
 from labolatorium1.johnson_rule import JohnsonRule
@@ -50,6 +51,11 @@ class UIManager:
         Option("N:", "neh-algorithm-modyfications", "arg: 0, 1, 2, 3, 4"),
         Option("t:", "tabu-search", "arg - tabu list length"),
         Option("T:", "tabu-search-modyfications",
+"""arg: <tabli list length>,<init>,<neighbour>,<stop>
+\t\t\tinit: {c, s, j, n, N1, N2, N3, N4},
+\t\t\tneighbour: {sw, in, iv}
+\t\t\tstop: {i<max_iter>, t<max_time>, p<max_iter_without_progres>}"""),
+        Option("Y:", "tabu-search-modyfications-v2",
 """arg: <tabli list length>,<init>,<neighbour>,<stop>
 \t\t\tinit: {c, s, j, n, N1, N2, N3, N4},
 \t\t\tneighbour: {sw, in, iv}
@@ -123,6 +129,16 @@ class UIManager:
 
                 if curr_arg in ('-T'):
                     UIManager._add_tabu_serach_with_modification(curr_val)
+
+                if curr_arg in ('-Y'):
+                    if "," in curr_val:
+                        list_length, initial_switch, neighbour_switch, stop_switch = curr_val.split(",")
+                        initial = UIManager._get_initial_alg(initial_switch)
+                        neighbour = UIManager._get_neighbour_alg(neighbour_switch)
+                        stop = UIManager._get_stop_con(stop_switch)
+                        UIManager._add_alg(TabuSearchV2(int(list_length), initial, neighbour, stop))
+                    else:
+                        UIManager._add_alg(TabuSearchV2())
 
                 if curr_arg in ("--tabu-list", None):
                     TabuSearch.tabu_list_max_length = int(curr_val)
