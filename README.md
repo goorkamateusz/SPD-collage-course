@@ -1,4 +1,6 @@
 # Sterowanie Procesami Dyskretnymi
+Zbiór algorytmów dotyczących szeregowania zadań.
+
 Praca zespołowa. Kurs na kierunku Automatyka i Robotyka Politechniki Wrocławskiej.
 
 
@@ -7,7 +9,7 @@ Praca zespołowa. Kurs na kierunku Automatyka i Robotyka Politechniki Wrocławsk
   - [Spis Treści](#spis-treści)
   - [Autorzy](#autorzy)
   - [Prowadzący zajęcia](#prowadzący-zajęcia)
-  - [Autorzy przykładowych danych](#autorzy-przykładowych-danych)
+  - [Autorzy zestawów przykładowych danych](#autorzy-zestawów-przykładowych-danych)
   - [Instalacja potrzebnych paczek](#instalacja-potrzebnych-paczek)
   - [Styl kodu](#styl-kodu)
 
@@ -20,7 +22,7 @@ Praca zespołowa. Kurs na kierunku Automatyka i Robotyka Politechniki Wrocławsk
 ## Prowadzący zajęcia
 Mgr inż. Teodor Niżyński
 
-## Autorzy przykładowych danych
+## Autorzy zestawów przykładowych danych
 - Mgr inż. Teodor Niżyński
 - Dr inż. Mariusz Makuchowski
 

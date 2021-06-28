@@ -16,3 +16,4 @@ for nb in examples_nb:
         file.writelines(line)
 
     file.close()
+    
